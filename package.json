@@ -1,0 +1,24 @@
+{
+  "name": "cs546_group28_final_project",
+  "version": "1.0.0",
+  "description": "Team Members\r - Sabah Ahmed\r - Prathyeka Reddy Anugu\r - Yash Dinkar Bharambay\r - Swarajsing Anandsing Patil\r - Abhishek Kocharekar",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prathyekareddy/CS546_Group28_Final_Project.git"
+  },
+  "author": "CS-546-B-Group28",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prathyekareddy/CS546_Group28_Final_Project/issues"
+  },
+  "homepage": "https://github.com/prathyekareddy/CS546_Group28_Final_Project#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6"
+  }
+}
