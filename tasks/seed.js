@@ -7,7 +7,7 @@ const { updateGroup } = require("../data/groups");
 
 async function main() {
   const db = await dbConnection.dbConnection();
-    await db.dropDatabase();
+    // await db.dropDatabase();
 
   for(let i=1;i<50;i++)
    {const user =  await users.createUser(
@@ -19,7 +19,6 @@ async function main() {
       "Hero",
       "",
       "Jersey City",
-      "Hudson",
       "NJ",
       "Terrace Ave",
       "1234567890"
@@ -95,6 +94,23 @@ async function main() {
   //     "1234567890"
   //  );
 
+  try {
+    await users.updateUser (
+      "6379add720504203e06c005b",
+      "password",
+        "Patrick",
+        "Hill",
+        "yash@gmail.com",
+        "male",
+        "Professor",
+        "",
+        "Jersey City",
+        "NJ",
+        "Terrace Ave",
+        "1234567890")
+  } catch (error) {
+    console.log(error);
+  }
 
 const group = await groups.createGroup(
 "Neflix1",

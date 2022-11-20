@@ -12,7 +12,6 @@ const createUser = async (
   gender,
   userDescription,
   profileImgUrl,
-  address,
   city,
   state,
   streetAddress,
@@ -75,7 +74,6 @@ const updateUser = async (
   gender,
   userDescription,
   profileImgUrl,
-  address,
   city,
   state,
   streetAddress,
@@ -93,10 +91,7 @@ const updateUser = async (
     gender: gender,
     userDescription: userDescription,
     profileImgUrl: profileImgUrl,
-    address: address,
-    city: city,
-    state: state,
-    streetAddress: streetAddress,
+    address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
   };
 
