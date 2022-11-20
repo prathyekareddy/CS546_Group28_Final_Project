@@ -1,7 +1,7 @@
-const movies = require('./users');
-const reviews = require('./groups');
+const users = require('./users');
+const groups = require('./groups');
 
 module.exports = {
-    users,
-    groups
+    users:users,
+    groups:groups
 }
