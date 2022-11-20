@@ -28,10 +28,7 @@ const createUser = async (
     gender: gender,
     userDescription: userDescription,
     profileImgUrl: profileImgUrl,
-    address: address,
-    city: city,
-    state: state,
-    streetAddress: streetAddress,
+    address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
   };
 
