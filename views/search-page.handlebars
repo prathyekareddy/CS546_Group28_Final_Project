@@ -1,7 +1,19 @@
 <main>
   <h1>Search Page</h1>
-  
+  <form id="search-form">
+          
+        <label for="groupSearch">
+            Group Name
+        <input type="text" name="groupSearch" id="groupSearch"/>
+        </label>       
+        <label for="categorySearch">
+            Category
+            <input type="text" name="categorySearch" id="categorySearch"/>
+        </label> 
+        <button type="submit">Search</button>
+        
+  </form>
   <form action="/username/groupdetails" method="GET">
         <button type="submit">Group Details</button>
-    </form>
+  </form>
 </main>
