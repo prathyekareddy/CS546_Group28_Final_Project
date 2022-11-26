@@ -1,7 +1,8 @@
 const mongoCollections = require("../config/mongo-collections");
 const groups = mongoCollections.groups;
-const validation = require("../validations/helper")
+const validation = require("../validations/createGroupValidation")
 const {ObjectId} = require('mongodb');
+const createGroupValidation = require("../validations/createGroupValidation");
 
 
 const createGroup = async (
@@ -20,18 +21,36 @@ const createGroup = async (
 //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
-
+  let newObj = {};
+  
+  try {
+    newObj = await createGroupValidation.checkCreateGroup( groupName,
+      // profileImgUrl,
+      platFormName,
+      groupdLeaderId,
+      groupLimit,
+      // memberIds,
+      duePaymentDate,
+      loginId,
+      password,
+      subscriptionLengthInDays)
+      console.log(newObj , "validated");
+  } catch (error) {
+    console.log(error);
+  }
+     
   let newGrp = {
-    groupName:groupName,
+    groupName:newObj.groupName,
     profileImgUrl:"",
-    platFormName:platFormName,
-    groupdLeaderId:groupdLeaderId,
-    groupLimit:groupLimit,
+    platFormName:newObj.platFormName,
+    groupdLeaderId:newObj.groupdLeaderId,
+    groupLimit:newObj.groupLimit,
     memberIds:[],
-    duePaymentDate:duePaymentDate,
-    loginId:loginId,
-    password:password,
-    subscriptionLengthInDays:subscriptionLengthInDays
+    duePaymentDate:newObj.duePaymentDate,
+    loginId:newObj.loginId,
+    password:newObj.password,
+    subscriptionLengthInDays:newObj.subscriptionLengthInDays,
+    requestToJoin:[]
   };
 
   newGrp.memberIds.push(groupdLeaderId);
@@ -40,9 +59,7 @@ const createGroup = async (
 
   if (!insertedGrp.acknowledged || !insertedGrp.insertedId)
     throw "Could not create the group";
-  const insertedGrpId = insertedGrp.insertedId.toString();
-  const group = await getGroupById(insertedGrpId);
-  return group;
+ 
 };
 
 const getAllGroups = async () => {
