@@ -2,6 +2,8 @@ const mongoCollections = require("../config/mongo-collections");
 const users = mongoCollections.users;
 const validation = require("../validations/helper");
 const {ObjectId} = require('mongodb');
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 
 
 const createUser = async (
@@ -18,15 +20,22 @@ const createUser = async (
   phoneNumber
 ) => {
   const userCollection = await users();
+  const emailsList = await userCollection.find({},{projection: {_id: 0,email:1}}).toArray();
+  if (!emailsList) throw "Could not get all emails";
+ for(let i in emailsList){
+  if (emailsList[i]["email"].toLowerCase()==email.toLowerCase()){throw "email-id already exists kindly choose other email-id"}
+ }
+  
+ const hash = await bcrypt.hash(password, saltRounds);
 
   let newUser = {
-    password: password,
+    password: hash,
     firstName: firstName,
     lastName: lastName,
     email: email,
     gender: gender,
     userDescription: userDescription,
-    profileImgUrl: profileImgUrl,
+    profileImgUrl: "profileImgUrl",
     address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
   };
@@ -51,6 +60,13 @@ const getUserById = async (userId) => {
   const user = await userCollection.findOne({ _id: ObjectId(userId) });
   if (!user) throw "User not found";
   return user;
+};
+
+const getUserByemail = async (username) => {
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({email:username})
+  if (user === null) throw "No user with that username";
+  return user
 };
 
 const removeUser = async (userId) => {
@@ -107,10 +123,40 @@ const updateUser = async (
 
 };
 
+
+const checkUser = async (username, password) => {
+  // username = validation.checkString(username,"username")
+  // username = username.trim().toLowerCase()
+  // password = validation.checkString(password,"password")
+  // if(username.trim().length<4){ throw "Username should be atleast of length 4"}
+  // if(password.trim().length<6){ throw "Password should be atleast of length 4"}
+  // if(username.trim().search(/[^a-zA-Z0-9]/g) != -1){ throw "Username should be alphanumeric"}
+  // if(password.trim().search(/[A-Z]/g)==-1){throw "Password should contain atleast 1 uppercase character"}
+  // if(password.trim().search(/[0-9]/g)==-1){throw "Password should contain atleast 1 number"}
+  // if(password.trim().search(/[^A-Za-z0-9]/g)==-1){throw "Password should contain atleast 1 special character"}
+
+  //Match regex for special characters is yet to be done
+
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({email:username})
+  if (user === null) throw "No user with that username";
+
+  let compareToMatch = await bcrypt.compare(password, user.password);
+  if (compareToMatch==true){
+    return {authenticatedUser: true}
+}else{
+    throw "Either the username or password is invalid"
+}
+
+};
+
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  getUserByemail,
   removeUser,
   updateUser,
+  checkUser
 };
