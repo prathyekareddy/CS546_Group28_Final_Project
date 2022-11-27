@@ -46,7 +46,7 @@ const createUser = async (
     throw "Could not add User";
   const insertedUserId = insertedUser.insertedId.toString();
   const user = await getUserById(insertedUserId);
-  return user;
+  return {userInserted: true};
 };
 
 const getAllUsers = async () => {
