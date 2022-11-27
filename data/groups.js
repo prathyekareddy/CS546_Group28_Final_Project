@@ -15,7 +15,8 @@ const createGroup = async (
   duePaymentDate,
   loginId,
   password,
-  subscriptionLengthInDays
+  subscriptionLengthInDays,
+  category
 ) => {
 
 //Profile Images and memberIds who joins the grp will have to be updated
@@ -50,6 +51,7 @@ const createGroup = async (
     loginId:newObj.loginId,
     password:newObj.password,
     subscriptionLengthInDays:newObj.subscriptionLengthInDays,
+    category:category,
     requestToJoin:[]
   };
 
