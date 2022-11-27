@@ -18,7 +18,6 @@ router
         res.render('create-group');
     })
     .post(async (req, res) => {
-        console.log('hello2', req);
         //let groupInfo = req.body;
         try {
           result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);

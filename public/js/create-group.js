@@ -1,8 +1,10 @@
-let cgForm = document.getElementById('group-name');
-let groupName = document.getElementById('platform-name');
+let cgForm = document.getElementById('cgForm');
+let groupName = document.getElementById('group-name');
+let platformName = document.getElementById('platform-name');
 let groupLimit = document.getElementById('group-limit');
 let category = document.getElementById('category');
-let dueDate = document.getElementById('due-date');
+let duePaymentDate = document.getElementById('due-date');
+let subscriptionLengthInDays = document.getElementById('subs-length');
 let loginId = 'sabah@gmail.com';
 let password = 'Password';
 let error = document.getElementById('error');
@@ -10,7 +12,7 @@ let error = document.getElementById('error');
   const checkCreateGroup = async (
     groupName,
     // profileImgUrl,
-    platFormName,
+    platformName,
     groupLimit,
     // memberIds,
     duePaymentDate,
@@ -22,7 +24,9 @@ let error = document.getElementById('error');
   
     // Group Name Validation===================================================================================
   
-    if (!groupName) throw `Error: You must supply GroupName!`;
+    if (!groupName) {
+      throw `Error: You must supply GroupName!`;
+    } 
     groupName = groupName.trim();
     if (groupName.length === 0)
       throw "Group Name cannot be an empty string or string with just spaces";
@@ -33,6 +37,13 @@ let error = document.getElementById('error');
     groupName = groupName.trim();
     if (groupName.length === 0)
       throw `Group Name cannot be an empty string or string with just spaces`;
+
+    if (!platformName) {
+      throw 'You should provide a Platform name';
+    }
+    platformName = platformName.trim();
+    if (platformName.length === 0)
+    throw `Platform Name cannot be an empty string or string with just spaces`;
   
     // Group Limit ID============================================================================================
     if (!groupLimit) throw "You should provide a groupLimit Number";
@@ -107,7 +118,7 @@ let error = document.getElementById('error');
     if (subscriptionLengthInDays.includes("."))
       throw `Error: Decimals values are not allowed`;
     if (subscriptionLengthInDays.includes("-")) throw `Days should be valid`;
-    if (!subscriptionLengthInDays) throw `You must provide the password`;
+    if (!subscriptionLengthInDays) throw `You must provide the subscription length in days`;
     subscriptionLengthInDays = subscriptionLengthInDays.trim();
     if (!subscriptionLengthInDays)
       throw `You must provide the Subscription Duration`;
@@ -118,11 +129,13 @@ let error = document.getElementById('error');
       Number.isNaN(subscriptionLengthInDays)
     )
       throw "subscriptionLengthInDays should be a number";
+    
+    
   
     return {
       groupName,
       // profileImgUrl,
-      platFormName,
+      platformName,
       groupLimit,
       // memberIds,
       duePaymentDate,
@@ -134,18 +147,19 @@ let error = document.getElementById('error');
 // let groupImage = document.getElementById('group-image');
 
 if (cgForm) { 
-        cgForm.addEventListener("submit", (event) => {
+        cgForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        error.hidden = true;
         let validForm;
         try {
-            validForm = checkCreateGroup(groupName, platFormName, groupLimit, duePaymentDate, loginId, password, subscriptionLengthInDays);
-            event.target.submit();
+            validForm = await checkCreateGroup(groupName.value, platformName.value, groupLimit.value, duePaymentDate.value, loginId, password, subscriptionLengthInDays.value);
         }
         catch(e) {
             error.hidden = false;
             error.innerHTML = e;
             return;
         }
+        event.target.submit();
     });
 
 }
