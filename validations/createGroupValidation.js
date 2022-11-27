@@ -137,7 +137,7 @@ const checkCreateGroup = async (
     duePaymentDate,
     loginId,
     password,
-    subscriptionLengthInDays,
+    subscriptionLengthInDays
   };
 };
 

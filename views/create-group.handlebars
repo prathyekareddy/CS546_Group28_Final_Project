@@ -1,0 +1,51 @@
+    <main>
+        <h2>Create Group</h2>
+        <div id = "error" class = "error" hidden></div>
+        <form method="POST" action="/navigation/create" id="cgForm">
+            <h3>Group Image</h3>
+            {{!-- <label for = "group-image">
+                Choose File
+                <input type="file" name="grpImg" id="group-image" accept="image/*" />
+              </label> --}}
+            <h3>Group Information</h3>
+            <div>
+                <label for="group-name">
+                    Group Name
+                    <input type="text" id="group-name" name="groupName">
+                </label>
+            </div>
+            <div>
+                <label for="platform-name">
+                    Platform Name
+                    <input type="text" id="platform-name" name="platformName">
+                </label>
+            </div>
+            <div>
+                <label for="group-limit">
+                    Group Limit
+                    <input type="number" id="group-limit" name="groupLimit">
+                </label>
+            </div>
+            <div>
+                <label for="category">
+                    Category
+                    <input type="text" id="category" name="category">
+                </label>
+            </div>
+            <div>
+                <label for="due-date">
+                    Payment Due Date
+                    <input type="text" id="due-date" name="dueDate">
+                </label>
+            </div>
+            <div>
+                <label for="subs-length">
+                    Subscription Length in Days
+                    <input type="number" id="subs-length" name="subsLength">
+                </label>
+            </div>
+            <br>
+            <button type="submit" value="Submit">Create Group</button>
+        </form>
+    </main>
+    <script src='../public/js/create-group.js'></script>
