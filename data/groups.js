@@ -3,9 +3,70 @@ const groups = mongoCollections.groups;
 const validation = require("../validations/createGroupValidation")
 const {ObjectId} = require('mongodb');
 const createGroupValidation = require("../validations/createGroupValidation");
+const userGroupData = require("./usergroup")
 
+// const createGroup = async (
+//   groupName,
+//   // profileImgUrl,
+//   platFormName,
+//   groupdLeaderId,
+//   groupLimit,
+//   // memberIds,
+//   duePaymentDate,
+//   loginId,
+//   password,
+//   subscriptionLengthInDays,
+//   category
+// ) => {
+
+// //Profile Images and memberIds who joins the grp will have to be updated
+
+//   const grpCollection = await groups();
+//   let newObj = {};
+  
+//   try {
+//     newObj = await createGroupValidation.checkCreateGroup( groupName,
+//       // profileImgUrl,
+//       platFormName,
+//       groupdLeaderId,
+//       groupLimit,
+//       // memberIds,
+//       duePaymentDate,
+//       loginId,
+//       password,
+//       subscriptionLengthInDays)
+//       console.log(newObj , "validated");
+//   } catch (error) {
+//     console.log(error);
+//   }
+//   console.log(newObj)
+     
+//   let newGrp = {
+//     groupName:newObj.groupName,
+//     profileImgUrl:"",
+//     platFormName:newObj.platFormName,
+//     groupdLeaderId:newObj.groupdLeaderId,
+//     groupLimit:newObj.groupLimit,
+//     memberIds:[],
+//     duePaymentDate:newObj.duePaymentDate,
+//     loginId:newObj.loginId,
+//     password:newObj.password,
+//     subscriptionLengthInDays:newObj.subscriptionLengthInDays,
+//     category:category,
+//     requestToJoin:[]
+//   };
+
+//   newGrp.memberIds.push(groupdLeaderId);
+
+//   const insertedGrp = await grpCollection.insertOne(newGrp);
+
+//   if (!insertedGrp.acknowledged || !insertedGrp.insertedId)
+//     throw "Could not create the group";
+ 
+// };
 
 const createGroup = async (
+  userid,
   groupName,
   // profileImgUrl,
   platFormName,
@@ -13,55 +74,58 @@ const createGroup = async (
   groupLimit,
   // memberIds,
   duePaymentDate,
-  loginId,
-  password,
+  platformLoginId,
+  platFormPassword,
   subscriptionLengthInDays,
-  category
+  totalPaymentPrice,
+  paymentPlanSpanInMonths
 ) => {
 
 //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
-  let newObj = {};
-  
-  try {
-    newObj = await createGroupValidation.checkCreateGroup( groupName,
-      // profileImgUrl,
-      platFormName,
-      groupdLeaderId,
-      groupLimit,
-      // memberIds,
-      duePaymentDate,
-      loginId,
-      password,
-      subscriptionLengthInDays)
-      console.log(newObj , "validated");
-  } catch (error) {
-    console.log(error);
-  }
-     
+  montlyPaymentForGroup = monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
   let newGrp = {
-    groupName:newObj.groupName,
+    groupName:groupName,
     profileImgUrl:"",
-    platFormName:newObj.platFormName,
-    groupdLeaderId:newObj.groupdLeaderId,
-    groupLimit:newObj.groupLimit,
-    memberIds:[],
-    duePaymentDate:newObj.duePaymentDate,
-    loginId:newObj.loginId,
-    password:newObj.password,
-    subscriptionLengthInDays:newObj.subscriptionLengthInDays,
-    category:category,
-    requestToJoin:[]
+    platForm:{
+      platFormName:platFormName,
+      platformLoginId: platformLoginId,
+      platFormPassword:platFormPassword
+    },
+    groupdLeaderId:groupdLeaderId,
+    groupLimit:groupLimit,
+    duePaymentDate:duePaymentDate,
+    payment:{
+      totalPaymentPrice:totalPaymentPrice, //"54$"
+      paymentPlanSpanInMonths:paymentPlanSpanInMonths, // 6
+      montlyPaymentForGroup: montlyPaymentForGroup
+    },
+    listOfUsers:[userid]//userId list
   };
-
-  newGrp.memberIds.push(groupdLeaderId);
-
   const insertedGrp = await grpCollection.insertOne(newGrp);
 
   if (!insertedGrp.acknowledged || !insertedGrp.insertedId)
     throw "Could not create the group";
- 
+  const insertedGrpId = insertedGrp.insertedId.toString();
+  const group = await getGroupById(insertedGrpId);
+
+
+  if(userid){
+    await userGroupData.createUserGroup(userid,insertedGrpId,montlyPaymentForGroup)
+  }
+
+  return group;
+};
+
+ function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
+  if(paymentPlanSpanInMonths & totalPaymentPrice){
+    const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths
+    return monthlyPayment
+  }else{
+    return 0
+  }
+  
 };
 
 const getAllGroups = async () => {
@@ -70,7 +134,7 @@ const getAllGroups = async () => {
 };
 
 const getGroupById = async (groupId) => {
-  groupId = validation.checkId(groupId, "id");
+  // groupId = validation.checkId(groupId, "id");
   const grpCollection = await groups();
   const grp = await grpCollection.findOne({ _id: ObjectId(groupId) });
   if (!grp) throw "Group not found";
@@ -123,6 +187,39 @@ const updateGroup = async (groupId,groupName,
     return group; 
 
   };
+  const updateListOfUsersInGroup = async (groupId,userId) => {
+    // groupId = validation.checkId(groupId, "groupId");
+    const grpCollection = await groups();
+    const oldGrpData = await getGroupById(groupId);
+
+    newList = oldGrpData.listOfUsers + userId
+    let updateGrpDetails = {
+      groupName:oldGrpData.groupName,
+      profileImgUrl:"",
+      platFormName:oldGrpData.platFormName,
+      groupdLeaderId:oldGrpData.groupdLeaderId,
+      groupLimit:oldGrpData.groupLimit,
+      // memberIds:[groupdLeaderId],
+      duePaymentDate:oldGrpData.duePaymentDate,
+      loginId:oldGrpData.loginId,
+      password:oldGrpData.password,
+      subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays,
+      listOfUsers:newList
+    };
+  
+    const newUpdatedGrp = await grpCollection.updateOne(
+      { _id: ObjectId(groupId) },
+      { $set: updateGrpDetails }
+    );
+    if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+      throw "Cannot update List of Users";
+    }
+    const group = await getGroupById(groupId);
+    return group; 
+
+  };
+
+  
 
 module.exports = {
   createGroup,
@@ -130,4 +227,5 @@ module.exports = {
   getGroupById,
   removeGroup,
   updateGroup,
+  updateListOfUsersInGroup
 };
