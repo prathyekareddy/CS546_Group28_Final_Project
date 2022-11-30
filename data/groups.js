@@ -69,6 +69,7 @@ const createGroup = async (
   userid,
   groupName,
   // profileImgUrl,
+  category,
   platFormName,
   groupdLeaderId,
   groupLimit,
@@ -88,12 +89,13 @@ const createGroup = async (
   let newGrp = {
     groupName:groupName,
     profileImgUrl:"",
+    category:category,
     platForm:{
       platFormName:platFormName,
       platformLoginId: platformLoginId,
       platFormPassword:platFormPassword
     },
-    groupdLeaderId:groupdLeaderId,
+    groupdLeaderId:userid,
     groupLimit:groupLimit,
     duePaymentDate:duePaymentDate,
     payment:{

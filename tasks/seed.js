@@ -178,8 +178,8 @@ async function createEverythingEverywhereAllAtOnce(){
 
     try{
       groupCreated = await groups.createGroup(userCreated._id,"Neflix1",
+      "OTT",
       "Netflix",
-      userCreated._id,
       "4",
       "19/11/2022",
       "yash@netflix.com",
