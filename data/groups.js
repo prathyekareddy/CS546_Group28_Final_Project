@@ -4,6 +4,7 @@ const validation = require("../validations/createGroupValidation")
 const {ObjectId} = require('mongodb');
 const createGroupValidation = require("../validations/createGroupValidation");
 const userGroupData = require("./usergroup")
+const helper = require("../validations/helper");
 
 // const createGroup = async (
 //   groupName,
@@ -65,13 +66,114 @@ const userGroupData = require("./usergroup")
  
 // };
 
+const sendRequest = async (groupId,userId) => {
+    groupId = helper.checkId(groupId);
+    userId = helper.checkId(userId);
+    const grpCollection = await groups();
+    const oldGrpData = await getGroupById(groupId);
+
+    oldGrpData.requestToJoin.push(userId);
+    let updateGrpDetails = {
+      requestToJoin: oldGrpData.requestToJoin
+    };
+  
+    const newUpdatedGrp = await grpCollection.updateOne(
+      { _id: ObjectId(groupId) },
+      { $set: updateGrpDetails }
+    );
+    if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+      throw "Cannot update List of Users";
+    }
+    return true;
+}
+
+const searchGroup = async (input) => {
+
+  try{
+    helper.checkSearch(input.groupName, input.category);
+  } catch(e){
+    console.log("Error: ",e);
+  }
+
+  const listOfGroups = await getAllGroups();
+  let result = [];
+  if(input.category && input.groupName){
+    let tempResult = []
+    listOfGroups.forEach(group => {
+      if(group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())){
+        let newEntry = {
+          groupName: group.groupName,
+          platform: group.platForm.platFormName,
+          monthlyPayment: group.payment.montlyPaymentForGroup, 
+          requested: group.requestToJoin.includes(input.userId), 
+          groupId: group._id, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.listOfUsers.length, 
+        }
+        newEntry.notRequested = !newEntry.requested;
+        tempResult.push(newEntry);
+      }
+    });
+    tempResult.forEach(group => {
+      if(group.groupName.toLowerCase().includes(input.groupName.toLowerCase())){
+        let newEntry = {
+          groupName: group.groupName,
+          platform: group.platform,
+          monthlyPayment: group.monthlyPayment, 
+          requested: group.requested, 
+          notRequested: group.notRequested,
+          groupId: group.groupId, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.totalMembers, 
+        }
+        result.push(newEntry);
+      }
+    });
+  }
+  else if(input.category){
+    listOfGroups.forEach(group => {
+      if(group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())){
+        let newEntry = {
+          groupName: group.groupName,
+          platform: group.platForm.platFormName,
+          monthlyPayment: group.payment.montlyPaymentForGroup, 
+          requested: group.requestToJoin.includes(input.userId), 
+          groupId: group._id, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.listOfUsers.length, 
+        }
+        newEntry.notRequested = !newEntry.requested;
+        result.push(newEntry);
+      }
+    });
+  }
+  else if(input.groupName){
+    listOfGroups.forEach(group => {
+      if(group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())){
+        let newEntry = {
+          groupName: group.groupName,
+          platform: group.platForm.platFormName,
+          monthlyPayment: group.payment.montlyPaymentForGroup, 
+          requested: group.requestToJoin.includes(input.userId), 
+          groupId: group._id, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.listOfUsers.length, 
+        }
+        newEntry.notRequested = !newEntry.requested;
+        result.push(newEntry);
+      }
+    });
+  }
+  return result;
+}
+
 const createGroup = async (
   userid,
   groupName,
   // profileImgUrl,
   category,
   platFormName,
-  groupdLeaderId,
+  // groupdLeaderId,
   groupLimit,
   // memberIds,
   duePaymentDate,
@@ -103,7 +205,8 @@ const createGroup = async (
       paymentPlanSpanInMonths:paymentPlanSpanInMonths, // 6
       montlyPaymentForGroup: montlyPaymentForGroup
     },
-    listOfUsers:[userid]//userId list
+    listOfUsers:[userid],//userId list
+    requestToJoin: []
   };
   const insertedGrp = await grpCollection.insertOne(newGrp);
 
@@ -229,5 +332,7 @@ module.exports = {
   getGroupById,
   removeGroup,
   updateGroup,
-  updateListOfUsersInGroup
+  updateListOfUsersInGroup,
+  searchGroup,
+  sendRequest
 };

@@ -4,6 +4,7 @@ const path = require('path');
 const data = require('../data');
 const groupData = data.groups;
 const createGroupValidation = require('../validations/createGroupValidation');
+const helper = require("../validations/helper");
 
 router
     .route("/homepage")
@@ -58,7 +59,50 @@ router
 router
     .route("/search")
     .get(async (req, res) => {
-        res.render('search-page', {});
+        res.render('search-page', {notSearchedYet: true});
+    })
+
+let result = [];
+
+router
+    .post('/search.html', async (req, res) => {
+
+        try{
+            helper.checkSearch(req.body.groupName, req.body.category);
+        } catch(e){
+            console.log("Error: ",e);
+            return;
+        }
+
+        let input = {category: req.body.category, groupName: req.body.groupName, userId: req.session.user._id};
+        result = [];
+        result = await groupData.searchGroup(input);
+        if(result.length === 0){
+            res.render('partials/searched-group', {layout: null, sampleResult: false});
+            return;
+        }
+        res.render('partials/searched-group', {layout: null, sampleResult: result});
+        
+    });
+
+router
+    .route("/sendrequest/:id")
+    .post(async (req, res) => {
+        const updateResult  = async (groupId) => {
+            result.forEach(element => {
+                if(element.groupId.toString() === groupId){
+                    element.requested = true;
+                    element.notRequested = false;
+                }
+            });
+        };
+        groupId = helper.checkId(req.params.id);
+        userId = helper.checkId(req.session.user._id);
+        let updated = groupData.sendRequest(groupId,userId);
+        if(updated){
+            await updateResult(req.params.id);
+        }
+        res.render('partials/searched-group', {layout: null, sampleResult: result});
     })
 
 router

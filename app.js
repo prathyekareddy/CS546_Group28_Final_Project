@@ -4,6 +4,10 @@ const session = require("express-session");
 const static = express.static(__dirname + "/public");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
+const handlebarsInstance = exphbs.create({
+  defaultLayout: 'main',
+  partialsDir: ['views/partials/']
+});
 
 app.use("/public", static);
 app.use(express.json());
@@ -28,7 +32,7 @@ app.use("/navigation/*", (req, res, next) => {
 
 app.use(express.urlencoded({ extended: true }));
 
-app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
+app.engine('handlebars', handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
 configRoutes(app);
