@@ -134,7 +134,6 @@ router
           success_url: "http://localhost:3000/navigation/groupdetails",
           cancel_url: "https://www.youtube.com/",
         });
-        console.log(session);
         res.json({ url: session.url });
       } catch (error) {
         console.log(error);
