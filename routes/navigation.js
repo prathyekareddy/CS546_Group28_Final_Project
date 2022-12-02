@@ -5,6 +5,8 @@ const data = require('../data');
 const groupData = data.groups;
 const createGroupValidation = require('../validations/createGroupValidation');
 const helper = require("../validations/helper");
+const stripe = require("stripe")('sk_test_51MAdqdGXsyLIL2myfowY9UaAZt0rMOB9Z7A26k5yxVMMjLPunw4OTm8ZZMYp9HzvuOLUyBQPMd1NiMZqFd0Jr4Ci00chGfRsuW')
+
 
 router
     .route("/homepage")
@@ -109,6 +111,33 @@ router
     .route("/groupdetails")
     .get(async (req, res) => {
         res.render('group-details', {});
+    })
+    router.route('/checkout-page').get(async (req,res)=>{
+      try {
+    const session = await stripe.checkout.sessions.create({
+        mode:"payment",
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price: 'price_1MAdtxGXsyLIL2myAGYK5cE8',
+            quantity: 1,
+          },
+          {
+            price: 'price_1MAfX1GXsyLIL2myFZU8pn6J',
+            quantity: 1,
+          },
+        ],
+        allow_promotion_codes: true,
+        billing_address_collection: "auto",
+        success_url: 'http://localhost:3000/navigation/groupdetails',
+        cancel_url: 'https://www.youtube.com/',
+        })
+          console.log(session);
+          res.json({url:session.url});
+      }
+    catch(error){
+      console.log(error);
+    }
     })
 
 module.exports = router;
