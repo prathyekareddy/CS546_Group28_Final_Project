@@ -12,8 +12,8 @@ const userCol = mongoCollections.users;
 const createUserGroup = async (
     userId ,
     groupId,
-    curentPaymentStatus,
-    paymentHistory,
+    // curentPaymentStatus,
+    // paymentHistory,
     monthlyPaymentPrice
   ) => {
     const userGroupCollection = await userGroupData();

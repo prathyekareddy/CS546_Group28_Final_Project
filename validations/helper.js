@@ -17,6 +17,33 @@
 
 const {ObjectId} = require('mongodb');
 
+const checkSearch = async (groupName, category) => {
+
+  if(!groupName && !category) throw `Error: Enter group name or category to search`;
+
+  if(groupName) {
+    if(groupName.trim().length === 0){
+        throw `Error: Group Name Can not contain empty spaces`;
+    }
+  }
+
+  if(category){
+      let categoryArray = ["N/A","OTT","Music Streaming","Network Service Providers","Education","E-Commerce","Other"]
+      if(category) {
+          if(category.trim().length === 0){
+              throw `Error: Category Can not contain empty spaces`;
+          }
+          let flag = true;
+          categoryArray.forEach(element => {
+              if(category === element) flag = false;
+          });
+          if(flag) {
+              throw `Error: Invalid Category`;
+          }
+      }
+  }
+}
+
 module.exports = {
   checkId(id, varName) {
     if (!id) throw `Error: You must provide a ${varName}`;
@@ -37,5 +64,6 @@ module.exports = {
     if (!isNaN(strVal))
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
-  }
+  },
+  checkSearch
 };
