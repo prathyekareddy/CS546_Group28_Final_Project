@@ -1,0 +1,56 @@
+body {
+	background-color: #eceeef !important;
+}
+
+.search-form {
+	height: calc(100vh - 110px);
+	margin: 0px 24px 15px 24px;
+	padding: 24px;
+}
+
+.platform {
+	font-size: 12px;
+}
+
+.payment {
+	color: red;
+}
+
+.members {
+	color: blue;
+	font-size: 14px;
+}
+
+.empty-search {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 35px;
+	font-weight: 300;
+}
+
+.error {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 35px;
+	font-weight: 300;
+	color: red;
+}
+
+.search-button {
+	background-color: #5cb85c !important;
+	color: white !important;
+}
+
+.req-btn {
+	color: white !important;
+}
+
+.custom-align {
+	font-weight: 400;
+	line-height: 1.7;
+	padding: 0.375rem 0.75rem;
+}

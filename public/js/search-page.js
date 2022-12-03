@@ -7,7 +7,7 @@
     empty = $('#empty');
 
   function bindRequestToJoinButton(result) {
-    result.find('.finishItem').on('click', function (event) {
+    result.find('.btn').on('click', function (event) {
       event.preventDefault();
       let currentLink = $(this);
       let currentId = currentLink.data('id');
@@ -47,16 +47,20 @@
 
     if (groupName) {
       if (groupName.trim().length === 0) {
+        searchResults.hide();
+        empty.hide();
         error.show();
         error.html("Error: Group Name Can not contain empty spaces");
         return;
       }
     }
 
-    let categoryArray = ["N/A", "OTT", "Music Streaming", "Network Service Providers", "Education", "E-Commerce", "Other"]
+    let categoryArray = ["N/A", "OTT", "Music Streaming", "Network Service Provider", "Education", "E-Commerce", "Other"]
 
     if (category) {
       if (category.trim().length === 0) {
+        searchResults.hide();
+        empty.hide();
         error.show();
         error.html("Error: Category Can not contain empty spaces");
         return;
@@ -66,6 +70,8 @@
         if (category === element) flag = false;
       });
       if (flag) {
+        searchResults.hide();
+        empty.hide();
         error.show();
         error.html("Error: Invalid Category");
         return;
