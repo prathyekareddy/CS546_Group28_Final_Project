@@ -17,17 +17,14 @@ router
     .post(async (req, res) => {
         try{
 
-          let username = req.body.usernameInput
+          let emailId = req.body.emailIdInput
           let password = req.body.passwordInput
-          // username = usersData.checkString(username,"username")    
-          // if(username.trim().length<4){ throw "Username should be atleast of length 4"}
-          // if(username.trim().search(/[^a-zA-Z0-9]/g) != -1){ throw "Username should be alphanumeric"}
-          // password = usersData.checkString(password,"password")
-          // if(password.trim().length<6){ throw "Password should be atleast of length 4"}
-          // if(password.trim().search(/[A-Z]/g)==-1){throw "Password should contain atleast 1 uppercase character"}
-          // if(password.trim().search(/[0-9]/g)==-1){throw "Password should contain atleast 1 number"}
-          // if(password.trim().search(/[^A-Za-z0-9]/g)==-1){throw "Password should contain atleast 1 special character"}
-          const ans = await usersData.users.checkUser(username,password)
+          // Validation
+          emailId = validation.checkString(emailId,"username")    
+          password = validation.checkString(password,"password")
+          validation.checkUserValidation(emailId,password)
+          // DB
+          const ans = await usersData.users.checkUser(emailId,password)
           if(JSON.stringify(ans)==JSON.stringify({authenticatedUser: true})){
             const takeId = await usersData.users.getUserByemail(username)
             req.session.user = {_id: takeId._id.toString()};
@@ -52,7 +49,7 @@ router
     })
     .post(async (req, res) => {
         try{
-          let username = req.body.usernameInput
+          let emailId = req.body.emailIdInput
           let password = req.body.passwordInput
           let firstName = req.body.firstNameInput
           let lastName = req.body.lastNameInput
@@ -63,21 +60,20 @@ router
           let state = req.body.stateInput
           let streetAddress = req.body.streetAddressInput
           let phoneNumber = req.body.phoneNumberInput
-          // username = usersData.checkString(username,"username")    
-          // if(username.trim().length<4){ throw "Username should be atleast of length 4"}
-          // if(username.trim().search(/[^a-zA-Z0-9]/g) != -1){ throw "Username should be alphanumeric"}
-          // password = usersData.checkString(password,"password")
-          // if(password.trim().length<6){ throw "Password should be atleast of length 4"}
-          // if(password.trim().search(/[A-Z]/g)==-1){throw "Password should contain atleast 1 uppercase character"}
-          // if(password.trim().search(/[0-9]/g)==-1){throw "Password should contain atleast 1 number"}
-          // if(password.trim().search(/[^A-Za-z0-9]/g)==-1){throw "Password should contain atleast 1 special character"}
-          const ans = await usersData.users.createUser(password,firstName,lastName,username,gender,userDescription,profileImgUrl,city,state,streetAddress,phoneNumber)
-          if(JSON.stringify(ans)==JSON.stringify({userInserted: true})){
+          //// Validations
+          emailId = validation.checkString(emailId,"emailId")
+          firstName = validation.checkString(firstName,"firstName")
+          lastName = validation.checkString(lastName,"lastName")
+          password = validation.checkString(password,"password")
+          validation.createUserValidation(firstName,lastName,password,phoneNumber)
+          //// DB
+          const ans = await usersData.users.createUser(password,firstName,lastName,emailId,gender,userDescription,profileImgUrl,city,state,streetAddress,phoneNumber)
+          if(ans){
             return res.redirect('/login');
           }
           
           }catch(e){
-            return res.status(400).render('sign-up', {title: "Registration Page",error:"Error status 400: "+e});
+            return res.status(400).render('sign-up', {title: "Registration Page",error:e});
           }
     });
 router

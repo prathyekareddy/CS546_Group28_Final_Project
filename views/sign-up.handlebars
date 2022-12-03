@@ -1,9 +1,9 @@
 <p>{{error}}</p>
 <form method="POST" action="/register" id="registration-form">
 
-    <label for="usernameInput">Enter email-Id</label><br>
-    <input type="text" id="usernameInput" name="usernameInput"><br><br>
-    <label for="usernameInput">Enter password</label><br>
+    <label for="emailIdInput">Enter email-Id</label><br>
+    <input type="text" id="emailIdInput" name="emailIdInput"><br><br>
+    <label for="passwordInput">Enter password</label><br>
     <input type="password" id="passwordInput" name="passwordInput"><br><br>
 
     <label for="firstNameInput">Enter First Name</label><br>
@@ -11,8 +11,13 @@
     <label for="lastNameInput">Enter Last Name</label><br>
     <input type="text" id="lastNameInput" name="lastNameInput"><br><br>
 
-    <label for="genderInput">Enter gender</label><br>
-    <input type="text" id="genderInput" name="genderInput"><br><br>
+    <label for="genderId">Gender:</label><br>
+    <select name="genderInput" id="genderId">
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+    </select><br><br>
+
     <label for="userDescriptionInput">Enter userDescription</label><br>
     <input type="text" id="userDescriptionInput" name="userDescriptionInput"><br><br>
 
@@ -33,3 +38,4 @@
 
 </form>
 <a href="/login">Already have an account? Click here to log-in</a>
+<script src='../public/js/register.js'></script>

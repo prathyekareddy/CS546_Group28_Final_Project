@@ -19,6 +19,12 @@ const createUser = async (
   streetAddress,
   phoneNumber
 ) => {
+  email = validation.checkString(emailId,"email")
+  firstName = validation.checkString(firstName,"firstName")
+  lastName = validation.checkString(lastName,"lastName")
+  password = validation.checkString(password,"password")
+  validation.createUserValidation(firstName,lastName,password,phoneNumber)
+
   const userCollection = await users();
   const emailsList = await userCollection.find({},{projection: {_id: 0,email:1}}).toArray();
   if (!emailsList) throw "Could not get all emails";
@@ -32,7 +38,7 @@ const createUser = async (
     password: hash,
     firstName: firstName,
     lastName: lastName,
-    email: email,
+    email: email.toLowerCase(),
     gender: gender,
     userDescription: userDescription,
     profileImgUrl: "profileImgUrl",
@@ -124,22 +130,16 @@ const updateUser = async (
 };
 
 
-const checkUser = async (username, password) => {
-  // username = validation.checkString(username,"username")
-  // username = username.trim().toLowerCase()
-  // password = validation.checkString(password,"password")
-  // if(username.trim().length<4){ throw "Username should be atleast of length 4"}
-  // if(password.trim().length<6){ throw "Password should be atleast of length 4"}
-  // if(username.trim().search(/[^a-zA-Z0-9]/g) != -1){ throw "Username should be alphanumeric"}
-  // if(password.trim().search(/[A-Z]/g)==-1){throw "Password should contain atleast 1 uppercase character"}
-  // if(password.trim().search(/[0-9]/g)==-1){throw "Password should contain atleast 1 number"}
-  // if(password.trim().search(/[^A-Za-z0-9]/g)==-1){throw "Password should contain atleast 1 special character"}
+const checkUser = async (emailId, password) => {
 
-  //Match regex for special characters is yet to be done
+  emailId = validation.checkString(emailId,"username")
+  emailId = emailId.toLowerCase()
+  password = validation.checkString(password,"password")
+  validation.checkUserValidation(emailId,password)
 
   const usersCollection = await users();
-  const user = await usersCollection.findOne({email:username})
-  if (user === null) throw "No user with that username";
+  const user = await usersCollection.findOne({email:emailId})
+  if (user === null) throw "No user with that email-id";
 
   let compareToMatch = await bcrypt.compare(password, user.password);
   if (compareToMatch==true){
