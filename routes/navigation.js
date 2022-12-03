@@ -3,6 +3,8 @@ const router = express.Router();
 const path = require('path');
 const data = require('../data');
 const groupData = data.groups;
+const userData = data.users;
+const userGroupData = data.usergroup;
 const createGroupValidation = require('../validations/createGroupValidation');
 const helper = require("../validations/helper");
 const stripe = require("stripe")(
@@ -24,39 +26,47 @@ router
     .post(async (req, res) => {
         //let groupInfo = req.body;
         try {
-          result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
+          // result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
+            createGroupData = await groupData.createGroup(req.session.user._id, req.body.groupName,req.body.category, req.body.platformName,req.body.platformEmail, req.body.platformPassword, 
+            parseInt(req.body.groupLimit), req.body.dueDate, parseFloat(req.body.totalSubsPrice),parseInt(req.body.subsLength))
+            console.log(createGroupData)
+            createUserData = await userData.getUserById(req.session.user._id)
+            console.log(createUserData)
+            arrUsers = [createUserData,createUserData,createUserData,createUserData] //this will have list of users present in the group -> need a function that gets all the users present in the group
+            console.log(arrUsers)
+            res.render('group-details', {user: arrUsers, group: createGroupData})
         }
         catch(e) {
           return res.status(400).json({error: e});
         }
-        try {
-          //console.log(groupInfo);
-          //console.log(req);
-          //const {groupName, platFormName, groupdLeaderId, groupLimit, duePaymentDate, loginId, password, subscriptionLengthInDays} = groupInfo;
-          const groupName = req.body.groupName;
-          const platformName = req.body.platformName;
-          const groupLeaderId = req.session.user._id;
-          const groupLimit = req.body.groupLimit;
-          const category = req.body.category;
-          const dueDate = req.body.dueDate;
-          const subsLength = req.body.subsLength;
-          const new_group = await groupData.createGroup(
-            groupName,
-            platformName,
-            req.session.user._id,
-            groupLimit,
-            dueDate,
-            'sabah@gmail.com',
-            'Password',
-            subsLength,
-            category
-          );
-            // res.render('group-details', {groupName: groupName});
-            res.redirect('/navigation/groupdetails');
-        }
-        catch(e) {
-          res.status(500).json({error: e});
-        }
+        // try {
+        //   //console.log(groupInfo);
+        //   //console.log(req);
+        //   //const {groupName, platFormName, groupdLeaderId, groupLimit, duePaymentDate, loginId, password, subscriptionLengthInDays} = groupInfo;
+        //   const groupName = req.body.groupName;
+        //   const platformName = req.body.platformName;
+        //   const groupLeaderId = req.session.user._id;
+        //   const groupLimit = req.body.groupLimit;
+        //   const category = req.body.category;
+        //   const dueDate = req.body.dueDate;
+        //   const subsLength = req.body.subsLength;
+        //   const new_group = await groupData.createGroup(
+        //     groupName,
+        //     platformName,
+        //     req.session.user._id,
+        //     groupLimit,
+        //     dueDate,
+        //     'sabah@gmail.com',
+        //     'Password',
+        //     subsLength,
+        //     category
+        //   );
+        //     // res.render('group-details', {groupName: groupName});
+        //     res.redirect('/navigation/groupdetails');
+        // }
+        // catch(e) {
+        //   res.status(500).json({error: e});
+        // }
       });
 
 router

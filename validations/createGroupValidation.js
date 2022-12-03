@@ -133,7 +133,6 @@ const checkCreateGroup = async (
     platFormName,
     groupdLeaderId,
     groupLimit,
-    // memberIds,
     duePaymentDate,
     loginId,
     password,

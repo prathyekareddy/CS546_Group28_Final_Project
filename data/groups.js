@@ -173,13 +173,10 @@ const createGroup = async (
   // profileImgUrl,
   category,
   platFormName,
-  // groupdLeaderId,
-  groupLimit,
-  // memberIds,
-  duePaymentDate,
   platformLoginId,
   platFormPassword,
-  subscriptionLengthInDays,
+  groupLimit,
+  duePaymentDate,
   totalPaymentPrice,
   paymentPlanSpanInMonths
 ) => {
@@ -187,15 +184,15 @@ const createGroup = async (
 //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
-  montlyPaymentForGroup = monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
+  montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
   let newGrp = {
     groupName:groupName,
     profileImgUrl:"",
     category:category,
-    platForm:{
-      platFormName:platFormName,
+    platform:{
+      platformName:platFormName,
       platformLoginId: platformLoginId,
-      platFormPassword:platFormPassword
+      platformPassword:platFormPassword
     },
     groupdLeaderId:userid,
     groupLimit:groupLimit,
@@ -215,6 +212,8 @@ const createGroup = async (
   const insertedGrpId = insertedGrp.insertedId.toString();
   const group = await getGroupById(insertedGrpId);
 
+  console.log(montlyPaymentForGroup + " "+ typeof montlyPaymentForGroup)
+
 
   if(userid){
     await userGroupData.createUserGroup(userid,insertedGrpId,montlyPaymentForGroup)
@@ -223,11 +222,12 @@ const createGroup = async (
   return group;
 };
 
- function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
-  if(paymentPlanSpanInMonths & totalPaymentPrice){
-    const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths
+ async function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
+  if(paymentPlanSpanInMonths && totalPaymentPrice){
+    const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths;
     return monthlyPayment
   }else{
+    console.log("here")
     return 0
   }
   
@@ -259,10 +259,9 @@ const removeGroup = async (groupId) => {
 };
 
 // In updateGroup user can update the name and profile image also memberIds shall be updated here...
-
-const updateGroup = async (groupId,groupName,
-  profileImgUrl,
-  // memberIds
+// profileImgUrl,, totalPaymentPrice,
+const updateGroup = async (groupId,groupName
+  
   ) => {
     groupId = validation.checkId(groupId, "groupId");
 
@@ -270,15 +269,15 @@ const updateGroup = async (groupId,groupName,
     const oldGrpData = await getGroupById(groupId);
     let updateGrpDetails = {
       groupName:groupName,
-      profileImgUrl:"",
-      platFormName:oldGrpData.platFormName,
-      groupdLeaderId:oldGrpData.groupdLeaderId,
-      groupLimit:oldGrpData.groupLimit,
-      // memberIds:[groupdLeaderId],
-      duePaymentDate:oldGrpData.duePaymentDate,
-      loginId:oldGrpData.loginId,
-      password:oldGrpData.password,
-      subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays
+      // profileImgUrl:"",
+      // platFormName:oldGrpData.platFormName,
+      // groupdLeaderId:oldGrpData.groupdLeaderId,
+      // groupLimit:oldGrpData.groupLimit,
+      // duePaymentDate:oldGrpData.duePaymentDate,
+      // loginId:oldGrpData.loginId,
+      // password:oldGrpData.password,
+      // totalPaymentPrice:totalPaymentPrice,
+      // paymentPlanSpanInMonths:oldGrpData.paymentPlanSpanInMonths
     };
   
     const newUpdatedGrp = await grpCollection.updateOne(
@@ -299,16 +298,6 @@ const updateGroup = async (groupId,groupName,
 
     newList = oldGrpData.listOfUsers + userId
     let updateGrpDetails = {
-      groupName:oldGrpData.groupName,
-      profileImgUrl:"",
-      platFormName:oldGrpData.platFormName,
-      groupdLeaderId:oldGrpData.groupdLeaderId,
-      groupLimit:oldGrpData.groupLimit,
-      // memberIds:[groupdLeaderId],
-      duePaymentDate:oldGrpData.duePaymentDate,
-      loginId:oldGrpData.loginId,
-      password:oldGrpData.password,
-      subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays,
       listOfUsers:newList
     };
   
