@@ -1,7 +1,45 @@
 <main>
   <h1>Search Page</h1>
-  
+
+  <div id="error"></div>
+
+  <form id="search-form">
+    <label for="groupNameSearch">
+      Group Name
+      <input type="text" name="groupNameSearchValue" id="groupNameSearch" />
+    </label>
+    <label for="categorySearch">
+      Category
+      <select name="categorySearchValue" id="categorySearch">
+        <option value="N/A">N/A</option>
+        <option value="OTT">OTT</option>
+        <option value="Music Streaming">Music Streaming</option>
+        <option value="Network Service Providers">Network Service Providers</option>
+        <option value="Education">Education</option>
+        <option value="E-Commerce">E-Commerce</option>
+        <option value="Other">Other</option>
+      </select>
+    </label>
+    <button type="submit">Search</button>
+
+  </form>
+
+  {{#if notSearchedYet }}
+  <div id="empty">
+    <h2>Make a Search!</h2>
+  </div>
+  {{/if}}
+
+  <div id="noResults">
+  </div>
+
+  <div id="search-results">
+  </div>
+
   <form action="/navigation/groupdetails" method="GET">
         <button type="submit">Group Details</button>
     </form>
+
 </main>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="../public/js/search-page.js"></script>

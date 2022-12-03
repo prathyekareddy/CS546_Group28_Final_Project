@@ -12,15 +12,52 @@
  </head>
  
  <body>
-    <a href="/logout">Click here to logout</a>
-    <h1>Insert Navigation Toolbar Here</h1>
-    <h1>Home Page</h1>
+    <header>
+        <nav>
+            <div class = "navbar">
+                <a href="/navigation/homepage">Home</a>
+                <a href="/navigation/create">Create a Group</a>
+                <a href="/navigation/search">Find an Existing Group</a>
+                <a href="#">My Groups</a>
+                <a href="#">My Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </nav>
+    </header>
+    <h1>SubSplit</h1>
+    <p>Welcome to SubSplit! SubSplit, short for subscription split, enables users to come together 
+        and split subscriptions of different platforms among themselves, including but not limited to, music applications,
+        entertainment (television or films), OTT platforms, digital content providers, network provider plans,
+        and so much more!</p>
+    <p>These are just some of the perks of using SubSplit:</p>
+    <ul>
+        <li>Find co-subscribers who share similar interests to share the membership</li>
+        <li>Find users to fill available slots in subscription plans</li>
+        <li>Manage payments for different subscriptions easily</li>
+        <li>And access their favourite services at a lower rate!</li>
+    </ul>
+
+    <h2>Join an Existing Group:</h2>
+    <form action="/navigation/search" method="GET">
+        <button type="submit">Netflix</button>
+        <button type="submit">Spotify</button>
+        <button type="submit">Amazon Prime</button>
+        <button type="submit">Disney+</button>
+        <button type="submit">HBO Max</button>
+        <button type="submit">Youtube Premium</button>
+        <button type="submit">PlayStation Now</button>
+        <button type="submit">Hulu</button>
+    </form>
+    <br>
+    <a href="/navigation/search">....Click here to look for more groups!</a>
+    <h3>OR</h3>
+    <h2>Create a New Group:</h2>
     <form action="/navigation/create" method="GET">
         <button type="submit">Create a Group</button>
     </form>
-    <form action="/navigation/search" method="GET">
-        <button type="submit">Search Page</button>
-    </form>
+    <br>
+    <footer>
+        <p>© 2022 Sabah Ahmed | Prathyeka Reddy Anugu | Yash DinkarBharambay | Abhishek Kocharekar | SwarajsingAnandsing Patil</p>
+    </footer>
  </body>
- 
  </html>

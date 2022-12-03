@@ -3,7 +3,7 @@ const navigationRoutes = require('./navigation');
 
 const constructorMethod = (app) => {
   app.use('/', loginRoutes);
-  app.use('/navigation',navigationRoutes); //username will be dynamic
+  app.use('/navigation',navigationRoutes);
 };
 
 

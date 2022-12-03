@@ -11,7 +11,7 @@ router
             return res.redirect('/navigation/homepage');
           }
           else{
-            return res.render('login', {title: "Log-in"});
+            return res.render('login', {title: "Log-in", layout: 'main-login-register'});
           }
     })
     .post(async (req, res) => {
@@ -47,7 +47,7 @@ router
             return res.redirect('/navigation/homepage');
           }
           else{
-           return  res.render('sign-up', {title: "Sign-up"});
+           return  res.render('sign-up', {title: "Sign-up", layout: 'main-login-register'});
           }
     })
     .post(async (req, res) => {

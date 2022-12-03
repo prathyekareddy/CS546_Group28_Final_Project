@@ -4,6 +4,10 @@ const path = require('path');
 const data = require('../data');
 const groupData = data.groups;
 const createGroupValidation = require('../validations/createGroupValidation');
+const helper = require("../validations/helper");
+const stripe = require("stripe")(
+  "sk_test_51MAdqdGXsyLIL2myfowY9UaAZt0rMOB9Z7A26k5yxVMMjLPunw4OTm8ZZMYp9HzvuOLUyBQPMd1NiMZqFd0Jr4Ci00chGfRsuW"
+);
 
 router
     .route("/homepage")
@@ -58,7 +62,50 @@ router
 router
     .route("/search")
     .get(async (req, res) => {
-        res.render('search-page', {});
+        res.render('search-page', {notSearchedYet: true});
+    })
+
+let result = [];
+
+router
+    .post('/search.html', async (req, res) => {
+
+        try{
+            helper.checkSearch(req.body.groupName, req.body.category);
+        } catch(e){
+            console.log("Error: ",e);
+            return;
+        }
+
+        let input = {category: req.body.category, groupName: req.body.groupName, userId: req.session.user._id};
+        result = [];
+        result = await groupData.searchGroup(input);
+        if(result.length === 0){
+            res.render('partials/searched-group', {layout: null, sampleResult: false});
+            return;
+        }
+        res.render('partials/searched-group', {layout: null, sampleResult: result});
+        
+    });
+
+router
+    .route("/sendrequest/:id")
+    .post(async (req, res) => {
+        const updateResult  = async (groupId) => {
+            result.forEach(element => {
+                if(element.groupId.toString() === groupId){
+                    element.requested = true;
+                    element.notRequested = false;
+                }
+            });
+        };
+        groupId = helper.checkId(req.params.id);
+        userId = helper.checkId(req.session.user._id);
+        let updated = groupData.sendRequest(groupId,userId);
+        if(updated){
+            await updateResult(req.params.id);
+        }
+        res.render('partials/searched-group', {layout: null, sampleResult: result});
     })
 
 router
@@ -66,5 +113,31 @@ router
     .get(async (req, res) => {
         res.render('group-details', {});
     })
+
+    router.route("/checkout-page").get(async (req, res) => {
+      try {
+        const session = await stripe.checkout.sessions.create({
+          mode: "payment",
+          payment_method_types: ["card"],
+          line_items: [
+            {
+              price: "price_1MAdtxGXsyLIL2myAGYK5cE8",
+              quantity: 1,
+            },
+            {
+              price: "price_1MAfX1GXsyLIL2myFZU8pn6J",
+              quantity: 1,
+            },
+          ],
+          allow_promotion_codes: true,
+          billing_address_collection: "auto",
+          success_url: "http://localhost:3000/navigation/groupdetails",
+          cancel_url: "https://www.youtube.com/",
+        });
+        res.json({ url: session.url });
+      } catch (error) {
+        console.log(error);
+      }
+    });
 
 module.exports = router;

@@ -74,7 +74,7 @@ let error = document.getElementById('error');
     let dueYear = Number(duePaymentDate.slice(6));
   
     if (Number.isNaN(dueMonth) || Number.isNaN(dueDay) || Number.isNaN(dueYear))
-      throw `day, month and year must be numbers`;
+      throw `Day, Month and Year must be numbers`;
   
     if (dueMonth < 1 || dueMonth > 12) throw `Month must be between 1-12`;
     if (dueDay < 1 || dueDay > 31) throw `Day must be between 1-31`;
@@ -89,12 +89,12 @@ let error = document.getElementById('error');
   
     if (dueYear == currYear) {
       if (dueMonth < currMonth)
-        throw `DuePayment Date cannot be less than current date`;
+        throw `Due Payment Date cannot be less than current date`;
     }
   
     if (dueMonth == currMonth) {
       if (dueYear == currYear && dueDay < currDay)
-        throw `DuePayment Date cannot be less than current date`;
+        throw `Due Payment Date cannot be less than current date`;
     }
   
     // LoginID validation======================================================================================
@@ -111,7 +111,7 @@ let error = document.getElementById('error');
     if (!password) throw `You must provide the password`;
     password = password.trim();
     if (password.length === 0)
-      throw `Group Name cannot be an empty string or string with just spaces`;
+      throw `Password cannot be an empty string or string with just spaces`;
   
     //  subscriptionLengthInDays validation=======================================================================
   

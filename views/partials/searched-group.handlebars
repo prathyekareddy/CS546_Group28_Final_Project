@@ -1,0 +1,17 @@
+<div class="row">
+    {{#each sampleResult}}
+    <div>
+        <h3>{{ groupName }}</h3>
+        <p>{{ platform }}</p>
+        <p>{{ monthlyPayment }}$ permonth</p>
+        <p>{{ totalMembers }}/{{ groupLimit }} Group Members</p>
+        {{#if notRequested }}
+        <button class="finishItem" data-id="{{groupId}}">Request to Join</a>
+            {{/if}}
+            {{#if requested }}
+            <em>Resuest Sent!</em>
+            {{/if}}
+    </div>
+    {{/each}}
+
+</div>
