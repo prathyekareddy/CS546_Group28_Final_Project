@@ -24,7 +24,7 @@ const helper = require("../validations/helper");
 
 //   const grpCollection = await groups();
 //   let newObj = {};
-  
+
 //   try {
 //     newObj = await createGroupValidation.checkCreateGroup( groupName,
 //       // profileImgUrl,
@@ -41,7 +41,7 @@ const helper = require("../validations/helper");
 //     console.log(error);
 //   }
 //   console.log(newObj)
-     
+
 //   let newGrp = {
 //     groupName:newObj.groupName,
 //     profileImgUrl:"",
@@ -63,103 +63,106 @@ const helper = require("../validations/helper");
 
 //   if (!insertedGrp.acknowledged || !insertedGrp.insertedId)
 //     throw "Could not create the group";
- 
+
 // };
 
-const sendRequest = async (groupId,userId) => {
-    groupId = helper.checkId(groupId);
-    userId = helper.checkId(userId);
-    const grpCollection = await groups();
-    const oldGrpData = await getGroupById(groupId);
+const sendRequest = async (groupId, userId) => {
+  groupId = helper.checkId(groupId);
+  userId = helper.checkId(userId);
+  const grpCollection = await groups();
+  const oldGrpData = await getGroupById(groupId);
 
-    oldGrpData.requestToJoin.push(userId);
-    let updateGrpDetails = {
-      requestToJoin: oldGrpData.requestToJoin
-    };
-  
-    const newUpdatedGrp = await grpCollection.updateOne(
-      { _id: ObjectId(groupId) },
-      { $set: updateGrpDetails }
-    );
-    if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
-      throw "Cannot update List of Users";
-    }
-    return true;
+  oldGrpData.requestToJoin.push(userId);
+  let updateGrpDetails = {
+    requestToJoin: oldGrpData.requestToJoin
+  };
+
+  const newUpdatedGrp = await grpCollection.updateOne(
+    { _id: ObjectId(groupId) },
+    { $set: updateGrpDetails }
+  );
+  if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+    throw "Cannot update List of Users";
+  }
+  return true;
 }
 
 const searchGroup = async (input) => {
 
-  try{
+  try {
     helper.checkSearch(input.groupName, input.category);
-  } catch(e){
-    console.log("Error: ",e);
+  } catch (e) {
+    console.log("Error: ", e);
   }
 
   const listOfGroups = await getAllGroups();
   let result = [];
-  if(input.category && input.groupName){
+  if (input.category && input.groupName) {
     let tempResult = []
     listOfGroups.forEach(group => {
-      if(group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())){
+      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platForm.platFormName,
-          monthlyPayment: group.payment.montlyPaymentForGroup, 
-          requested: group.requestToJoin.includes(input.userId), 
-          groupId: group._id, 
-          groupLimit: group.groupLimit, 
-          totalMembers: group.listOfUsers.length, 
+          monthlyPayment: group.payment.montlyPaymentForGroup,
+          requested: group.requestToJoin.includes(input.userId),
+          groupId: group._id,
+          groupLimit: group.groupLimit,
+          totalMembers: group.listOfUsers.length,
         }
         newEntry.notRequested = !newEntry.requested;
         tempResult.push(newEntry);
       }
     });
     tempResult.forEach(group => {
-      if(group.groupName.toLowerCase().includes(input.groupName.toLowerCase())){
+      if (group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platform,
-          monthlyPayment: group.monthlyPayment, 
-          requested: group.requested, 
+          monthlyPayment: group.monthlyPayment,
+          requested: group.requested,
           notRequested: group.notRequested,
-          groupId: group.groupId, 
-          groupLimit: group.groupLimit, 
-          totalMembers: group.totalMembers, 
+          groupId: group.groupId,
+          groupLimit: group.groupLimit,
+          totalMembers: group.totalMembers,
         }
+        newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
         result.push(newEntry);
       }
     });
   }
-  else if(input.category){
+  else if (input.category) {
     listOfGroups.forEach(group => {
-      if(group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())){
+      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platForm.platFormName,
-          monthlyPayment: group.payment.montlyPaymentForGroup, 
-          requested: group.requestToJoin.includes(input.userId), 
-          groupId: group._id, 
-          groupLimit: group.groupLimit, 
-          totalMembers: group.listOfUsers.length, 
+          monthlyPayment: group.payment.montlyPaymentForGroup,
+          requested: group.requestToJoin.includes(input.userId),
+          groupId: group._id,
+          groupLimit: group.groupLimit,
+          totalMembers: group.listOfUsers.length,
         }
         newEntry.notRequested = !newEntry.requested;
+        newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
         result.push(newEntry);
       }
     });
   }
-  else if(input.groupName){
+  else if (input.groupName) {
     listOfGroups.forEach(group => {
-      if(group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())){
+      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platForm.platFormName,
-          monthlyPayment: group.payment.montlyPaymentForGroup, 
-          requested: group.requestToJoin.includes(input.userId), 
-          groupId: group._id, 
-          groupLimit: group.groupLimit, 
-          totalMembers: group.listOfUsers.length, 
+          monthlyPayment: group.payment.montlyPaymentForGroup,
+          requested: group.requestToJoin.includes(input.userId),
+          groupId: group._id,
+          groupLimit: group.groupLimit,
+          totalMembers: group.listOfUsers.length,
         }
         newEntry.notRequested = !newEntry.requested;
+        newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
         result.push(newEntry);
       }
     });
@@ -184,7 +187,7 @@ const createGroup = async (
   paymentPlanSpanInMonths
 ) => {
 
-//Profile Images and memberIds who joins the grp will have to be updated
+  //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
   montlyPaymentForGroup = monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
@@ -223,14 +226,14 @@ const createGroup = async (
   return group;
 };
 
- function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
+function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
   if(paymentPlanSpanInMonths & totalPaymentPrice){
     const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths
     return monthlyPayment
   }else{
     return 0
   }
-  
+
 };
 
 const getAllGroups = async () => {
@@ -263,68 +266,68 @@ const removeGroup = async (groupId) => {
 const updateGroup = async (groupId,groupName,
   profileImgUrl,
   // memberIds
-  ) => {
-    groupId = validation.checkId(groupId, "groupId");
+) => {
+  groupId = validation.checkId(groupId, "groupId");
 
-    const grpCollection = await groups();
-    const oldGrpData = await getGroupById(groupId);
-    let updateGrpDetails = {
-      groupName:groupName,
-      profileImgUrl:"",
-      platFormName:oldGrpData.platFormName,
-      groupdLeaderId:oldGrpData.groupdLeaderId,
-      groupLimit:oldGrpData.groupLimit,
-      // memberIds:[groupdLeaderId],
-      duePaymentDate:oldGrpData.duePaymentDate,
-      loginId:oldGrpData.loginId,
-      password:oldGrpData.password,
-      subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays
-    };
-  
-    const newUpdatedGrp = await grpCollection.updateOne(
-      { _id: ObjectId(groupId) },
-      { $set: updateGrpDetails }
-    );
-    if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
-      throw "Cannot update user";
-    }
-    const group = await getGroupById(groupId);
-    return group; 
-
-  };
-  const updateListOfUsersInGroup = async (groupId,userId) => {
-    // groupId = validation.checkId(groupId, "groupId");
-    const grpCollection = await groups();
-    const oldGrpData = await getGroupById(groupId);
-
-    newList = oldGrpData.listOfUsers + userId
-    let updateGrpDetails = {
-      groupName:oldGrpData.groupName,
-      profileImgUrl:"",
-      platFormName:oldGrpData.platFormName,
-      groupdLeaderId:oldGrpData.groupdLeaderId,
-      groupLimit:oldGrpData.groupLimit,
-      // memberIds:[groupdLeaderId],
-      duePaymentDate:oldGrpData.duePaymentDate,
-      loginId:oldGrpData.loginId,
-      password:oldGrpData.password,
-      subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays,
-      listOfUsers:newList
-    };
-  
-    const newUpdatedGrp = await grpCollection.updateOne(
-      { _id: ObjectId(groupId) },
-      { $set: updateGrpDetails }
-    );
-    if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
-      throw "Cannot update List of Users";
-    }
-    const group = await getGroupById(groupId);
-    return group; 
-
+  const grpCollection = await groups();
+  const oldGrpData = await getGroupById(groupId);
+  let updateGrpDetails = {
+    groupName:groupName,
+    profileImgUrl:"",
+    platFormName:oldGrpData.platFormName,
+    groupdLeaderId:oldGrpData.groupdLeaderId,
+    groupLimit:oldGrpData.groupLimit,
+    // memberIds:[groupdLeaderId],
+    duePaymentDate:oldGrpData.duePaymentDate,
+    loginId:oldGrpData.loginId,
+    password:oldGrpData.password,
+    subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays
   };
 
-  
+  const newUpdatedGrp = await grpCollection.updateOne(
+    { _id: ObjectId(groupId) },
+    { $set: updateGrpDetails }
+  );
+  if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+    throw "Cannot update user";
+  }
+  const group = await getGroupById(groupId);
+  return group;
+
+};
+const updateListOfUsersInGroup = async (groupId,userId) => {
+  // groupId = validation.checkId(groupId, "groupId");
+  const grpCollection = await groups();
+  const oldGrpData = await getGroupById(groupId);
+
+  newList = oldGrpData.listOfUsers + userId
+  let updateGrpDetails = {
+    groupName:oldGrpData.groupName,
+    profileImgUrl:"",
+    platFormName:oldGrpData.platFormName,
+    groupdLeaderId:oldGrpData.groupdLeaderId,
+    groupLimit:oldGrpData.groupLimit,
+    // memberIds:[groupdLeaderId],
+    duePaymentDate:oldGrpData.duePaymentDate,
+    loginId:oldGrpData.loginId,
+    password:oldGrpData.password,
+    subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays,
+    listOfUsers:newList
+  };
+
+  const newUpdatedGrp = await grpCollection.updateOne(
+    { _id: ObjectId(groupId) },
+    { $set: updateGrpDetails }
+  );
+  if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+    throw "Cannot update List of Users";
+  }
+  const group = await getGroupById(groupId);
+  return group;
+
+};
+
+
 
 module.exports = {
   createGroup,
