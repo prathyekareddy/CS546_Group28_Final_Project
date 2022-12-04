@@ -5,7 +5,6 @@ const data = require("../data/");
 const { removeUser, updateUser, getAllUsers, getUserById } = require("../data/users");
 const { updateGroup } = require("../data/groups");
 const userGroupData = require("../data/usergroup")
-const userGroupData = require("../data/usergroup")
 
 async function main() {
   const db = await dbConnection.dbConnection();

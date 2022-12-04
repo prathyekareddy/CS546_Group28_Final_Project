@@ -1,17 +1,33 @@
-<div class="row">
+<div class="row row-cols-1 row-cols-md-2 g-4">
     {{#each sampleResult}}
-    <div>
-        <h3>{{ groupName }}</h3>
-        <p>{{ platform }}</p>
-        <p>{{ monthlyPayment }}$ permonth</p>
-        <p>{{ totalMembers }}/{{ groupLimit }} Group Members</p>
-        {{#if notRequested }}
-        <button class="finishItem" data-id="{{groupId}}">Request to Join</a>
-            {{/if}}
-            {{#if requested }}
-            <em>Resuest Sent!</em>
-            {{/if}}
+    <div class="col">
+        <div class="card shadow">
+            <div style="display: flex; justify-content: center;">
+                <div class="col-md-4">
+                    <img src="/public/netflix.png" class="img-fluid" alt={{ platform }}>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title blockquote">{{ groupName }}</h5>
+                <div class="card-text">
+                    <p class="platform">{{ platform }}</p>
+                    <p class="payment">${{ monthlyPayment }} permonth / ${{ yearlyPayment }} per year</p>
+                    <p class="members">{{ totalMembers }}/{{ groupLimit }} Group Members</p>
+                </div>
+                {{#if notRequested }}
+                <div class="text-end">
+                    <button class="btn btn-primary req-btn" data-id="{{groupId}}">Request to Join
+                </div>
+
+                {{/if}}
+                {{#if requested }}
+                <div class="text-end custom-align">
+                    <em>Resuest Sent!</em>
+                </div>
+                {{/if}}
+            </div>
+        </div>
     </div>
     {{/each}}
-
 </div>

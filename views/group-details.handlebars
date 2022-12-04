@@ -35,7 +35,7 @@
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-left">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-left" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
-                              <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.salaryMin}} - ${{this.salaryMax}} </h5>
+                              <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.salaryMin}} </h5>
                               <p class="card-subtitle text-muted d-flex justify-content-left" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
                               <p class="card-text d-flex justify-content-left">{{this.userDescription}}</p>
                               {{#each this.skills}}
@@ -51,83 +51,9 @@
                       </div>
                   </div>
           {{/each}}
-      </div>    
-  </div>
-
-    
-    {{!-- User details cards --}}
-    <div class="row .row-cols-3 row-cols-md-2 g-4">
-        <div class="col">
-          <div class="card mb-3" style="max-width: 540px; height: 80%;">
-            <div class="row g-3">
-              <div class="col-md-4">
-                <img src="/public/netflix.png" class="img-fluid rounded-start" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">{{user.firstName}} {{user.lastName}}</h5> 
-                  {{!-- <h6>{{}}</h6> --}}
-                  <p class="card-text">{{user.userDescription}}</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p></div>
-              </div>
-            </div>  
-          </div>  
-        </div>
-      <div class="col">
-        <div class="card mb-3" style="max-width: 540px; height: 80%;">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <img src="/public/netflix.png" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">{{user.firstName}} {{user.lastName}}</h5> 
-                <p class="card-text">{{user.userDescription}}</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p></div>
-              </div>
-            </div> 
-        </div>
-      </div>
-      <div class="col">
-        <div class="card mb-3" style="max-width: 540px; height: 80%; ">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <img src="/public/netflix.png" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">{{user.firstName}} {{user.lastName}}</h5> 
-                <p class="card-text">{{user.userDescription}}</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p></div>
-              </div>
-            </div> 
-        </div>
-      </div>
-      <div class="col">
-        <div class="card mb-3" style="max-width: 540px; height: 80%; ">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <img src="/public/netflix.png" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">{{user.firstName}} {{user.lastName}}</h5> 
-                <p class="card-text">{{user.userDescription}}</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p></div>
-              </div>
-            </div> 
-        </div>
-      </div>
-    </div>  
+    </div>    
+    </div>
   </main>
 </section>
 
 
-
-
-
-<<<<<<< Updated upstream
-         
-=======
-         
->>>>>>> Stashed changes

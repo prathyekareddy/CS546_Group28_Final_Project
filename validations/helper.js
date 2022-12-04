@@ -28,7 +28,7 @@ const checkSearch = async (groupName, category) => {
   }
 
   if(category){
-      let categoryArray = ["N/A","OTT","Music Streaming","Network Service Providers","Education","E-Commerce","Other"]
+      let categoryArray = ["N/A","OTT","Music Streaming","Network Service Provider","Education","E-Commerce","Other"]
       if(category) {
           if(category.trim().length === 0){
               throw `Error: Category Can not contain empty spaces`;
