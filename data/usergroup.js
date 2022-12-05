@@ -45,6 +45,13 @@ const createUserGroup = async (
     if (!usergroup) throw "Group not found for this user";
     return usergroup;
   };
+  const getUserGroupByUserId = async (userId) => {
+    // userId = validation.checkId(usergroupId, "id");
+    const usergroupCollection = await userGroupData();
+    const usergroup = await usergroupCollection.find({ userId: ObjectId(userId)});
+    if (!usergroup) throw "Group not found for this user";
+    return usergroup;
+  };
   
   //Recommending updatePayment function along with removeUserGoup
   const removeUserGroup = async (usergroupId) => { 
@@ -141,7 +148,7 @@ const createUserGroup = async (
     }
 
     // Below is the Sudo code for adding group Ids to the user.
-
+    await userData.addGroupToUser(userId, groupId);
     // userInfo = await userData.getUserById(userId)
 
     // userInfo.listOfGroups.push(ObjectId(groupId))
@@ -203,5 +210,6 @@ const createUserGroup = async (
     removeUserGroup,
     updateUserGroup,
     addUserToGroup,
-    updatePayment
+    updatePayment,
+    getUserGroupByUserId
   };

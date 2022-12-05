@@ -5,6 +5,7 @@ const {ObjectId} = require('mongodb');
 const createGroupValidation = require("../validations/createGroupValidation");
 const userGroupData = require("./usergroup")
 const helper = require("../validations/helper");
+const userData = require('./users');
 
 // const createGroup = async (
 //   groupName,
@@ -215,8 +216,7 @@ const createGroup = async (
   const insertedGrpId = insertedGrp.insertedId.toString();
   const group = await getGroupById(insertedGrpId);
 
-  console.log(montlyPaymentForGroup + " "+ typeof montlyPaymentForGroup)
-
+  await userData.addGroupToUser(userid, insertedGrpId);
 
   if(userid){
     await userGroupData.createUserGroup(userid,insertedGrpId,montlyPaymentForGroup)
