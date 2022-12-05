@@ -141,7 +141,7 @@ const createUserGroup = async (
     }
 
     // Below is the Sudo code for adding group Ids to the user.
-
+    await userData.addGroupToUser(userId, groupId);
     // userInfo = await userData.getUserById(userId)
 
     // userInfo.listOfGroups.push(ObjectId(groupId))
