@@ -57,7 +57,7 @@ const getAllUsers = async () => {
 };
 
 const getUserById = async (userId) => {
-  userId = validation.checkId(userId, "id");
+  // userId = validation.checkId(userId, "id");
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(userId) });
   if (!user) throw "User not found";
