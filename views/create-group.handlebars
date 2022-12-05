@@ -2,50 +2,79 @@
         <h2>Create Group</h2>
         <div id = "error" class = "error"></div>
         <form method="POST" action="/navigation/create" id="cgForm">
-            <h3>Group Image</h3>
-            {{!-- <label for = "group-image">
-                Choose File
-                <input type="file" name="grpImg" id="group-image" accept="image/*" />
-              </label> --}}
-            <h3>Group Information</h3>
-            <div>
-                <label for="group-name">
-                    Group Name
-                    <input type="text" id="group-name" name="groupName">
-                </label>
+        <div class="container shadow p-3 mb-5 bg-white rounded">
+            <form method="POST" action="/navigation/create" id="cgForm">
+            <div class="d-flex align-items-center flex-column">
+                <div id="file" class="d-flex justify-content-start align-items-center flex-column form-group col-md-3">
+                    <h2 class="text-center py-2">Profile image</h2>
+                    <input type='file' class="form-control-file " id="profilePicture" name="profilePicture" accept="image/jpeg, image/png, image/jpg" required />
+                </div>
             </div>
-            <div>
-                <label for="platform-name">
-                    Platform Name
-                    <input type="text" id="platform-name" name="platformName">
-                </label>
+            <div class="form-row">
+                {{!-- groupName --}}
+                <div class="form-group col-md-12">
+                    <label for="inputEmail4">Group Name</label>
+                    <input type="text" class="form-control" id="group-name" name="groupName" placeholder="Group Name" required>
+                </div>
+            </div>    
+            <div class="form-row">
+                {{!-- category --}}
+                <div class="dropdown form-group d-flex flex-column">
+                    <label for="category">Category</label>
+                        <select style="width: 553px;" class="text-left btn btn-light dropdown-toggle" id="category" name="category"
+                            data-toggle="dropdown" required>
+                            <option disabled selected value> -- select a category -- </option>
+                            <option value="OTT">OTT</option>
+                            <option value="Education">Education</option>
+                            <option value="E-commerce">E-commerce</option>
+                            <option value="Network Carrier Plans">Network Carrier Plans</option>
+                        </select>
+                </div>
+                {{!-- Platform --}}
+                <div class="form-group col-md-6">
+                <label for="platform-name">Platform</label>
+                <input type="text" class="form-control" id="platform-name" name="platformName" placeholder="platform" required>
+                </div>
+            </div> 
+            <div class="form-row">   
+                {{!-- email --}}
+                <div class="form-group col-md-6">
+                <label for="platform-email">Email</label>
+                <input type="email" class="form-control" id="platform-email" name="platformEmail" placeholder="Plaform Login Email" required>
+                </div>
+                {{!-- password --}}
+                <div class="form-group col-md-6">
+                <label for="platform-password">Password</label>
+                <input type="password" class="form-control" id="platform-password" name="platformPassword" placeholder="Platform Login Password" required>
+                </div>
+            </div>     
+            <div class="form-row"> 
+                {{!-- groupLimit --}}
+                <div class="form-group col-md-6">
+                <label for="group-limit">Group Limit</label>
+                <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit" min="1">
+                </div>
+                {{!-- DuePAymentDate --}}
+                <div class="form-group col-md-6">
+                <label for="due-date">Payment Due Date</label>
+                <input type="text" class="form-control" id="due-date" name="dueDate" placeholder="Payment Due Date ">
+                </div>
+            </div>    
+            <div class="form-row">
+                {{!-- TotalPriceForSubscription --}}
+                <div class="form-group col-md-6">
+                <label for="total-subs-price">Total Price For Subscription</label>
+                <input type= "number" class="form-control" id="total-subs-price" name="totalSubsPrice" placeholder="Total Price For Subscription" min="0">
+                </div>
+                {{!-- PaymentPlanInMonths --}}
+                <div class="form-group col-md-6">
+                <label for="subs-length">Subscription Payment Plan In Months</label>
+                <input type="number" class="form-control" id="subs-length" name="subsLength" placeholder="Subscription Payment Plan In Months" min="0">
+                </div>
             </div>
-            <div>
-                <label for="group-limit">
-                    Group Limit
-                    <input type="number" id="group-limit" name="groupLimit">
-                </label>
-            </div>
-            <div>
-                <label for="category">
-                    Category
-                    <input type="text" id="category" name="category">
-                </label>
-            </div>
-            <div>
-                <label for="due-date">
-                    Payment Due Date
-                    <input type="text" id="due-date" name="dueDate">
-                </label>
-            </div>
-            <div>
-                <label for="subs-length">
-                    Subscription Length in Days
-                    <input type="number" id="subs-length" name="subsLength">
-                </label>
-            </div>
-            <br>
-            <button type="submit" value="Submit">Create Group</button>
+            <button type="submit" class="btn btn-primary">Create Group</button>
         </form>
+        </div>
+        
     </main>
     <script src='../public/js/create-group.js'></script>

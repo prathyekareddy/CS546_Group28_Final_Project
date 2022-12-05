@@ -5,6 +5,8 @@ const {ObjectId} = require('mongodb');
 const createGroupValidation = require("../validations/createGroupValidation");
 const userGroupData = require("./usergroup")
 const helper = require("../validations/helper");
+const userData = require('./users');
+const  groupchat  = require("../data/groupchat");
 
 // const createGroup = async (
 //   groupName,
@@ -66,6 +68,25 @@ const helper = require("../validations/helper");
 
 // };
 
+const addGroupChatIdToGroup = async (groupId, groupChatId) => {
+  groupId = helper.checkId(groupId.toString());
+  groupChatId = helper.checkId(groupChatId.toString());
+
+  const grpCollection = await groups();
+  let updateGrpDetails = {
+    groupChatId: ObjectId(groupChatId)
+  };
+
+  const newUpdatedGrp = await grpCollection.updateOne(
+    { _id: ObjectId(groupId) },
+    { $set: updateGrpDetails }
+  );
+  if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+    throw "Cannot update List of Users";
+  }
+  return true;
+}
+
 const sendRequest = async (groupId, userId) => {
   groupId = helper.checkId(groupId);
   userId = helper.checkId(userId);
@@ -103,12 +124,12 @@ const searchGroup = async (input) => {
       if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
-          platform: group.platForm.platFormName,
-          monthlyPayment: group.payment.montlyPaymentForGroup,
-          requested: group.requestToJoin.includes(input.userId),
-          groupId: group._id,
-          groupLimit: group.groupLimit,
-          totalMembers: group.listOfUsers.length,
+          platform: group.platform.platformName,
+          monthlyPayment: group.payment.montlyPaymentForGroup, 
+          requested: group.requestToJoin.includes(input.userId), 
+          groupId: group._id, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.listOfUsers.length, 
         }
         newEntry.notRequested = !newEntry.requested;
         tempResult.push(newEntry);
@@ -136,12 +157,12 @@ const searchGroup = async (input) => {
       if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
-          platform: group.platForm.platFormName,
-          monthlyPayment: group.payment.montlyPaymentForGroup,
-          requested: group.requestToJoin.includes(input.userId),
-          groupId: group._id,
-          groupLimit: group.groupLimit,
-          totalMembers: group.listOfUsers.length,
+          platform: group.platform.platformName,
+          monthlyPayment: group.payment.montlyPaymentForGroup, 
+          requested: group.requestToJoin.includes(input.userId), 
+          groupId: group._id, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.listOfUsers.length, 
         }
         newEntry.notRequested = !newEntry.requested;
         newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
@@ -154,7 +175,7 @@ const searchGroup = async (input) => {
       if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
-          platform: group.platForm.platFormName,
+          platform: group.platform.platformName,
           monthlyPayment: group.payment.montlyPaymentForGroup,
           requested: group.requestToJoin.includes(input.userId),
           groupId: group._id,
@@ -175,14 +196,11 @@ const createGroup = async (
   groupName,
   // profileImgUrl,
   category,
-  platFormName,
-  // groupdLeaderId,
-  groupLimit,
-  // memberIds,
-  duePaymentDate,
+  platformName,
   platformLoginId,
   platFormPassword,
-  subscriptionLengthInDays,
+  groupLimit,
+  duePaymentDate,
   totalPaymentPrice,
   paymentPlanSpanInMonths
 ) => {
@@ -190,15 +208,15 @@ const createGroup = async (
   //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
-  montlyPaymentForGroup = monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
+  montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
   let newGrp = {
     groupName:groupName,
     profileImgUrl:"",
     category:category,
-    platForm:{
-      platFormName:platFormName,
+    platform:{
+      platformName:platformName,
       platformLoginId: platformLoginId,
-      platFormPassword:platFormPassword
+      platformPassword:platFormPassword
     },
     groupdLeaderId:userid,
     groupLimit:groupLimit,
@@ -218,6 +236,7 @@ const createGroup = async (
   const insertedGrpId = insertedGrp.insertedId.toString();
   const group = await getGroupById(insertedGrpId);
 
+  await userData.addGroupToUser(userid, insertedGrpId);
 
   if(userid){
     await userGroupData.createUserGroup(userid,insertedGrpId,montlyPaymentForGroup)
@@ -226,11 +245,12 @@ const createGroup = async (
   return group;
 };
 
-function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
-  if(paymentPlanSpanInMonths & totalPaymentPrice){
-    const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths
+ async function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
+  if(paymentPlanSpanInMonths && totalPaymentPrice){
+    const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths;
     return monthlyPayment
   }else{
+    console.log("here")
     return 0
   }
 
@@ -261,8 +281,6 @@ const removeGroup = async (groupId) => {
   return true;
 };
 
-// In updateGroup user can update the name and profile image also memberIds shall be updated here...
-
 const updateGroup = async (groupId,groupName,
   profileImgUrl,
   // memberIds
@@ -277,7 +295,6 @@ const updateGroup = async (groupId,groupName,
     platFormName:oldGrpData.platFormName,
     groupdLeaderId:oldGrpData.groupdLeaderId,
     groupLimit:oldGrpData.groupLimit,
-    // memberIds:[groupdLeaderId],
     duePaymentDate:oldGrpData.duePaymentDate,
     loginId:oldGrpData.loginId,
     password:oldGrpData.password,
@@ -307,7 +324,6 @@ const updateListOfUsersInGroup = async (groupId,userId) => {
     platFormName:oldGrpData.platFormName,
     groupdLeaderId:oldGrpData.groupdLeaderId,
     groupLimit:oldGrpData.groupLimit,
-    // memberIds:[groupdLeaderId],
     duePaymentDate:oldGrpData.duePaymentDate,
     loginId:oldGrpData.loginId,
     password:oldGrpData.password,

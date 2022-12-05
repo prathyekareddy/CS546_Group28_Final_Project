@@ -1,0 +1,19 @@
+<div id="message-container">
+    {{#each chat}} {{> display-messages }} {{/each}}
+</div>
+<div id="useless">
+    {{groupID}}
+</div>
+<div id="useless2">
+    {{username}}
+</div>
+<div id="useless3">
+    {{email}}
+</div>
+<form id="send-container">
+    <input type="text" id="message-input">
+    <button type="submit" id="send-button">Send</button>
+</form>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src='/public/js/group-chat.js'></script>

@@ -17,4 +17,5 @@ module.exports = {
   users: getCollectionFn('users'),
   groups: getCollectionFn('groups'),
   usergroup: getCollectionFn('usergroup'),
+  groupchat: getCollectionFn('groupchat')
 };

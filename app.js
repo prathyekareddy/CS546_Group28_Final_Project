@@ -9,6 +9,9 @@ const handlebarsInstance = exphbs.create({
   partialsDir: ['views/partials/']
 });
 
+const server = require('http').Server(app)
+const io = require('socket.io')(server);
+
 app.use("/public", static);
 app.use(express.json());
 
@@ -37,7 +40,20 @@ app.set("view engine", "handlebars");
 
 configRoutes(app);
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000");
 });
+
+io.on('connection', socket => {
+  socket.on('create-room', (groupId) => {
+    console.log("here",groupId)
+    socket.join(groupId)
+    // io.to(`navigation/chat/${groupId}`).emit('chat-message', { message: message })
+  })
+  socket.on('send-chat-message', (groupId, message) => {
+    console.log("send",groupId)
+    // io.to(`navigation/chat/${groupId}`).emit('chat-message', { message: message })
+    io.to(groupId).emit('chat-message', { message: message })
+  })
+})

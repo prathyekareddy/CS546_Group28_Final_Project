@@ -3,6 +3,7 @@ const users = mongoCollections.users;
 const validation = require("../validations/helper");
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcryptjs');
+const helper = require("../validations/helper");
 const saltRounds = 10;
 
 
@@ -38,6 +39,7 @@ const createUser = async (
     profileImgUrl: "profileImgUrl",
     address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
+    listOfGroups: []
   };
 
   const insertedUser = await userCollection.insertOne(newUser);
@@ -55,7 +57,7 @@ const getAllUsers = async () => {
 };
 
 const getUserById = async (userId) => {
-  userId = validation.checkId(userId, "id");
+  // userId = validation.checkId(userId, "id");
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(userId) });
   if (!user) throw "User not found";
@@ -150,6 +152,28 @@ const checkUser = async (username, password) => {
 
 };
 
+//Add Group to User function
+const addGroupToUser = async (userId, groupId) => {
+  userId = helper.checkId(userId.toString());
+  groupId = helper.checkId(groupId.toString());
+  const usersCollection = await users();
+  const oldUserData = await getUserById(userId);
+
+  oldUserData.listOfGroups.push(groupId);
+  let updateUserDetails = {
+    listOfGroups: oldUserData.listOfGroups
+  };
+
+  const updateUserInfo = await usersCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $set: updateUserDetails }
+  );
+
+  if (!updateUserInfo.modifiedCount || !updateUserInfo.acknowledged) {
+    throw 'The list of groups could not be updated';
+  }
+  return true;
+}
 
 module.exports = {
   createUser,
@@ -158,5 +182,6 @@ module.exports = {
   getUserByemail,
   removeUser,
   updateUser,
-  checkUser
+  checkUser,
+  addGroupToUser
 };
