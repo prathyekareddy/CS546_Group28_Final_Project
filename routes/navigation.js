@@ -5,7 +5,10 @@ const data = require('../data');
 const groupData = data.groups;
 const userData = data.users;
 const userGroupData = data.usergroup;
+<<<<<<< HEAD
 const groupChatData = data.groupchat;
+=======
+>>>>>>> ae40e6079bb778fa860514afb1d7ebd59c2091be
 const createGroupValidation = require('../validations/createGroupValidation');
 const helper = require("../validations/helper");
 const stripe = require("stripe")(
