@@ -6,10 +6,7 @@ const createGroupValidation = require("../validations/createGroupValidation");
 const userGroupData = require("./usergroup")
 const helper = require("../validations/helper");
 const userData = require('./users');
-<<<<<<< HEAD
 const  groupchat  = require("../data/groupchat");
-=======
->>>>>>> ae40e6079bb778fa860514afb1d7ebd59c2091be
 
 // const createGroup = async (
 //   groupName,
