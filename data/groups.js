@@ -237,6 +237,16 @@ const createGroup = async (
   const group = await getGroupById(insertedGrpId);
 
   await userData.addGroupToUser(userid, insertedGrpId);
+  let groupChatCreated;
+  try{
+    groupChatCreated = await groupchat.createGroupChat(insertedGrpId)
+  }catch(e){
+    console.log("Group chat Creating unsuccessful",e)
+    return;
+  }
+  
+  await addGroupChatIdToGroup(insertedGrpId,groupChatCreated._id);
+
 
   if(userid){
     await userGroupData.createUserGroup(userid,insertedGrpId,montlyPaymentForGroup)
