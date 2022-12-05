@@ -1,10 +1,12 @@
 <section>
   <main>
-    <h3>Group Details</h3>
+    <br>
+    <br>
+    <h3 class="text-center">Group Details</h3>
     {{!-- <h5>Userid {{user._id}}</h5> --}}
     {{!-- <h2>Group Id {{groupData._id}}</h2>
     <h2>Group Name {{groupData.groupName}}</h2> --}}
-    <div class="card shadow p-3 mb-5 bg-white rounded mx-auto" style="width: 55rem; ">
+    <div class="card shadow p-3 mb-5 bg-white mx-auto" style="width: 80rem; height:25rem; border-radius: 40px; ">
       <div class="row">
         <div class="col-md-4">
           <img class="card-img-top img-circle" style="padding: 40px ;" src="/public/netflix.png" alt="">
@@ -12,8 +14,11 @@
         <div class="card-body col-md-6">
           <br>
           <br>
+            <h2 class="card-title">Group Name: {{group.groupName}}</h2>
             <h4 class="card-title">Login ID: {{group.platform.platformLoginId}}</h4>
             <h4 class="card-title">Password: {{group.platform.platformPassword}}</h4>
+            <h5 class="card-title d-flex justify-content-left" style="font-size: medium;color:red;">Monthly Payment for the group : ${{group.payment.montlyPaymentForGroup}}</h5>
+            <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">Payment Span : {{group.payment.paymentPlanSpanInMonths}} months</h5>
         </div>
       </div>
     </div>
@@ -26,33 +31,52 @@
     {{!-- User details cards --}}
 
     <div class="container">
-      <h5 class="mx-auto">Users</h5>
+      <h5 class="text-center">User in this group</h5>
       <div class="card-deck">
           {{#each user}}
-              <div class="col-6   " style="padding-bottom: 50px;">
-                      <div class="card Larger shadow">
-                          <img style="border-radius: 50% ; padding: 30px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/netflix.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+              <div class="col-3 " style="padding-bottom: 50px;">
+                      <div class="card Larger shadow" style="border-radius: 40px;">
+                          <img style="border-radius: 50% ; padding: 20px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                           <div class="card-body">
-                              <h5 class="card-title d-flex justify-content-left">{{this.firstName}} {{this.lastName}}</h5>
-                              <h6 class="card-subtitle d-flex justify-content-left" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
-                              <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.salaryMin}} </h5>
-                              <p class="card-subtitle text-muted d-flex justify-content-left" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
-                              <p class="card-text d-flex justify-content-left">{{this.userDescription}}</p>
-                              {{#each this.skills}}
-                                  <span class="badge badge-pill badge-info" style="font-size: small;" >{{this}}</span>
-                              {{/each}}
-                              {{!-- Can be used for remove from group functionality --}}
-                              {{!-- <form action="/profile/deleteJob" method="post">
-                                  <input type="hidden" name="jobid"  value="{{this._id}}"/>
-                                  <input type="hidden" name="companyid"  value="{{../company._id}}"/>
-                                  
-                              </form> --}}
+                              <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
+                              <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
+                              {{!-- <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.payment}} </h5> --}}
+                              <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
+                              <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
                           </div>
                       </div>
                   </div>
           {{/each}}
     </div>    
     </div>
+    {{!-- request to join --}}
+
+    <div class="container">
+      <h5 class="mx-auto">Request To join</h5>
+      <div class="card-deck">
+          {{#each requestToJoin}}
+              <div class="col-3   " style="padding-bottom: 50px;">
+                      <div class="card Larger shadow" style="border-radius: 40px;">
+                          <img style="border-radius: 50% ; padding: 20px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <div class="card-body">
+                              <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
+                              <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
+                              <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
+                              <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
+
+                              {{!-- Can be used for add to group functionality --}}
+                              <form action="/navigation/addusertogroup" method="post">
+                                  <input type="hidden" name="userid"  value="{{this._id}}"/>
+                                  <input type="hidden" name="groupid"  value="{{../group._id}}"/>
+                                  <button type="submit" class="btn btn-primary">Accept</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+          {{/each}}
+    </div>    
+    </div>
+
   </main>
 </section>
 

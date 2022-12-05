@@ -140,6 +140,37 @@ async function main() {
 // "30"
 // )
 
+try{
+  userCreated123 = await users.createUser("password",
+  "Prathyeka reddy",
+  "Reddy",
+  `testuser@gmail.com`,
+  "Female",
+  "Student",
+  "",
+  "Jersey City",
+  "NJ",
+  "Webster Ave",
+  "1234567890")
+}catch(e){
+  console.log("User Creating unsuccessful",e)
+}
+try{
+  groupCreated123 = await groups.createGroup(userCreated123._id,`World`,
+  "OTT",
+  "Netflix",
+  "4",
+  "19/11/2022",
+  "punugu@netflix.com",
+  "password",
+  30,
+  60,
+  6)
+}catch(e){
+  console.log("group Creating unsuccessful",e)
+}
+
+
 /*
   the function createEverythingEverywhereAllAtOnce creates a user then the user creates a group for a platform, 
   then we create multiple users who want to join the group. these users join the group. User failed to join as per the limit set for the group.
