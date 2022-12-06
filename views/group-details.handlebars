@@ -36,7 +36,7 @@
           {{#each user}}
               <div class="col-3 " style="padding-bottom: 50px;">
                       <div class="card Larger shadow" style="border-radius: 40px;">
-                          <img style="border-radius: 50% ; padding: 20px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -50,26 +50,36 @@
     </div>    
     </div>
     {{!-- request to join --}}
-
     <div class="container">
       <h5 class="mx-auto">Request To join</h5>
       <div class="card-deck">
           {{#each requestToJoin}}
-              <div class="col-3   " style="padding-bottom: 50px;">
+              <div class="col-3" style="padding-bottom: 50px;">
                       <div class="card Larger shadow" style="border-radius: 40px;">
-                          <img style="border-radius: 50% ; padding: 20px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
                               <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
                               <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
 
-                              {{!-- Can be used for add to group functionality --}}
-                              <form action="/navigation/addusertogroup" method="post">
-                                  <input type="hidden" name="userid"  value="{{this._id}}"/>
-                                  <input type="hidden" name="groupid"  value="{{../group._id}}"/>
-                                  <button type="submit" class="btn btn-primary">Accept</button>
-                              </form>
+                              <div class="row">
+                                <div class="col" style="padding-left:30px ;">
+                                   <form action="/navigation/addusertogroup" method="post">
+                                      <input type="hidden" name="userid"  value="{{this._id}}"/>
+                                      <input type="hidden" name="groupid"  value="{{../group._id}}"/>
+                                      <button type="submit" class="btn btn-primary" >Accept</button>
+                                  </form>
+                                </div>
+                                <div class="col">
+                                  <form action="/navigation/rejectUserToJoinGroup" method="post">
+                                      <input type="hidden" name="userid"  value="{{this._id}}"/>
+                                      <input type="hidden" name="groupid"  value="{{../group._id}}"/>
+                                      <button type="submit" class="btn btn-danger">Reject</button>
+                                  </form>
+                                </div>                             
+                              </div>
+                              
                           </div>
                       </div>
                   </div>
@@ -77,6 +87,7 @@
     </div>    
     </div>
 
+    {{!-- Payment below --}}
   </main>
 </section>
 

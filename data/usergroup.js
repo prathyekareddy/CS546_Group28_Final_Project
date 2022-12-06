@@ -19,7 +19,6 @@ const createUserGroup = async (
     const userGroupCollection = await userGroupData();
 
     dateJoined = new Date().toUTCString()
-    console.log(monthlyPaymentPrice)
     let newUser = {
         userId: ObjectId(userId),
         groupId: ObjectId(groupId),
