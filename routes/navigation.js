@@ -3,6 +3,8 @@ const router = express.Router();
 const path = require('path');
 const data = require('../data');
 const groupData = data.groups;
+const userData = data.users;
+const userGroupData = data.usergroup;
 const createGroupValidation = require('../validations/createGroupValidation');
 const helper = require("../validations/helper");
 const stripe = require("stripe")(
@@ -22,40 +24,16 @@ router
         res.render('create-group');
     })
     .post(async (req, res) => {
-        //let groupInfo = req.body;
         try {
-          result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
+          // result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
+            createGroupData = await groupData.createGroup(req.session.user._id, req.body.groupName,req.body.category, req.body.platformName,req.body.platformEmail, req.body.platformPassword, 
+            parseInt(req.body.groupLimit), req.body.dueDate, parseFloat(req.body.totalSubsPrice),parseInt(req.body.subsLength))
+            createUserData = await userData.getUserById(req.session.user._id)
+            arrUsers = [createUserData] //this will have list of users present in the group -> need a function that gets all the users present in the group
+            res.render('group-details', {user: arrUsers, group: createGroupData})
         }
         catch(e) {
           return res.status(400).json({error: e});
-        }
-        try {
-          //console.log(groupInfo);
-          //console.log(req);
-          //const {groupName, platFormName, groupdLeaderId, groupLimit, duePaymentDate, loginId, password, subscriptionLengthInDays} = groupInfo;
-          const groupName = req.body.groupName;
-          const platformName = req.body.platformName;
-          const groupLeaderId = req.session.user._id;
-          const groupLimit = req.body.groupLimit;
-          const category = req.body.category;
-          const dueDate = req.body.dueDate;
-          const subsLength = req.body.subsLength;
-          const new_group = await groupData.createGroup(
-            groupName,
-            platformName,
-            req.session.user._id,
-            groupLimit,
-            dueDate,
-            'sabah@gmail.com',
-            'Password',
-            subsLength,
-            category
-          );
-            // res.render('group-details', {groupName: groupName});
-            res.redirect('/navigation/groupdetails');
-        }
-        catch(e) {
-          res.status(500).json({error: e});
         }
       });
 
@@ -109,9 +87,66 @@ router
     })
 
 router
-    .route("/groupdetails")
+.route("/mygroups")
+.get(async (req, res) => {
+  currentUser = await userData.getUserById(req.session.user._id)
+  listOfGroups = currentUser.listOfGroups
+  arrGroups = []
+  for(let i = 0; i< listOfGroups.length;i++){
+    arrGroups.push(await groupData.getGroupById(listOfGroups[i]))
+  }
+  res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups});
+})
+
+router
+    .route("/groupdetails/:id")
     .get(async (req, res) => {
-        res.render('group-details', {});
+
+      groupDetails = await groupData.getGroupById(req.params.id)
+
+      requestArr = []
+      userArr = []
+
+      try {
+        if((groupDetails.requestToJoin).length > 0){
+          for (i = 0; i < (groupDetails.requestToJoin).length; i ++){
+            requestArr.push(await userData.getUserById((groupDetails.requestToJoin)[i]))
+          }
+        }
+      } catch (error) {
+        throw error
+      }
+
+      try {
+        if((groupDetails.listOfUsers).length > 0){
+          for (i = 0; i < (groupDetails.listOfUsers).length; i ++){
+            userArr.push(await userData.getUserById((groupDetails.listOfUsers)[i]))
+          }
+        }
+      } catch (error) {
+        throw error
+      }
+      res.render('group-details', { group: groupDetails, requestToJoin : requestArr, user : userArr})
+    })
+router
+    .route("/addusertogroup")
+    .post(async (req, res) => {
+      try{
+        addUserToGroup = await userGroupData.addUserToGroup(req.body.userid,req.body.groupid)
+        res.redirect('/navigation/groupdetails/'+req.body.groupid);
+      }catch(e){
+        console.log(e);
+      }
+    })
+    router
+    .route("/rejectUserToJoinGroup")
+    .post(async (req, res) => {
+      try{
+        rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
+        res.redirect('/navigation/groupdetails/'+req.body.groupid);
+      }catch(e){
+        console.log(e);
+      }
     })
 
     router.route("/checkout-page").get(async (req, res) => {

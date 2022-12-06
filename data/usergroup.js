@@ -19,7 +19,6 @@ const createUserGroup = async (
     const userGroupCollection = await userGroupData();
 
     dateJoined = new Date().toUTCString()
-  
     let newUser = {
         userId: ObjectId(userId),
         groupId: ObjectId(groupId),
@@ -42,6 +41,13 @@ const createUserGroup = async (
     // userId = validation.checkId(usergroupId, "id");
     const usergroupCollection = await userGroupData();
     const usergroup = await usergroupCollection.findOne({ _id: ObjectId(usergroupId)});
+    if (!usergroup) throw "Group not found for this user";
+    return usergroup;
+  };
+  const getUserGroupByUserId = async (userId) => {
+    // userId = validation.checkId(usergroupId, "id");
+    const usergroupCollection = await userGroupData();
+    const usergroup = await usergroupCollection.findOne({ userId: ObjectId(userId)});
     if (!usergroup) throw "Group not found for this user";
     return usergroup;
   };
@@ -109,6 +115,8 @@ const createUserGroup = async (
       group.listOfUsers.push(ObjectId(userId))
     }
 
+    requestList = group.requestToJoin.filter(function(e) { return e !== userId })
+
     dateJoined = new Date().toUTCString()
   
     let newUserGroup = {
@@ -133,25 +141,15 @@ const createUserGroup = async (
 
     const updateListOfUsersInGroup = await groupcollection.updateOne(
       {_id:ObjectId(groupId)},
-      {$set:{listOfUsers: group.listOfUsers}}
+      {$set:{listOfUsers: group.listOfUsers, requestToJoin:requestList}}
     )
 
     if(!updateListOfUsersInGroup.acknowledged){
       throw `User List Not Updated`
     }
 
-    // Below is the Sudo code for adding group Ids to the user.
     await userData.addGroupToUser(userId, groupId);
-    // userInfo = await userData.getUserById(userId)
-
-    // userInfo.listOfGroups.push(ObjectId(groupId))
-
-    // const userCollection = await userCol()
-
-    // const updateListOfGroupsInUser = await userCollection.updateOne(
-    //   {_id:ObjectId(userId)},
-    //   {$set:{listOfGroups: userInfo.listOfGroups}}
-    // )
+    
     return usergroup;
   };
   
@@ -203,5 +201,6 @@ const createUserGroup = async (
     removeUserGroup,
     updateUserGroup,
     addUserToGroup,
-    updatePayment
+    updatePayment,
+    getUserGroupByUserId
   };

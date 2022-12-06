@@ -104,12 +104,12 @@ const searchGroup = async (input) => {
       if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
-          platform: group.platForm.platFormName,
-          monthlyPayment: group.payment.montlyPaymentForGroup,
-          requested: group.requestToJoin.includes(input.userId),
-          groupId: group._id,
-          groupLimit: group.groupLimit,
-          totalMembers: group.listOfUsers.length,
+          platform: group.platform.platformName,
+          monthlyPayment: group.payment.montlyPaymentForGroup, 
+          requested: group.requestToJoin.includes(input.userId), 
+          groupId: group._id, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.listOfUsers.length, 
         }
         newEntry.notRequested = !newEntry.requested;
         tempResult.push(newEntry);
@@ -137,12 +137,12 @@ const searchGroup = async (input) => {
       if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
-          platform: group.platForm.platFormName,
-          monthlyPayment: group.payment.montlyPaymentForGroup,
-          requested: group.requestToJoin.includes(input.userId),
-          groupId: group._id,
-          groupLimit: group.groupLimit,
-          totalMembers: group.listOfUsers.length,
+          platform: group.platform.platformName,
+          monthlyPayment: group.payment.montlyPaymentForGroup, 
+          requested: group.requestToJoin.includes(input.userId), 
+          groupId: group._id, 
+          groupLimit: group.groupLimit, 
+          totalMembers: group.listOfUsers.length, 
         }
         newEntry.notRequested = !newEntry.requested;
         newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
@@ -155,7 +155,7 @@ const searchGroup = async (input) => {
       if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
         let newEntry = {
           groupName: group.groupName,
-          platform: group.platForm.platFormName,
+          platform: group.platform.platformName,
           monthlyPayment: group.payment.montlyPaymentForGroup,
           requested: group.requestToJoin.includes(input.userId),
           groupId: group._id,
@@ -176,14 +176,11 @@ const createGroup = async (
   groupName,
   // profileImgUrl,
   category,
-  platFormName,
-  // groupdLeaderId,
-  groupLimit,
-  // memberIds,
-  duePaymentDate,
+  platformName,
   platformLoginId,
   platFormPassword,
-  subscriptionLengthInDays,
+  groupLimit,
+  duePaymentDate,
   totalPaymentPrice,
   paymentPlanSpanInMonths
 ) => {
@@ -191,15 +188,15 @@ const createGroup = async (
   //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
-  montlyPaymentForGroup = monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
+  montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
   let newGrp = {
     groupName:groupName,
     profileImgUrl:"",
     category:category,
-    platForm:{
-      platFormName:platFormName,
+    platform:{
+      platformName:platformName,
       platformLoginId: platformLoginId,
-      platFormPassword:platFormPassword
+      platformPassword:platFormPassword
     },
     groupdLeaderId:userid,
     groupLimit:groupLimit,
@@ -228,9 +225,9 @@ const createGroup = async (
   return group;
 };
 
-function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
-  if(paymentPlanSpanInMonths & totalPaymentPrice){
-    const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths
+ async function monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths){
+  if(paymentPlanSpanInMonths && totalPaymentPrice){
+    const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths;
     return monthlyPayment
   }else{
     return 0
@@ -263,8 +260,6 @@ const removeGroup = async (groupId) => {
   return true;
 };
 
-// In updateGroup user can update the name and profile image also memberIds shall be updated here...
-
 const updateGroup = async (groupId,groupName,
   profileImgUrl,
   // memberIds
@@ -279,7 +274,6 @@ const updateGroup = async (groupId,groupName,
     platFormName:oldGrpData.platFormName,
     groupdLeaderId:oldGrpData.groupdLeaderId,
     groupLimit:oldGrpData.groupLimit,
-    // memberIds:[groupdLeaderId],
     duePaymentDate:oldGrpData.duePaymentDate,
     loginId:oldGrpData.loginId,
     password:oldGrpData.password,
@@ -309,7 +303,6 @@ const updateListOfUsersInGroup = async (groupId,userId) => {
     platFormName:oldGrpData.platFormName,
     groupdLeaderId:oldGrpData.groupdLeaderId,
     groupLimit:oldGrpData.groupLimit,
-    // memberIds:[groupdLeaderId],
     duePaymentDate:oldGrpData.duePaymentDate,
     loginId:oldGrpData.loginId,
     password:oldGrpData.password,
@@ -329,6 +322,18 @@ const updateListOfUsersInGroup = async (groupId,userId) => {
 
 };
 
+const removeUserFromRequestListInGroup = async (userId,groupId) =>{
+
+  const grpCollection = await groups();
+  const removeUserFromListOfUserInGroup = await grpCollection.updateOne({ _id:  ObjectId(groupId) },
+    {$pull: { 'requestToJoin': userId }});
+
+  if (!removeUserFromListOfUserInGroup.acknowledged){
+    throw `removing requestToJoin Failed`
+  }
+
+}
+
 
 
 module.exports = {
@@ -339,5 +344,6 @@ module.exports = {
   updateGroup,
   updateListOfUsersInGroup,
   searchGroup,
-  sendRequest
+  sendRequest,
+  removeUserFromRequestListInGroup
 };
