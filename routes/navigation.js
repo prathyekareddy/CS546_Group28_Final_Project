@@ -114,7 +114,6 @@ router
           }
         }
       } catch (error) {
-        console.log("in getting reqs")
         throw error
       }
 
@@ -125,7 +124,6 @@ router
           }
         }
       } catch (error) {
-        console.log("In getting users")
         throw error
       }
       res.render('group-details', { group: groupDetails, requestToJoin : requestArr, user : userArr})
@@ -135,6 +133,16 @@ router
     .post(async (req, res) => {
       try{
         addUserToGroup = await userGroupData.addUserToGroup(req.body.userid,req.body.groupid)
+        res.redirect('/navigation/groupdetails/'+req.body.groupid);
+      }catch(e){
+        console.log(e);
+      }
+    })
+    router
+    .route("/rejectUserToJoinGroup")
+    .post(async (req, res) => {
+      try{
+        rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
         res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
         console.log(e);
