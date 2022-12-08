@@ -159,13 +159,13 @@ try{
   groupCreated123 = await groups.createGroup(userCreated123._id,`World`,
   "OTT",
   "Netflix",
-  "4",
-  "19/11/2022",
   "punugu@netflix.com",
   "password",
-  30,
-  60,
-  6)
+  "4",
+  "19/11/2023",
+  300,
+  12,
+  "#asdxas#asdasd#sada")
 }catch(e){
   console.log("group Creating unsuccessful",e)
 }
@@ -176,292 +176,292 @@ try{
   then we create multiple users who want to join the group. these users join the group. User failed to join as per the limit set for the group.
 
 */
-try{
-  await createEverythingEverywhereAllAtOnce()
-}catch{
-  console.log("createEverythingEverywhereAllAtOnce()")
-}
+// try{
+//   await createEverythingEverywhereAllAtOnce()
+// }catch{
+//   console.log("createEverythingEverywhereAllAtOnce()")
+// }
 
-async function createEverythingEverywhereAllAtOnce(){
+// async function createEverythingEverywhereAllAtOnce(){
 
-  console.log("Creating 5 Groups where the group limit is full. This won't appear in the search");
-  for(let i = 0; i < 5; i++){
-    try{
-      userCreated = await users.createUser("password",
-      "Prathyeka reddy",
-      "Reddy",
-      `prathyekaAdmin${i}@gmail.com`,
-      "Female",
-      "Student",
-      "",
-      "Jersey City",
-      "NJ",
-      "Webster Ave",
-      "1234567890")
-    }catch(e){
-      console.log("User Creating unsuccessful",e)
-    }
+//   console.log("Creating 5 Groups where the group limit is full. This won't appear in the search");
+//   for(let i = 0; i < 5; i++){
+//     try{
+//       userCreated = await users.createUser("password",
+//       "Prathyeka reddy",
+//       "Reddy",
+//       `prathyekaAdmin${i}@gmail.com`,
+//       "Female",
+//       "Student",
+//       "",
+//       "Jersey City",
+//       "NJ",
+//       "Webster Ave",
+//       "1234567890")
+//     }catch(e){
+//       console.log("User Creating unsuccessful",e)
+//     }
   
-    if(userCreated){
-      // console.log(userCreated._id)
+//     if(userCreated){
+//       // console.log(userCreated._id)
   
-      if(i<3){
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,
-          "OTT",
-          "Netflix",
-          "4",
-          "19/11/2022",
-          "yash@netflix.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      } else {
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`Apple Music Group${i - 3} - Full`,
-          "Music Streaming",
-          "Apple Music",
-          "4",
-          "19/11/2022",
-          "yash@netflix.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      }
+//       if(i<3){
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,
+//           "OTT",
+//           "Netflix",
+//           "4",
+//           "19/11/2022",
+//           "yash@netflix.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       } else {
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`Apple Music Group${i - 3} - Full`,
+//           "Music Streaming",
+//           "Apple Music",
+//           "4",
+//           "19/11/2022",
+//           "yash@netflix.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       }
       
   
-      if(groupCreated){
-        for(let j = 0; j<3 ; j++){
-          let userCreated2 = null;
-          try{
-            userCreated2 = await users.createUser("password",
-              "Prathyeka reddy",
-              "Reddy",
-              `prathyeka${i}${j}@gmail.com`,
-              "Female",
-              "Student",
-              "",
-              "Jersey City",
-              "NJ",
-              "Webster Ave",
-              "1234567890")
-          }catch(e){
-            console.log("User Creating unsuccessful",e)
-          }
-          try{
-            addUserToGroup1 = await userGroupData.addUserToGroup(userCreated2._id,groupCreated._id)
-          }catch(e){
-            console.log(e);
-          }
-        }
-      }
-    }
-  }
+//       if(groupCreated){
+//         for(let j = 0; j<3 ; j++){
+//           let userCreated2 = null;
+//           try{
+//             userCreated2 = await users.createUser("password",
+//               "Prathyeka reddy",
+//               "Reddy",
+//               `prathyeka${i}${j}@gmail.com`,
+//               "Female",
+//               "Student",
+//               "",
+//               "Jersey City",
+//               "NJ",
+//               "Webster Ave",
+//               "1234567890")
+//           }catch(e){
+//             console.log("User Creating unsuccessful",e)
+//           }
+//           try{
+//             addUserToGroup1 = await userGroupData.addUserToGroup(userCreated2._id,groupCreated._id)
+//           }catch(e){
+//             console.log(e);
+//           }
+//         }
+//       }
+//     }
+//   }
 
-  console.log("Creating 10 OTT Groups where there are slots to join. This will appear in the search");
-  for(let i = 0; i < 10; i++){
-    try{
-      userCreated = await users.createUser("password",
-      "Prathyeka reddy",
-      "Reddy",
-      `prathyekaOTTAdmin${i}@gmail.com`,
-      "Female",
-      "Student",
-      "",
-      "Jersey City",
-      "NJ",
-      "Webster Ave",
-      "1234567890")
-    }catch(e){
-      console.log("User Creating unsuccessful",e)
-    }
+//   console.log("Creating 10 OTT Groups where there are slots to join. This will appear in the search");
+//   for(let i = 0; i < 10; i++){
+//     try{
+//       userCreated = await users.createUser("password",
+//       "Prathyeka reddy",
+//       "Reddy",
+//       `prathyekaOTTAdmin${i}@gmail.com`,
+//       "Female",
+//       "Student",
+//       "",
+//       "Jersey City",
+//       "NJ",
+//       "Webster Ave",
+//       "1234567890")
+//     }catch(e){
+//       console.log("User Creating unsuccessful",e)
+//     }
   
-    if(userCreated){
-      // console.log(userCreated._id)
+//     if(userCreated){
+//       // console.log(userCreated._id)
   
-      if(i<3){
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i}`,
-          "OTT",
-          "Netflix",
-          "4",
-          "19/11/2022",
-          "yash@netflix.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      } else if(2<i && i<6){
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`HBO MAX Group${i - 3}`,
-          "OTT",
-          "HBO MAX",
-          "5",
-          "19/11/2022",
-          "yash@hbomax.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      } else if(5<i && i<10){
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`Hulu Group${i - 6}`,
-          "OTT",
-          "Hulu",
-          "6",
-          "19/11/2022",
-          "yash@hulu.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      }
+//       if(i<3){
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i}`,
+//           "OTT",
+//           "Netflix",
+//           "4",
+//           "19/11/2022",
+//           "yash@netflix.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       } else if(2<i && i<6){
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`HBO MAX Group${i - 3}`,
+//           "OTT",
+//           "HBO MAX",
+//           "5",
+//           "19/11/2022",
+//           "yash@hbomax.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       } else if(5<i && i<10){
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`Hulu Group${i - 6}`,
+//           "OTT",
+//           "Hulu",
+//           "6",
+//           "19/11/2022",
+//           "yash@hulu.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       }
       
   
-      if(groupCreated){
-        for(let j = 0; j<1 ; j++){
-          let userCreated2 = null;
-          try{
-            userCreated2 = await users.createUser("password",
-              "Prathyeka reddy",
-              "Reddy",
-              `prathyekaOTT${i}${j}@gmail.com`,
-              "Female",
-              "Student",
-              "",
-              "Jersey City",
-              "NJ",
-              "Webster Ave",
-              "1234567890")
-          }catch(e){
-            console.log("User Creating unsuccessful",e)
-          }
-          try{
-            addUserToGroup1 = await userGroupData.addUserToGroup(userCreated2._id,groupCreated._id)
-          }catch(e){
-            console.log(e);
-          }
-        }
-      }
-    }
-  }
+//       if(groupCreated){
+//         for(let j = 0; j<1 ; j++){
+//           let userCreated2 = null;
+//           try{
+//             userCreated2 = await users.createUser("password",
+//               "Prathyeka reddy",
+//               "Reddy",
+//               `prathyekaOTT${i}${j}@gmail.com`,
+//               "Female",
+//               "Student",
+//               "",
+//               "Jersey City",
+//               "NJ",
+//               "Webster Ave",
+//               "1234567890")
+//           }catch(e){
+//             console.log("User Creating unsuccessful",e)
+//           }
+//           try{
+//             addUserToGroup1 = await userGroupData.addUserToGroup(userCreated2._id,groupCreated._id)
+//           }catch(e){
+//             console.log(e);
+//           }
+//         }
+//       }
+//     }
+//   }
 
-  console.log("Creating 10 Network Service Provider Groups where there are slots to join. This will appear in the search");
-  for(let i = 0; i < 10; i++){
-    try{
-      userCreated = await users.createUser("password",
-      "Prathyeka reddy",
-      "Reddy",
-      `prathyekaNSPAdmin${i}@gmail.com`,
-      "Female",
-      "Student",
-      "",
-      "Jersey City",
-      "NJ",
-      "Webster Ave",
-      "1234567890")
-    }catch(e){
-      console.log("User Creating unsuccessful",e)
-    }
+//   console.log("Creating 10 Network Service Provider Groups where there are slots to join. This will appear in the search");
+//   for(let i = 0; i < 10; i++){
+//     try{
+//       userCreated = await users.createUser("password",
+//       "Prathyeka reddy",
+//       "Reddy",
+//       `prathyekaNSPAdmin${i}@gmail.com`,
+//       "Female",
+//       "Student",
+//       "",
+//       "Jersey City",
+//       "NJ",
+//       "Webster Ave",
+//       "1234567890")
+//     }catch(e){
+//       console.log("User Creating unsuccessful",e)
+//     }
   
-    if(userCreated){
-      // console.log(userCreated._id)
+//     if(userCreated){
+//       // console.log(userCreated._id)
   
-      if(i<3){
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`AT&T Group ${i}`,
-          "Network Service Provider",
-          "AT&T",
-          "6",
-          "19/11/2022",
-          "yash@AT&T.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      } else if(2<i && i<6){
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`T-Mobile Group${i - 3}`,
-          "Network Service Provider",
-          "T-Mobile",
-          "6",
-          "19/11/2022",
-          "yash@TMobile.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      } else if(5<i && i<10){
-        try{
-          groupCreated = await groups.createGroup(userCreated._id,`Verizon Group${i - 6}`,
-          "Network Service Provider",
-          "Verizon",
-          "10",
-          "19/11/2022",
-          "yash@Verizon.com",
-          "password",
-          30,
-          60,
-          6)
-        }catch(e){
-          console.log("group Creating unsuccessful",e)
-        }
-      }
+//       if(i<3){
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`AT&T Group ${i}`,
+//           "Network Service Provider",
+//           "AT&T",
+//           "6",
+//           "19/11/2022",
+//           "yash@AT&T.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       } else if(2<i && i<6){
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`T-Mobile Group${i - 3}`,
+//           "Network Service Provider",
+//           "T-Mobile",
+//           "6",
+//           "19/11/2022",
+//           "yash@TMobile.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       } else if(5<i && i<10){
+//         try{
+//           groupCreated = await groups.createGroup(userCreated._id,`Verizon Group${i - 6}`,
+//           "Network Service Provider",
+//           "Verizon",
+//           "10",
+//           "19/11/2022",
+//           "yash@Verizon.com",
+//           "password",
+//           30,
+//           60,
+//           "#asdxas#asdasd#sada")
+//         }catch(e){
+//           console.log("group Creating unsuccessful",e)
+//         }
+//       }
       
   
-      if(groupCreated){
-        for(let j = 0; j<1 ; j++){
-          let userCreated2 = null;
-          try{
-            userCreated2 = await users.createUser("password",
-              "Prathyeka reddy",
-              "Reddy",
-              `prathyekaNSP${i}${j}@gmail.com`,
-              "Female",
-              "Student",
-              "",
-              "Jersey City",
-              "NJ",
-              "Webster Ave",
-              "1234567890")
-          }catch(e){
-            console.log("User Creating unsuccessful",e)
-          }
-          try{
-            addUserToGroup1 = await userGroupData.addUserToGroup(userCreated2._id,groupCreated._id)
-          }catch(e){
-            console.log(e);
-          }
-        }
-      }
-    }
-  }
+//       if(groupCreated){
+//         for(let j = 0; j<1 ; j++){
+//           let userCreated2 = null;
+//           try{
+//             userCreated2 = await users.createUser("password",
+//               "Prathyeka reddy",
+//               "Reddy",
+//               `prathyekaNSP${i}${j}@gmail.com`,
+//               "Female",
+//               "Student",
+//               "",
+//               "Jersey City",
+//               "NJ",
+//               "Webster Ave",
+//               "1234567890")
+//           }catch(e){
+//             console.log("User Creating unsuccessful",e)
+//           }
+//           try{
+//             addUserToGroup1 = await userGroupData.addUserToGroup(userCreated2._id,groupCreated._id)
+//           }catch(e){
+//             console.log(e);
+//           }
+//         }
+//       }
+//     }
+//   }
 
   
-};
+// };
 //   console.log("Creating a User")
 
 //   try{

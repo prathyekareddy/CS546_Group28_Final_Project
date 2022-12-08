@@ -19,6 +19,9 @@
             <h4 class="card-title">Password: {{group.platform.platformPassword}}</h4>
             <h5 class="card-title d-flex justify-content-left" style="font-size: medium;color:red;">Monthly Payment for the group : ${{group.payment.montlyPaymentForGroup}}</h5>
             <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">Payment Span : {{group.payment.paymentPlanSpanInMonths}} months</h5>
+            {{#each group.hashtags}}
+            <span class="badge badge-pill badge-dark">{{this}}</span>
+          {{/each}}
         </div>
       </div>
     </div>

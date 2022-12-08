@@ -182,13 +182,23 @@ const createGroup = async (
   groupLimit,
   duePaymentDate,
   totalPaymentPrice,
-  paymentPlanSpanInMonths
+  paymentPlanSpanInMonths,
+  hashtags
 ) => {
 
   //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
   montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
+
+  hashtagArr = []
+  if(hashtags){
+    hashtagArr = hashtags.split("#");
+    hashtagArr = hashtagArr.filter(element => {
+      return element !== '';
+    });
+  }
+  
   let newGrp = {
     groupName:groupName,
     profileImgUrl:"",
@@ -207,7 +217,8 @@ const createGroup = async (
       montlyPaymentForGroup: montlyPaymentForGroup
     },
     listOfUsers:[userid],//userId list
-    requestToJoin: []
+    requestToJoin: [],
+    hashtags:hashtagArr
   };
   const insertedGrp = await grpCollection.insertOne(newGrp);
 
