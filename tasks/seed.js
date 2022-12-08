@@ -1,6 +1,7 @@
 const { groups } = require("../data/");
 const dbConnection = require("../config/mongo-connection");
 const { users } = require("../data/");
+const { groupchat } = require("../data/");
 const data = require("../data/");
 const { removeUser, updateUser, getAllUsers, getUserById } = require("../data/users");
 const { updateGroup } = require("../data/groups");
@@ -164,7 +165,7 @@ try{
   "punugu@netflix.com",
   "password",
   30,
-  60,
+  2,
   6)
 }catch(e){
   console.log("group Creating unsuccessful",e)
@@ -204,7 +205,7 @@ async function createEverythingEverywhereAllAtOnce(){
   
     if(userCreated){
       // console.log(userCreated._id)
-  
+
       if(i<3){
         try{
           groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,
@@ -215,8 +216,11 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
+          2,
           6)
+          if(i===0){
+            myId = groupCreated._id;
+          }
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -230,7 +234,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -297,7 +301,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -312,7 +316,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@hbomax.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -327,7 +331,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@hulu.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -394,7 +398,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@AT&T.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -409,7 +413,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@TMobile.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -424,7 +428,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@Verizon.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -459,7 +463,6 @@ async function createEverythingEverywhereAllAtOnce(){
       }
     }
   }
-
   
 };
 //   console.log("Creating a User")
@@ -493,7 +496,7 @@ async function createEverythingEverywhereAllAtOnce(){
 //       "password",
 //       "4",
 //       "19/11/2022",
-//       60,
+//       2,
 //       6)
 //       console.log("group Creating successful")
 //     }catch{

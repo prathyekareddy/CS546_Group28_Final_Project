@@ -5,6 +5,7 @@ const data = require('../data');
 const groupData = data.groups;
 const userData = data.users;
 const userGroupData = data.usergroup;
+const groupChatData = data.groupchat;
 const createGroupValidation = require('../validations/createGroupValidation');
 const helper = require("../validations/helper");
 const stripe = require("stripe")(
@@ -158,11 +159,7 @@ router
             {
               price: "price_1MAdtxGXsyLIL2myAGYK5cE8",
               quantity: 1,
-            },
-            {
-              price: "price_1MAfX1GXsyLIL2myFZU8pn6J",
-              quantity: 1,
-            },
+            }
           ],
           allow_promotion_codes: true,
           billing_address_collection: "auto",
@@ -174,5 +171,20 @@ router
         console.log(error);
       }
     });
+
+router
+    .route("/chat/:id")
+    .get(async (req, res) => {
+        const groupChat = await groupChatData.getGroupChatByGroupId(req.params.id);
+        req.session.chat = {groupId: req.params.id, groupChatId: groupChat._id};
+        res.render('group-chat', {chat: groupChat.messages, groupID: req.params.id, username: req.session.user.username, email: req.session.user.emailId});
+})
+
+router
+  .route('/send-message.html')
+  .post(async (req, res) => {
+    let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, req.body.message);
+    res.render('partials/display-messages', { layout: null, ...newMessage });
+  });
 
 module.exports = router;

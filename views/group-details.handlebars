@@ -1,5 +1,8 @@
 <section>
   <main>
+    <form action="/navigation/chat/{{group._id}}" method="get">
+    <button type="submit">Open Chat</button>
+  </form>
     <br>
     <br>
     <h3 class="text-center">Group Details</h3>
@@ -86,9 +89,8 @@
           {{/each}}
     </div>    
     </div>
-
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src='../public/js/group-details.js'></script>
     {{!-- Payment below --}}
   </main>
 </section>
-
-
