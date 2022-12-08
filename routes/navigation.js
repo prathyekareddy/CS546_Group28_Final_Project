@@ -152,7 +152,6 @@ router
 
     router.route("/checkout-page").get(async (req, res) => {
       try {
-        price = Number(price);
         const session = await stripe.checkout.sessions.create({
           mode: "payment",
           payment_method_types: ["card"],
