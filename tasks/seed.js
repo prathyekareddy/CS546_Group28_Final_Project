@@ -165,7 +165,7 @@ try{
   "punugu@netflix.com",
   "password",
   30,
-  60,
+  2,
   6)
 }catch(e){
   console.log("group Creating unsuccessful",e)
@@ -216,7 +216,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
+          2,
           6)
           if(i===0){
             myId = groupCreated._id;
@@ -234,7 +234,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -301,7 +301,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -316,7 +316,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@hbomax.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -331,7 +331,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@hulu.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -398,7 +398,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@AT&T.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -413,7 +413,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@TMobile.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -428,7 +428,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@Verizon.com",
           "password",
           30,
-          60,
+          2,
           6)
         }catch(e){
           console.log("group Creating unsuccessful",e)
@@ -460,19 +460,6 @@ async function createEverythingEverywhereAllAtOnce(){
             console.log(e);
           }
         }
-      }
-    }
-  }
-
-  for(let i=0; i<3; i++){
-    if(myId){
-      try{
-        console.log(myId);
-        const asdf = await groups.getGroupById(myId);
-        console.log(asdf)
-        await groupchat.sendMessage(asdf.groupChatId,`User${i}`,`email${i}`,`message${i}`);
-      }catch(e){
-        console.log("Group chat Creating unsuccessful",e)
       }
     }
   }
@@ -509,7 +496,7 @@ async function createEverythingEverywhereAllAtOnce(){
 //       "password",
 //       "4",
 //       "19/11/2022",
-//       60,
+//       2,
 //       6)
 //       console.log("group Creating successful")
 //     }catch{

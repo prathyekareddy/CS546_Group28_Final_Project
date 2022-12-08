@@ -1,6 +1,3 @@
-<div id="message-container">
-    {{#each chat}} {{> display-messages }} {{/each}}
-</div>
 <div id="useless">
     {{groupID}}
 </div>
@@ -10,9 +7,14 @@
 <div id="useless3">
     {{email}}
 </div>
-<form id="send-container">
-    <input type="text" id="message-input">
-    <button type="submit" id="send-button">Send</button>
+
+
+<div id="message-container">
+    {{#each chat}} {{> display-messages }} {{/each}}
+</div>
+<form id="send-container" class="send-form">
+    <input type="text" id="message-input" class="fg-1">
+    <button type="submit" id="send-button" class="btn btn-success">Send</button>
 </form>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>

@@ -47,13 +47,9 @@ server.listen(3000, () => {
 
 io.on('connection', socket => {
   socket.on('create-room', (groupId) => {
-    console.log("here",groupId)
     socket.join(groupId)
-    // io.to(`navigation/chat/${groupId}`).emit('chat-message', { message: message })
   })
   socket.on('send-chat-message', (groupId, message) => {
-    console.log("send",groupId)
-    // io.to(`navigation/chat/${groupId}`).emit('chat-message', { message: message })
-    io.to(groupId).emit('chat-message', { message: message })
+    socket.to(groupId).emit('chat-message', { message: message })
   })
 })

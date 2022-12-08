@@ -31,14 +31,9 @@ const getGroupChatById = async (groupChatId) => {
 
 const getGroupChatByGroupId = async (groupId) => {
   // groupId = validation.checkId(groupId, "id");
-  console.log(groupId);
   const groupChats = await getAllGroupChats();
   const grpChat = groupChats.find(data => {
-    console.log("in");
-    console.log(data.groupId.toString(), groupId);
-    console.log(data.groupId.toString() === groupId);
     if(data.groupId.toString() === groupId){
-      console.log(data);
       return data;
     }
   });

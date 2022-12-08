@@ -115,7 +115,6 @@ router
           }
         }
       } catch (error) {
-        console.log("in getting reqs")
         throw error
       }
 
@@ -126,10 +125,8 @@ router
           }
         }
       } catch (error) {
-        console.log("In getting users")
         throw error
       }
-      // res.render('group-details', {groupChatId: "638d456e2f857b24a31fbf5f"});
       res.render('group-details', { group: groupDetails, requestToJoin : requestArr, user : userArr})
     })
 router
@@ -137,6 +134,16 @@ router
     .post(async (req, res) => {
       try{
         addUserToGroup = await userGroupData.addUserToGroup(req.body.userid,req.body.groupid)
+        res.redirect('/navigation/groupdetails/'+req.body.groupid);
+      }catch(e){
+        console.log(e);
+      }
+    })
+    router
+    .route("/rejectUserToJoinGroup")
+    .post(async (req, res) => {
+      try{
+        rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
         res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
         console.log(e);
@@ -171,7 +178,6 @@ router
     .get(async (req, res) => {
         const groupChat = await groupChatData.getGroupChatByGroupId(req.params.id);
         req.session.chat = {groupId: req.params.id, groupChatId: groupChat._id};
-        console.log(req.session);
         res.render('group-chat', {chat: groupChat.messages, groupID: req.params.id, username: req.session.user.username, email: req.session.user.emailId});
 })
 

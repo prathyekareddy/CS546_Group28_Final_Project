@@ -197,10 +197,10 @@ const createGroup = async (
   // profileImgUrl,
   category,
   platformName,
-  platformLoginId,
-  platFormPassword,
   groupLimit,
   duePaymentDate,
+  platformLoginId,
+  platFormPassword,
   totalPaymentPrice,
   paymentPlanSpanInMonths
 ) => {
@@ -260,7 +260,6 @@ const createGroup = async (
     const monthlyPayment = totalPaymentPrice/paymentPlanSpanInMonths;
     return monthlyPayment
   }else{
-    console.log("here")
     return 0
   }
 
@@ -353,6 +352,18 @@ const updateListOfUsersInGroup = async (groupId,userId) => {
 
 };
 
+const removeUserFromRequestListInGroup = async (userId,groupId) =>{
+
+  const grpCollection = await groups();
+  const removeUserFromListOfUserInGroup = await grpCollection.updateOne({ _id:  ObjectId(groupId) },
+    {$pull: { 'requestToJoin': userId }});
+
+  if (!removeUserFromListOfUserInGroup.acknowledged){
+    throw `removing requestToJoin Failed`
+  }
+
+}
+
 
 
 module.exports = {
@@ -363,5 +374,6 @@ module.exports = {
   updateGroup,
   updateListOfUsersInGroup,
   searchGroup,
-  sendRequest
+  sendRequest,
+  removeUserFromRequestListInGroup
 };

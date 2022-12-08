@@ -19,7 +19,6 @@ const createUserGroup = async (
     const userGroupCollection = await userGroupData();
 
     dateJoined = new Date().toUTCString()
-    console.log(monthlyPaymentPrice)
     let newUser = {
         userId: ObjectId(userId),
         groupId: ObjectId(groupId),
@@ -41,14 +40,14 @@ const createUserGroup = async (
   const getUserGroupById = async (usergroupId) => {
     // userId = validation.checkId(usergroupId, "id");
     const usergroupCollection = await userGroupData();
-    const usergroup = await usergroupCollection.find({ _id: ObjectId(usergroupId)});
+    const usergroup = await usergroupCollection.findOne({ _id: ObjectId(usergroupId)});
     if (!usergroup) throw "Group not found for this user";
     return usergroup;
   };
   const getUserGroupByUserId = async (userId) => {
     // userId = validation.checkId(usergroupId, "id");
     const usergroupCollection = await userGroupData();
-    const usergroup = await usergroupCollection.find({ userId: ObjectId(userId)});
+    const usergroup = await usergroupCollection.findOne({ userId: ObjectId(userId)});
     if (!usergroup) throw "Group not found for this user";
     return usergroup;
   };

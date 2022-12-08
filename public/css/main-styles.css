@@ -54,3 +54,31 @@ body {
 	line-height: 1.7;
 	padding: 0.375rem 0.75rem;
 }
+
+.fg-1{
+	flex-grow: 1;
+}
+
+.send-form{
+	position: fixed;
+	padding: 5px 15px 15px 15px;
+    bottom: 0;
+    background-color: #eceeef;
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+}
+
+#message-container {
+	width: 100%;
+	max-width: 1200px;
+}
+
+#message-container div {
+	background-color: #CCC;
+	padding: 5px;
+  }
+
+#message-container div:nth-child(2n) {
+	background-color: #FFF;
+}

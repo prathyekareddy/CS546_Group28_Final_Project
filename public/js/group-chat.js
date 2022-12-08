@@ -43,16 +43,13 @@ mySearchForm.submit(async (event) => {
 
       $.ajax(requestConfig).then(function (responseMessage) {
         let newElement = $(responseMessage);
-        console.log(newElement);
-        // messageContainer.append(newElement);
+        messageContainer.append(newElement);
     });
 });
 
 socket.on('chat-message', data => {
-    console.log("called",data)
     const messageElement = document.createElement('div')
-    messageElement.innerHTML = `<p>Username: ${data.message.username}</p>
-                                <p>email ID: ${data.message.email}</p>
-                                <p>Message: ${data.message.message}</p>`
+    messageElement.innerHTML = `<p class="text-primary fw-bold">${data.message.email}</p>
+                                <p><b>Message: </b>${data.message.message}</p>`
     messageContainer.append(messageElement)
 });
