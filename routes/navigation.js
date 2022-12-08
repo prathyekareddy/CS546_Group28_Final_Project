@@ -89,47 +89,6 @@ router
     })
 
 router
-    .post('/search.html', async (req, res) => {
-
-        try{
-            helper.checkSearch(req.body.groupName, req.body.category);
-        } catch(e){
-            console.log("Error: ",e);
-            return;
-        }
-
-        let input = {category: req.body.category, groupName: req.body.groupName, userId: req.session.user._id};
-        result = [];
-        result = await groupData.searchGroup(input);
-        if(result.length === 0){
-            res.render('partials/searched-group', {layout: null, sampleResult: false});
-            return;
-        }
-        res.render('partials/searched-group', {layout: null, sampleResult: result});
-        
-    });
-
-router
-    .route("/sendrequest/:id")
-    .post(async (req, res) => {
-        const updateResult  = async (groupId) => {
-            result.forEach(element => {
-                if(element.groupId.toString() === groupId){
-                    element.requested = true;
-                    element.notRequested = false;
-                }
-            });
-        };
-        groupId = helper.checkId(req.params.id);
-        userId = helper.checkId(req.session.user._id);
-        let updated = groupData.sendRequest(groupId,userId);
-        if(updated){
-            await updateResult(req.params.id);
-        }
-        res.render('partials/searched-group', {layout: null, sampleResult: result});
-    })
-
-router
 .route("/mygroups")
 .get(async (req, res) => {
   currentUser = await userData.getUserById(req.session.user._id)
