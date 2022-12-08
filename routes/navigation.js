@@ -142,12 +142,14 @@ router
 })
 
 let tryStripe;
+let paymentForstripe;
 
 router
     .route("/groupdetails/:id")
     .get(async (req, res) => {
       tryStripe = req.params.id;
-     groupDetails = await groupData.getGroupById(req.params.id)
+     groupDetails = await groupData.getGroupById(req.params.id);
+     paymentForstripe = groupDetails.payment.montlyPaymentForGroup / groupDetails.listOfUsers.length ;
 
       requestArr = []
       userArr = []
@@ -196,15 +198,24 @@ router
 
     router.route("/checkout-page").get(async (req, res) => {
       try {
+        const productAmount =paymentForstripe * 100;
         const session = await stripe.checkout.sessions.create({
           mode: "payment",
           payment_method_types: ["card"],
           line_items: [
             {
-              price: "price_1MAdtxGXsyLIL2myAGYK5cE8",
+              price_data: {
+                currency: "usd",
+                unit_amount: productAmount,
+                product_data: {
+                  name: "NetPlix",
+                  description: "cas",
+                },
+              },
               quantity: 1,
-            }
+            },
           ],
+    
           allow_promotion_codes: true,
           billing_address_collection: "auto",
           success_url: `http://localhost:3000/navigation/success/${tryStripe}`,
@@ -230,6 +241,8 @@ router
     let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, req.body.message);
     res.render('partials/display-messages', { layout: null, ...newMessage });
   });
+
+  
     router.route('/success/:id').get(async (req,res)=>{
       try {
         let userId = req.session.user._id;
