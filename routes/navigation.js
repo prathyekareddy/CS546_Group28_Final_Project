@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const data = require('../data');
+const { updateUserGroup } = require('../data/usergroup');
 const groupData = data.groups;
 const userData = data.users;
 const userGroupData = data.usergroup;
@@ -88,6 +89,47 @@ router
     })
 
 router
+    .post('/search.html', async (req, res) => {
+
+        try{
+            helper.checkSearch(req.body.groupName, req.body.category);
+        } catch(e){
+            console.log("Error: ",e);
+            return;
+        }
+
+        let input = {category: req.body.category, groupName: req.body.groupName, userId: req.session.user._id};
+        result = [];
+        result = await groupData.searchGroup(input);
+        if(result.length === 0){
+            res.render('partials/searched-group', {layout: null, sampleResult: false});
+            return;
+        }
+        res.render('partials/searched-group', {layout: null, sampleResult: result});
+        
+    });
+
+router
+    .route("/sendrequest/:id")
+    .post(async (req, res) => {
+        const updateResult  = async (groupId) => {
+            result.forEach(element => {
+                if(element.groupId.toString() === groupId){
+                    element.requested = true;
+                    element.notRequested = false;
+                }
+            });
+        };
+        groupId = helper.checkId(req.params.id);
+        userId = helper.checkId(req.session.user._id);
+        let updated = groupData.sendRequest(groupId,userId);
+        if(updated){
+            await updateResult(req.params.id);
+        }
+        res.render('partials/searched-group', {layout: null, sampleResult: result});
+    })
+
+router
 .route("/mygroups")
 .get(async (req, res) => {
   currentUser = await userData.getUserById(req.session.user._id)
@@ -99,11 +141,13 @@ router
   res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups});
 })
 
+let tryStripe;
+
 router
     .route("/groupdetails/:id")
     .get(async (req, res) => {
-
-      groupDetails = await groupData.getGroupById(req.params.id)
+      tryStripe = req.params.id;
+     groupDetails = await groupData.getGroupById(req.params.id)
 
       requestArr = []
       userArr = []
@@ -163,10 +207,10 @@ router
           ],
           allow_promotion_codes: true,
           billing_address_collection: "auto",
-          success_url: "http://localhost:3000/navigation/groupdetails",
-          cancel_url: "https://www.youtube.com/",
+          success_url: `http://localhost:3000/navigation/success/${tryStripe}`,
+          cancel_url:`http://localhost:3000/navigation/groupdetails/${tryStripe}`,
         });
-        res.json({ url: session.url });
+        res.redirect(session.url);
       } catch (error) {
         console.log(error);
       }
@@ -186,5 +230,25 @@ router
     let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, req.body.message);
     res.render('partials/display-messages', { layout: null, ...newMessage });
   });
+    router.route('/success/:id').get(async (req,res)=>{
+      try {
+        let userId = req.session.user._id;
+        let currDate = new Date();
+        currDate = currDate.toString();
+        await updateUserGroup("Paid",currDate,tryStripe,userId);
+        res.redirect(`/navigation/groupdetails/${tryStripe}`);
+      } catch (e) {
+        console.log(e);
+        res.status(500).send('Internal Server Error');
+      }
+    })
+
+    router.route('/failure').get(async (req,res)=>{
+      try {
+        res.render("stripe-error",{error:"Payment Failed"})
+      } catch (e) {
+        console.log(e);
+      }
+    })
 
 module.exports = router;

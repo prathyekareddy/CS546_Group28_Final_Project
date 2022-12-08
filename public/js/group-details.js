@@ -1,4 +1,4 @@
-const button = document.getElementById("stripe");
+const button = document.getElementById("pay");
 
 const checkout = async () =>{
     const request = await fetch('/navigation/checkout-page',{method:"GET"})

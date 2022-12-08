@@ -87,10 +87,37 @@
                       </div>
                   </div>
           {{/each}}
+
+      {{!-- PAYMENT ACTIVITY --}}
+         <div class="container">
+      <h5 class="text-center">Payment Activity</h5>
+      <div class="card-deck">
+          {{!-- {{#each user}} --}}
+          <form action="/navigation/checkout-page" method="get">
+              <div class="col-3 " style="padding-bottom: 50px;">
+                      <div class="card Larger shadow" style="border-radius: 40px;">
+                          <img style="border-radius: 50% ; padding: 20px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <div class="card-body">
+                              <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
+                              <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
+                              {{!-- <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.payment}} </h5> --}}
+                              <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
+                              <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
+                              
+                          </div>
+                      </div>
+                  </div>
+                  <button type="submit">Check-out</button>
+            </form>
+                  
+          {{!-- {{/each}} --}}
+    </div>    
+          </div>
     </div>    
     </div>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src='../public/js/group-details.js'></script>
     {{!-- Payment below --}}
   </main>
+
 </section>
