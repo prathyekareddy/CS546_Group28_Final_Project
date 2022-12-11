@@ -5,6 +5,11 @@
   </form>
     <br>
     <br>
+    <div class="container d-flex justify-content-end">
+      <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
+        Update Group
+      </button>
+    </div>
     <h3 class="text-center">Group Details</h3>
     {{!-- <h5>Userid {{user._id}}</h5> --}}
     {{!-- <h2>Group Id {{groupData._id}}</h2>
@@ -22,6 +27,9 @@
             <h4 class="card-title">Password: {{group.platform.platformPassword}}</h4>
             <h5 class="card-title d-flex justify-content-left" style="font-size: medium;color:red;">Monthly Payment for the group : ${{group.payment.montlyPaymentForGroup}}</h5>
             <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">Payment Span : {{group.payment.paymentPlanSpanInMonths}} months</h5>
+            {{#each group.hashtags}}
+            <span class="badge badge-pill badge-dark">{{this}}</span>
+          {{/each}}
         </div>
       </div>
     </div>
@@ -46,6 +54,18 @@
                               {{!-- <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.payment}} </h5> --}}
                               <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
                               <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
+                              <div class="rate">
+                                  <input type="radio" id="star5" name="rate" value="5" />
+                                  <label for="star5" title="text">5 stars</label>
+                                  <input type="radio" id="star4" name="rate" value="4" />
+                                  <label for="star4" title="text">4 stars</label>
+                                  <input type="radio" id="star3" name="rate" value="3" />
+                                  <label for="star3" title="text">3 stars</label>
+                                  <input type="radio" id="star2" name="rate" value="2" />
+                                  <label for="star2" title="text">2 stars</label>
+                                  <input type="radio" id="star1" name="rate" value="1" />
+                                  <label for="star1" title="text">1 star</label>
+                            </div>
                           </div>
                       </div>
                   </div>
@@ -127,9 +147,82 @@
           </div>
     </div>    
     </div>
+
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src='../public/js/group-details.js'></script>
     {{!-- Payment below --}}
   </main>
+
+  
+<!-- Modal -->
+<div class="modal fade" id="updateGroupModal" tabindex="-1" aria-labelledby="updateGroupModal" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateGroupModal">Update Group</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{!-- Form Start --}}
+          <form method="POST" action="/navigation/updategroup" id="updateGroupForm">
+          <input type="hidden" name="groupid"  value="{{group._id}}"/>
+          <div class="form-row">
+              {{!-- groupName --}}
+              <div class="form-group col-md-12">
+                  <label for="group-name">Group Name</label>
+                  <input type="text" class="form-control" id="group-name" name="groupName" placeholder="Group Name" value="{{group.groupName}}">
+              </div>
+          </div>    
+          <div class="form-row">
+              {{!-- category --}}
+              <div class="dropdown form-group d-flex flex-column">
+                  <label for="category">Category</label>
+                      <select style="width: 553px;" class="text-left btn btn-light dropdown-toggle" id="category" name="category"
+                          data-toggle="dropdown" value="{{group.category}}">
+                          <option value="{{group.category}}"> {{group.category}} </option>
+                          <option value="OTT">OTT</option>
+                          <option value="Education">Education</option>
+                          <option value="E-commerce">E-commerce</option>
+                          <option value="Network Carrier Plans">Network Carrier Plans</option>
+                      </select>
+              </div>
+              {{!-- Platform --}}
+              <div class="form-group col-md-6">
+              <label for="platform-name">Platform</label>
+              <input type="text" class="form-control" id="platform-name" name="platformName" placeholder="Platform Name" value="{{group.platform.platformName}}">
+              </div>
+          </div> 
+          <div class="form-row">   
+              {{!-- email --}}
+              <div class="form-group col-md-6">
+              <label for="platform-email">Platform Email</label>
+              <input type="email" class="form-control" id="platform-email" name="platformEmail" placeholder="Platform Login Email" value="{{group.platform.platformLoginId}}">
+              </div>
+              {{!-- password --}}
+              <div class="form-group col-md-6">
+              <label for="platform-password">Platform Password</label>
+              <input type="text" class="form-control" id="platform-password" name="platformPassword" placeholder="Platform Login Password" value="{{group.platform.platformPassword}}">
+              </div>
+          </div>     
+          <div class="form-row"> 
+              {{!-- groupLimit --}}
+              <div class="form-group col-md-6">
+              <label for="group-limit">Group Limit</label>
+              <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit" value="{{group.groupLimit}}">
+              </div>
+              {{!-- DuePaymentDate --}}
+              <div class="form-group col-md-6">
+              <label for="platform-name">Add Hash Tags</label>
+                  <input type="text" class="form-control" id="hashtags" name="hashtags" placeholder="Add # before every tag" value="{{#each group.hashtags}}#{{this}}{{/each}}">
+              </div>
+          </div>    
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-toggle="tooltip" title="Update Group">Update Group</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 </section>

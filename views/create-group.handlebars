@@ -1,7 +1,6 @@
 <main>
     <h2 class="text-center">Create Group</h2>
     <div id = "error" class = "error"></div>
-    <form method="POST" action="/navigation/create" id="createGroupForm">
     <div class="container shadow p-3 mb-5 bg-white rounded">
         <form method="POST" action="/navigation/create" id="createGroupForm">
         <div class="d-flex align-items-center flex-column">
@@ -72,6 +71,14 @@
             <label for="subs-length">Subscription Payment Plan In Months</label>
             <input type="number" class="form-control" id="subs-length" name="subsLength" placeholder="Subscription Payment Plan In Months">
             </div>
+        </div>    
+            {{!-- hashtags --}}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="platform-name">Hash Tags</label>
+                <input type="text" class="form-control" id="hashtags" name="hashtags" placeholder="Add # before every tag">
+                <small id="emailHelp" class="form-text text-muted">#tags are not required.</small>
+            </div>
         </div>
         <div class="container">
         <div class="row">
@@ -83,4 +90,4 @@
     </form>
     </div>
 </main>
-<script src='../public/js/create-group.js'></script>
+{{!-- <script src='../public/js/create-group.js'></script> --}}

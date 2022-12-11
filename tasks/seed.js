@@ -161,12 +161,12 @@ try{
   "OTT",
   "Netflix",
   "4",
-  "19/11/2022",
+  "19/11/2023",
   "punugu@netflix.com",
   "password",
-  30,
-  2,
-  6)
+  300,
+  12,
+  "#asdxas#asdasd#sada")
 }catch(e){
   console.log("group Creating unsuccessful",e)
 }
@@ -217,7 +217,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
           if(i===0){
             myId = groupCreated._id;
           }
@@ -235,14 +235,14 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
       }
       
   
-      if(groupCreated){
+       if(groupCreated){
         for(let j = 0; j<3 ; j++){
           let userCreated2 = null;
           try{
@@ -289,7 +289,7 @@ async function createEverythingEverywhereAllAtOnce(){
     }
   
     if(userCreated){
-      // console.log(userCreated._id)
+      console.log(userCreated._id)
   
       if(i<3){
         try{
@@ -302,7 +302,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -317,7 +317,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -332,7 +332,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -386,7 +386,7 @@ async function createEverythingEverywhereAllAtOnce(){
     }
   
     if(userCreated){
-      // console.log(userCreated._id)
+      console.log(userCreated._id)
   
       if(i<3){
         try{
@@ -399,7 +399,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -414,7 +414,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -429,7 +429,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "password",
           30,
           2,
-          6)
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -464,7 +464,7 @@ async function createEverythingEverywhereAllAtOnce(){
     }
   }
   
-};
+// };
 //   console.log("Creating a User")
 
 //   try{
@@ -595,5 +595,8 @@ async function createEverythingEverywhereAllAtOnce(){
 
   await dbConnection.closeConnection();
 }
-
+}
 main();
+
+
+
