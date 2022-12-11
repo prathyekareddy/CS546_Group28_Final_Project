@@ -37,10 +37,10 @@
 
 
 
-  mySearchForm.submit(function (event) {
+  mySearchForm.submit(async (event) => {
+    event.preventDefault();
     $('#noResults').hide();
     error.hide();
-    event.preventDefault();
 
     let groupName = groupNameInput.val();
     let category = categoryInput.val();

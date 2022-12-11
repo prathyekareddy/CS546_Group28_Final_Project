@@ -30,7 +30,7 @@ router
           const ans = await usersData.users.checkUser(username,password)
           if(JSON.stringify(ans)==JSON.stringify({authenticatedUser: true})){
             const takeId = await usersData.users.getUserByemail(username)
-            req.session.user = {_id: takeId._id.toString()};
+            req.session.user = {_id: takeId._id.toString(), username: `${takeId.firstName} ${takeId.lastName}`, emailId: takeId.email};
             return res.redirect('/navigation/homepage');
           }
           }catch(e){

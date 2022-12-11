@@ -40,16 +40,16 @@ const createUserGroup = async (
   const getUserGroupById = async (usergroupId) => {
     // userId = validation.checkId(usergroupId, "id");
     const usergroupCollection = await userGroupData();
-    const usergroup = await usergroupCollection.find({ _id: ObjectId(usergroupId)});
+    const usergroup = await usergroupCollection.findOne({ _id: ObjectId(usergroupId)});
     if (!usergroup) throw "Group not found for this user";
     return usergroup;
   };
   const getUserGroupByUserId = async (userId) => {
     // userId = validation.checkId(usergroupId, "id");
     const usergroupCollection = await userGroupData();
-    const usergroup = await usergroupCollection.find({ userId: ObjectId(userId)});
+    const usergroup = await usergroupCollection.findOne({ userId: ObjectId(userId)});
     if (!usergroup) throw "Group not found for this user";
-    return usergroup;
+   return usergroup;
   };
   
   //Recommending updatePayment function along with removeUserGoup
@@ -166,34 +166,46 @@ const createUserGroup = async (
       throw "Cannot update price for all user groups belonging to the same group";
     }
   };
+ 
+  // let userGroupbyGroupIdandUserId = [];
+  const getUserGroupbyGroupIdandUserId = async (groupId , userId)=>{
+    const usergroupCollection = await userGroupData();
+    const usergroup = await usergroupCollection.findOne({groupId: ObjectId(groupId),userId:ObjectId(userId)});
+    if (!usergroup) throw "Group not found for this user";
+   return usergroup;
+  }
   
  //this function need to be implemented when we complete payment processing. 
  //this function is to update the payment status and payment history list.
   const updateUserGroup = async (
     curentPaymentStatus,
-    paymentHistory
+    paymentHistory,
+    groupId,userId
   ) => {
-    usergroupId = validation.checkId(usergroupId, "id");
+    // usergroupId = validation.checkId(usergroupId, "id");
   
-    const usergroupCollection = await usergroup();
-    const oldUserGroupcollection = await getUserGroupById(usergroupId);
+    const usergroupCollection = await userGroupData();
+    const oldUserGroupcollection = await getUserGroupbyGroupIdandUserId(groupId,userId);
+    oldUserGroupcollection.paymentHistory.push(paymentHistory);
+    const usergroupId = oldUserGroupcollection._id;
     
-    let updatedUserGroup = {
+    const updatedUserGroup = {
       curentPaymentStatus: curentPaymentStatus,
-      paymentHistory: paymentHistory
+      paymentHistory: oldUserGroupcollection.paymentHistory
     };
   
     const updateUserGroup = await usergroupCollection.updateOne(
       { _id: ObjectId(usergroupId) },
       { $set: updatedUserGroup}
     );
-    if (!updatedUserGroup.modifiedCount || !updatedUserGroup.acknowledged) {
+    if (!updateUserGroup.modifiedCount || !updateUserGroup.acknowledged) {
       throw "Cannot update user group";
     }
     const usergroup = await getUserGroupById(usergroupId);
     return usergroup;
   
   };
+
   
   module.exports = {
     createUserGroup,

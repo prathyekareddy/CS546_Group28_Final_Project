@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const data = require('../data');
+const { updateUserGroup } = require('../data/usergroup');
 const groupData = data.groups;
 const userData = data.users;
 const userGroupData = data.usergroup;
+const groupChatData = data.groupchat;
 const createGroupValidation = require('../validations/createGroupValidation');
 const helper = require("../validations/helper");
 const stripe = require("stripe")(
@@ -99,11 +101,15 @@ router
   res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups});
 })
 
+let tryStripe;
+let paymentForstripe;
+
 router
     .route("/groupdetails/:id")
     .get(async (req, res) => {
-
-      groupDetails = await groupData.getGroupById(req.params.id)
+      tryStripe = req.params.id;
+     groupDetails = await groupData.getGroupById(req.params.id);
+     paymentForstripe = groupDetails.payment.montlyPaymentForGroup / groupDetails.listOfUsers.length ;
 
       requestArr = []
       userArr = []
@@ -152,28 +158,70 @@ router
 
     router.route("/checkout-page").get(async (req, res) => {
       try {
+        const productAmount =paymentForstripe * 100;
         const session = await stripe.checkout.sessions.create({
           mode: "payment",
           payment_method_types: ["card"],
           line_items: [
             {
-              price: "price_1MAdtxGXsyLIL2myAGYK5cE8",
-              quantity: 1,
-            },
-            {
-              price: "price_1MAfX1GXsyLIL2myFZU8pn6J",
+              price_data: {
+                currency: "usd",
+                unit_amount: productAmount,
+                product_data: {
+                  name: "NetPlix",
+                  description: "cas",
+                },
+              },
               quantity: 1,
             },
           ],
+    
           allow_promotion_codes: true,
           billing_address_collection: "auto",
-          success_url: "http://localhost:3000/navigation/groupdetails",
-          cancel_url: "https://www.youtube.com/",
+          success_url: `http://localhost:3000/navigation/success/${tryStripe}`,
+          cancel_url:`http://localhost:3000/navigation/groupdetails/${tryStripe}`,
         });
-        res.json({ url: session.url });
+        res.redirect(session.url);
       } catch (error) {
         console.log(error);
       }
     });
+
+router
+    .route("/chat/:id")
+    .get(async (req, res) => {
+        const groupChat = await groupChatData.getGroupChatByGroupId(req.params.id);
+        req.session.chat = {groupId: req.params.id, groupChatId: groupChat._id};
+        res.render('group-chat', {chat: groupChat.messages, groupID: req.params.id, username: req.session.user.username, email: req.session.user.emailId});
+})
+
+router
+  .route('/send-message.html')
+  .post(async (req, res) => {
+    let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, req.body.message);
+    res.render('partials/display-messages', { layout: null, ...newMessage });
+  });
+
+  
+    router.route('/success/:id').get(async (req,res)=>{
+      try {
+        let userId = req.session.user._id;
+        let currDate = new Date();
+        currDate = currDate.toString();
+        await updateUserGroup("Paid",currDate,tryStripe,userId);
+        res.redirect(`/navigation/groupdetails/${tryStripe}`);
+      } catch (e) {
+        console.log(e);
+        res.status(500).send('Internal Server Error');
+      }
+    })
+
+    router.route('/failure').get(async (req,res)=>{
+      try {
+        res.render("stripe-error",{error:"Payment Failed"})
+      } catch (e) {
+        console.log(e);
+      }
+    })
 
 module.exports = router;

@@ -6,6 +6,7 @@ const createGroupValidation = require("../validations/createGroupValidation");
 const userGroupData = require("./usergroup")
 const helper = require("../validations/helper");
 const userData = require('./users');
+const  groupchat  = require("../data/groupchat");
 
 // const createGroup = async (
 //   groupName,
@@ -66,6 +67,25 @@ const userData = require('./users');
 //     throw "Could not create the group";
 
 // };
+
+const addGroupChatIdToGroup = async (groupId, groupChatId) => {
+  groupId = helper.checkId(groupId.toString());
+  groupChatId = helper.checkId(groupChatId.toString());
+
+  const grpCollection = await groups();
+  let updateGrpDetails = {
+    groupChatId: ObjectId(groupChatId)
+  };
+
+  const newUpdatedGrp = await grpCollection.updateOne(
+    { _id: ObjectId(groupId) },
+    { $set: updateGrpDetails }
+  );
+  if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+    throw "Cannot update List of Users";
+  }
+  return true;
+}
 
 const sendRequest = async (groupId, userId) => {
   groupId = helper.checkId(groupId);
@@ -177,10 +197,10 @@ const createGroup = async (
   // profileImgUrl,
   category,
   platformName,
-  platformLoginId,
-  platFormPassword,
   groupLimit,
   duePaymentDate,
+  platformLoginId,
+  platFormPassword,
   totalPaymentPrice,
   paymentPlanSpanInMonths,
   hashtags
@@ -228,6 +248,16 @@ const createGroup = async (
   const group = await getGroupById(insertedGrpId);
 
   await userData.addGroupToUser(userid, insertedGrpId);
+  let groupChatCreated;
+  try{
+    groupChatCreated = await groupchat.createGroupChat(insertedGrpId)
+  }catch(e){
+    console.log("Group chat Creating unsuccessful",e)
+    return;
+  }
+  
+  await addGroupChatIdToGroup(insertedGrpId,groupChatCreated._id);
+
 
   if(userid){
     await userGroupData.createUserGroup(userid,insertedGrpId,montlyPaymentForGroup)
