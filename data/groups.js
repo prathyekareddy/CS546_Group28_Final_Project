@@ -301,24 +301,38 @@ const removeGroup = async (groupId) => {
   return true;
 };
 
-const updateGroup = async (groupId,groupName,
-  profileImgUrl,
-  // memberIds
+const updateGroup = async (
+  groupId,
+  groupName,
+  category,
+  platformName,
+  platformLoginId,
+  platFormPassword,
+  groupLimit,
+  hashtags
 ) => {
-  groupId = validation.checkId(groupId, "groupId");
+  // groupId = validation.checkId(groupId, "groupId");
+
+  hashtagArr = []
+  if(hashtags){
+    hashtagArr = hashtags.split("#");
+    hashtagArr = hashtagArr.filter(element => {
+      return element !== '';
+    });
+  }
 
   const grpCollection = await groups();
   const oldGrpData = await getGroupById(groupId);
   let updateGrpDetails = {
     groupName:groupName,
-    profileImgUrl:"",
-    platFormName:oldGrpData.platFormName,
-    groupdLeaderId:oldGrpData.groupdLeaderId,
-    groupLimit:oldGrpData.groupLimit,
-    duePaymentDate:oldGrpData.duePaymentDate,
-    loginId:oldGrpData.loginId,
-    password:oldGrpData.password,
-    subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays
+    category:category,
+    platform:{
+      platformName:platformName,
+      platformLoginId: platformLoginId,
+      platformPassword:platFormPassword
+    },
+    groupLimit:groupLimit,
+    hashtags:hashtagArr
   };
 
   const newUpdatedGrp = await grpCollection.updateOne(

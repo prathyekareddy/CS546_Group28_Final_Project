@@ -29,8 +29,17 @@ router
         try {
           // result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
             console.log(req.body.hashtags)
-            createGroupData = await groupData.createGroup(req.session.user._id, req.body.groupName,req.body.category, req.body.platformName,req.body.platformEmail, req.body.platformPassword, 
-            parseInt(req.body.groupLimit), req.body.dueDate, parseFloat(req.body.totalSubsPrice),parseInt(req.body.subsLength), req.body.hashtags)
+            createGroupData = await groupData.createGroup(req.session.user._id, 
+              req.body.groupName,
+              req.body.category, 
+              req.body.platformName,
+              parseInt(req.body.groupLimit), 
+              req.body.dueDate,
+              req.body.platformEmail, 
+              req.body.platformPassword, 
+              parseFloat(req.body.totalSubsPrice),
+              parseInt(req.body.subsLength), 
+              req.body.hashtags)
             createUserData = await userData.getUserById(req.session.user._id)
             arrUsers = [createUserData] //this will have list of users present in the group -> need a function that gets all the users present in the group
             res.render('group-details', {user: arrUsers, group: createGroupData})
@@ -39,6 +48,26 @@ router
           return res.status(400).json({error: e});
         }
       });
+
+router
+.route("/updategroup")
+.post(async (req, res) => {
+  try{
+
+    console.log("Reached to routes")
+    updatedGroup = await groupData.updateGroup(req.body.groupid,
+      req.body.groupName,
+      req.body.category, 
+      req.body.platformName,
+      req.body.platformEmail, 
+      req.body.platformPassword,
+      parseInt(req.body.groupLimit),
+      req.body.hashtags )
+    res.redirect('/navigation/groupdetails/'+req.body.groupid);
+  }catch(e){
+    console.log(e);
+  }
+})
 
 router
     .route("/search")
