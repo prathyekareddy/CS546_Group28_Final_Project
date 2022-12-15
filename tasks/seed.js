@@ -1,6 +1,7 @@
 const { groups } = require("../data/");
 const dbConnection = require("../config/mongo-connection");
 const { users } = require("../data/");
+const { groupchat } = require("../data/");
 const data = require("../data/");
 const { removeUser, updateUser, getAllUsers, getUserById } = require("../data/users");
 const { updateGroup } = require("../data/groups");
@@ -9,6 +10,167 @@ const userGroupData = require("../data/usergroup")
 async function main() {
   const db = await dbConnection.dbConnection();
     await db.dropDatabase();
+
+  // for(let i=1;i<50;i++)
+  //  {const user =  await users.createUser(
+  //     "password",
+  //     `User${i}`,
+  //     "Bharambay",
+  //     `${i}yash@gmail.com`,
+  //     "male",
+  //     "Hero",
+  //     "",
+  //     "Jersey City",
+  //     "NJ",
+  //     "Terrace Ave",
+  //     "1234567890"
+  //  );}
+
+  try{
+    userCreated = await users.createUser("password",
+    "Prathyeka reddy",
+    "Reddy",
+    "prathyeka@gmail.com",
+    "Female",
+    "Student",
+    "",
+    "Jersey City",
+    "NJ",
+    "Webster Ave",
+    "1234567890")
+  }catch{
+    console.log("User Creating unsuccessful")
+  }
+
+  //     "password",
+  //     "Ab",
+  //     "Koch",
+  //     "yash@gmail.com",
+  //     "male",
+  //     "Hero",
+  //     "",
+  //     "Jersey City",
+  //     "Hudson",
+  //     "NJ",
+  //     "Terrace Ave",
+  //     "1234567890"
+  //  );
+  //  await users.createUser(
+  //     "password",
+  //     "Sabah",
+  //     "Ahmed",
+  //     "yash@gmail.com",
+  //     "female",
+  //     "Dashing",
+  //     "",
+  //     "Jersey City",
+  //     "Hudson",
+  //     "NJ",
+  //     "Terrace Ave",
+  //     "1234567890"
+  //  );
+  //  await users.createUser(
+  //     "password",
+  //     "Prathyeka",
+  //     "Reddy",
+  //     "yash@gmail.com",
+  //     "female",
+  //     "Influenza",
+  //     "",
+  //     "Jersey City",
+  //     "Hudson",
+  //     "NJ",
+  //     "Terrace Ave",
+  //     "1234567890"
+  //  );
+  //  await users.createUser(
+  //     "password",
+  //     "Swaraj",
+  //     "Patil",
+  //     "yash@gmail.com",
+  //     "male",
+  //     "Model",
+  //     "",
+  //     "Jersey City",
+  //     "Hudson",
+  //     "NJ",
+  //     "Terrace Ave",
+  //     "1234567890"
+  //  );
+  //  await users.createUser(
+  //     "password",
+  //     "Patrick",
+  //     "Hill",
+  //     "yash@gmail.com",
+  //     "male",
+  //     "Professor",
+  //     "",
+  //     "Jersey City",
+  //     "Hudson",
+  //     "NJ",
+  //     "Terrace Ave",
+  //     "1234567890"
+  //  );
+
+  // try {
+  //   await users.updateUser (
+  //     "6379add720504203e06c005b",
+  //     "password",
+  //       "Patrick",
+  //       "Hill",
+  //       "yash@gmail.com",
+  //       "male",
+  //       "Professor",
+  //       "",
+  //       "Jersey City",
+  //       "NJ",
+  //       "Terrace Ave",
+  //       "1234567890")
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+// const group = await groups.createGroup(
+// "Neflix1",
+// "Netflix",
+// "63797aa6f22bd41b4c4e9775",
+// "4",
+// "19/11/2022",
+// "yash@netflix.com",
+// "password",
+// "30"
+// )
+
+try{
+  userCreated123 = await users.createUser("password",
+  "Prathyeka reddy",
+  "Reddy",
+  `testuser@gmail.com`,
+  "Female",
+  "Student",
+  "",
+  "Jersey City",
+  "NJ",
+  "Webster Ave",
+  "1234567890")
+}catch(e){
+  console.log("User Creating unsuccessful",e)
+}
+try{
+  groupCreated123 = await groups.createGroup(userCreated123._id,`World`,
+  "OTT",
+  "Netflix",
+  "4",
+  "19/11/2023",
+  "punugu@netflix.com",
+  "password",
+  300,
+  12,
+  "#asdxas#asdasd#sada")
+}catch(e){
+  console.log("group Creating unsuccessful",e)
+}
+
 
 /*
   the function createEverythingEverywhereAllAtOnce creates a user then the user creates a group for a platform, 
@@ -43,7 +205,7 @@ async function createEverythingEverywhereAllAtOnce(){
   
     if(userCreated){
       // console.log(userCreated._id)
-  
+
       if(i<3){
         try{
           groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,
@@ -54,8 +216,11 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
+          if(i===0){
+            myId = groupCreated._id;
+          }
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -69,15 +234,15 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
       }
       
   
-      if(groupCreated){
+       if(groupCreated){
         for(let j = 0; j<3 ; j++){
           let userCreated2 = null;
           try{
@@ -124,7 +289,7 @@ async function createEverythingEverywhereAllAtOnce(){
     }
   
     if(userCreated){
-      // console.log(userCreated._id)
+      console.log(userCreated._id)
   
       if(i<3){
         try{
@@ -136,8 +301,8 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@netflix.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -151,8 +316,8 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@hbomax.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -166,8 +331,8 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@hulu.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -221,7 +386,7 @@ async function createEverythingEverywhereAllAtOnce(){
     }
   
     if(userCreated){
-      // console.log(userCreated._id)
+      console.log(userCreated._id)
   
       if(i<3){
         try{
@@ -233,8 +398,8 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@AT&T.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -248,8 +413,8 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@TMobile.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -263,8 +428,8 @@ async function createEverythingEverywhereAllAtOnce(){
           "yash@Verizon.com",
           "password",
           30,
-          60,
-          6)
+          2,
+          "#asdxas#asdasd#sada")
         }catch(e){
           console.log("group Creating unsuccessful",e)
         }
@@ -298,19 +463,131 @@ async function createEverythingEverywhereAllAtOnce(){
       }
     }
   }
-
   
-};
+// };
+//   console.log("Creating a User")
 
-// the below try catch testes the removal of auser from a group and updating the payment after the user is removed. 
-//provided the groupid the updatePayment function will also update just the payment for all the users currently present in the grpoup. 
-// try {
-//   console.log("Removing userID: " + userCreated2._id +  "with userGroupid: " +addUserToGroup1._id+ " from group: "+ groupCreated._id)
-//   removal = await userGroupData.removeUserGroup(addUserToGroup1._id)
-//   await userGroupData.updatePayment(removal.groupId)
+//   try{
+//     userCreated = await users.createUser("password",
+//     "Prathyeka reddy",
+//     "Reddy",
+//     "prathyeka@gmail.com",
+//     "Female",
+//     "Student",
+//     "",
+//     "Jersey City",
+//     "NJ",
+//     "Webster Ave",
+//     "1234567890")
+//     console.log("User Creating successful")
+//   }catch{
+//     console.log("User Creating unsuccessful")
+//   }
+
+//   if(userCreated){
+//     console.log(userCreated + " : userCreater")
+//     console.log(userCreated._id)
+
+//     try{
+//       groupCreated = await groups.createGroup(userCreated._id,"Neflix1",
+//       "OTT",
+//       "Netflix",
+//       "yash@netflix.com",
+//       "password",
+//       "4",
+//       "19/11/2022",
+//       2,
+//       6)
+//       console.log("group Creating successful")
+//     }catch{
+//       console.log("group Creating unsuccessful")
+//     }
+//     if(groupCreated){
+//         try{
+//           userCreated2 = await users.createUser("password",
+//             "Prathyeka reddy",
+//             "Reddy",
+//             "prathyeka21@gmail.com",
+//             "Female",
+//             "Student",
+//             "",
+//             "Jersey City",
+//             "NJ",
+//             "Webster Ave",
+//             "1234567890")
+//             console.log("User Creating successful")
+//         }catch{
+//           console.log("User Creating unsuccessful")
+//         }
+//         try{
+//           userCreated3 = await users.createUser("password",
+//           "Prathyeka reddy3333",
+//           "Reddy",
+//           "prathyeka3@gmail.com",
+//           "Female",
+//           "Student",
+//           "",
+//           "Jersey City",
+//           "NJ",
+//           "Webster Ave",
+//           "1234567890")
+//         }catch{
+//           console.log("User Creating unsuccessful")
+//         }
+//         try{
+//           userCreated4 = await users.createUser("password",
+//           "Prathyeka reddy44",
+//           "Reddy",
+//           "prathyeka4@gmail.com",
+//           "Female",
+//           "Student",
+//           "",
+//           "Jersey City",
+//           "NJ",
+//           "Webster Ave",
+//           "1234567890")
+//         }catch{
+//           console.log("User Creating unsuccessful")
+//         }
+//         try{
+//           userCreated5 = await users.createUser("password",
+//           "Prathyeka reddy44",
+//           "Reddy",
+//           "prathyeka5@gmail.com",
+//           "Female",
+//           "Student",
+//           "",
+//           "Jersey City",
+//           "NJ",
+//           "Webster Ave",
+//           "1234567890")
+//         }catch{
+//           console.log("User Creating unsuccessful")
+//         }
+//     }
+
+//     try{
+//       addUserToGroup1 = await userGroupData.addUserToGroup(userCreated2._id,groupCreated._id)
+//       addUserToGroup2 = await userGroupData.addUserToGroup(userCreated3._id,groupCreated._id)
+//       addUserToGroup3 = await userGroupData.addUserToGroup(userCreated4._id,groupCreated._id)
+//       addUserToGroup4 = await userGroupData.addUserToGroup(userCreated5._id,groupCreated._id)
+//     }catch{}
+//   }
+// };
+
+// ////the below try catch testes the removal of auser from a group and updating the payment after the user is removed. 
+// // //provided the groupid the updatePayment function will also update just the payment for all the users currently present in the grpoup. 
+// // // try {
+////  //   console.log("Removing userID: " + userCreated2._id +  "with userGroupid: " +addUserToGroup1._id+ " from group: "+ groupCreated._id)
+////  //   removal = await userGroupData.removeUserGroup(addUserToGroup1._id)
+////  //   await userGroupData.updatePayment(removal.groupId)
+//   console.log(typeof groupCreated._id)
+//   await groups.updateGroup(groupCreated._id, "NewGroupName");
+// // //   console.log(typeof groupCreated._id)
+//   await groups.updateGroup(groupCreated._id, "NewGroupName");
 // } catch (error) {
-//   console.log(error)
-// }
+////  //   console.log(error)
+// // // }
 
 // await groups.updateGroup("","Spotify","");
   console.log("Done seeding database");
@@ -318,5 +595,8 @@ async function createEverythingEverywhereAllAtOnce(){
 
   await dbConnection.closeConnection();
 }
-
+}
 main();
+
+
+

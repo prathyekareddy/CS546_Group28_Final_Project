@@ -1,0 +1,104 @@
+<h1 class="display-4 align-items-center" style="text-align: center; margin:15px">Edit User Profile</h1>
+<p class="error">{{error}}</p>
+ <div id="error" class="error" hidden>I'm an error</div>
+<br>
+<form method="POST" action="/navigation/editProfile" enctype="multipart/form-data" id="editUser-form">
+    <div>
+        <div class="form-center">
+                <img src=".{{user.profileImgUrl}}" style="  width: 120px;
+  height: 120px;display: block;
+  margin-left: auto;
+  margin-right: auto;" alt="No profile image." class="rounded-circle shadow-4 align-items-center" /><br />
+                <br />
+            </div>
+            <div class="form-center mb-3 col-md-3" style="align-items: center;  margin-left: auto;margin-right: auto;">            
+            <label for="profileImageInput" class="form-label"></label>
+            <input type="file" class="btn btn-light form-control" style="margin:30px" name="profileImageInput"
+                id="profileImageInput" />
+        </div>
+        <div class="row mt-2 form-center">
+            <div class="col-md-4">
+                <label for="firstNameInput" class="labels">Enter First Name</label><br />
+                <input type="text" id="firstNameInput" class="form-control shadow" name="firstNameInput"
+                    value="{{user.firstName}}" placeholder="First Name" /><br /><br />
+            </div>
+            <div class="col-md-4">
+                <label for="lastNameInput" class="labels">Enter Last Name</label><br />
+                <input type="text" id="lastNameInput" class="form-control shadow" name="lastNameInput"
+                    value="{{user.lastName}}" placeholder="Last Name" /><br />
+            </div>
+        </div>
+        <div class="row mt-2 form-center">
+            <div class="col-md-4">
+                <label for="emailIdInput" class="labels">Enter email-Id</label><br />
+                <input type="text" id="emailIdInput" class="form-control shadow" name="emailIdInput"
+                    value="{{user.email}}" placeholder="Email-id" /><br /><br />
+            </div>
+            <div class="col-md-4">
+                <label for="phoneNumberInput" class="labels" >Enter Phone Number</label><br />
+                <input type="text" id="phoneNumberInput" class="form-control shadow" name="phoneNumberInput"
+                    value="{{user.phoneNumber}}" placeholder="Phone Number" /><br />
+            </div>
+        </div>
+        <div class="row mt-2 form-center">
+            <div class="col-md-4">
+                <label for="genderInput" class="labels">Gender:</label><br />
+                <select name="genderInput" id="genderInput" class="form-select form-select-md mb-3 shadow">
+                    <option value="{{user.gender}}" selected hidden>{{user.gender}}</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select><br />
+            </div>
+            <div class="col-md-4">
+                <label for="streetAddressInput" class="labels">Enter streetAddress</label><br />
+                <input type="text" id="streetAddressInput" name="streetAddressInput" class="form-control shadow"
+                    value="{{user.address.streetAddress}}" placeholder="Street Address" /><br />
+            </div>
+        </div>
+        <div class="row mt-2 form-center">
+            <div class="col-md-4">
+                <label for="cityInput" class="labels">Enter city</label><br />
+                <input type="text" id="cityInput" name="cityInput" class="form-control shadow"
+                    value="{{user.address.city}}" placeholder="City" /><br /><br />
+            </div>
+            <div class="col-md-4">
+                <label for="stateInput" class="labels">Enter state</label><br />
+                <input type="text" id="stateInput" name="stateInput" class="form-control shadow"
+                    value="{{user.address.state}}" placeholder="State" /><br /><br />
+            </div>
+        </div>
+        <div class="row mt-2 form-center">
+            <div class="col-md-4">
+                <label for="userDescriptionInput" class="labels" style="width: 200px;">Enter userDescription</label><br />
+                <input type="text" id="userDescriptionInput" name="userDescriptionInput" class="form-control shadow"
+                    value="{{user.userDescription}}" placeholder="Description" /><br /><br />
+            </div>
+            <div class="col-md-4">
+                <div class="labels">Interested in category:</div>
+                <input type="checkbox" id="interestedOTT" name="interestedOTT" value="OTT" {{user.OTT}} />
+                <label for="interestedOTT">OTT</label><br />
+                <input type="checkbox" id="interestedMusicStreaming" name="interestedMusicStreaming"
+                    value="Music Streaming" {{user.MusicStreaming}} />
+                <label for="interestedMusicStreaming">Music Streaming</label><br />
+                <input type="checkbox" id="interestedNetworkServiceProviders" name="interestedNetworkServiceProviders"
+                    value="Network Service Providers" {{user.NetworkServiceProviders}} />
+                <label for="interestedNetworkServiceProviders">Network Service Providers</label><br />
+                <input type="checkbox" id="interestedEducation" name="interestedEducation" value="Education"
+                    {{user.Education}} />
+                <label for="interestedEducation">Education</label><br />
+                <input type="checkbox" id="interestedECommerce" name="interestedECommerce" value="E-Commerce"
+                    {{user.ECommerce}} />
+                <label for="interestedECommerce">E-Commerce</label><br />
+                <input type="checkbox" id="interestedOther" name="interestedOther" value="Other" {{user.Other}} />
+                <label for="interestedOther">Other</label><br />
+            </div>
+        </div>
+        <div class="row mt-2 form-center">
+        <button type="submit" class="btn btn-primary col-md-4" style="display:block; margin-left: auto; margin-right:auto;">Submit</button>
+    <br>
+        </div>
+    </div>
+</form>
+<button class="btn btn-primary col-md-4" style="display:block; margin: 40px auto" onclick="window.location.href='/navigation/userProfile';">Cancel</button>
+<script src="../public/js/editProfile.js"></script>

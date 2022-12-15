@@ -1,0 +1,40 @@
+<h1 class="display-4 align-items-center" style="text-align: center; margin-top:15px">User Profile</h1>
+<article>
+        <div class="container rounded bg-white mt-5 mb-5 shadow">
+                <div class="row">
+                        <div class="col-md-4 border-right">
+                                <div style="margin-top: auto; margin-bottom:auto" class="d-flex flex-column align-items-center text-center p-3 py-5">
+                                        <img class="shadow rounded-circle shadow-4" style="width: 180px;height: 180px;margin-bottom: 20px; border-radius: 10px;" src=".{{user.profileImgUrl}}" alt="No profile image.">
+                                        <p class="h3 font-weight-bold">{{user.firstName}} {{user.lastName}}</p>
+                                        <p class="text-black" style="margin-bottom:50px;">User-id: {{user._id}}</p>
+                                        <div class="font-weight-bold">Description: </div>
+                                        <p>{{user.userDescription}}</p>
+                                </div>
+                        </div>
+                        <div class="col-md-8 border-right">
+                                <div class="d-flex text-center flex-column p-3 py-5">
+                                        <div class="font-weight-bold">Email-id: </div>
+                                        <p>{{user.email}}</p>
+                                        <div class="font-weight-bold">First Name: </div>
+                                        <p>{{user.firstName}}</p>
+                                        <div class="font-weight-bold">Last Name: </div>
+                                        <p>{{user.lastName}}</p>
+                                        <div class="font-weight-bold">Gender: </div>
+                                        <p>{{user.gender}}</p>
+                                        <div class="font-weight-bold">Address: </div>
+                                                <p>city: {{user.address.city}}</p>
+                                                <p>state: {{user.address.state}}</p>
+                                        <div class="font-weight-bold">street address: </div>
+                                        <p> {{user.address.streetAddress}}</p>
+                                        <div class="font-weight-bold">Phone Number: </div>
+                                        <p>{{user.phoneNumber}}</p>
+                                        <div class="font-weight-bold">Interested in: </div>
+                                        <p>{{user.interestedIn}}</p>
+                                </div>
+                        </div>
+                </div>                  
+        </div>
+        <div class="align-items-center">
+                <button class="btn btn-primary col-md-3" style="display: block; margin-left:auto; margin-right:auto; margin-bottom:40px" onclick="window.location.href='/navigation/editProfile';">Edit Profile</button>
+        </div>
+</article>

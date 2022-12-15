@@ -1,41 +1,95 @@
-<p>{{error}}</p>
-<form method="POST" action="/register" id="registration-form">
+<h1 class="display-4" style="text-align: center; margin-top:30px;">Welcome to SubSplit Subscriptions</h1>
+<h2 style="text-align: center;; margin-top:20px;">Sign-up to enjoy split subscriptions</h2><br>
+<div id="error" class="error" hidden>I'm an error</div>
+<p class="error">{{error}}</p>
+<form method="POST" action="/register" enctype="multipart/form-data" id="registration-form">
+<br>
+<div class="row mt-2 form-center">
+    <div class="formImage col-md-4">
+        <label for="emailIdInput" class="">Enter email-Id</label>
+        <input type="text" id="emailIdInput" class="form-control shadow" name="emailIdInput" value="{{user.emailIdInput}}" placeholder="Email-id">
+    </div>
+    <div class="formImage col-md-4">
+        <label for="profileImageInput" class="">Upload a Profile picture</label>
+        <input type="file" class="btn btn-light form-control" name="profileImageInput" id="profileImageInput"/>
+    </div><br>
+</div><br>
+<div class="row mt-2 form-center">
+    <div class="formImage col-md-4">
+        <label for="passwordInput">Enter password</label>
+        <input type="password" id="passwordInput" class="form-control shadow" name="passwordInput" value="{{user.passwordInput}}" placeholder="Password">
+    </div>
+    <div class="formImage col-md-4">
+        <label for="rePasswordInput">Re-enter password</label>
+        <input type="password" id="rePasswordInput" class="form-control shadow" name="rePasswordInput" value="{{user.rePasswordInput}}" placeholder="Re-enter Password">
+    </div>
+</div><br>
 
-    <label for="emailIdInput">Enter email-Id</label><br>
-    <input type="text" id="emailIdInput" name="emailIdInput"><br><br>
-    <label for="passwordInput">Enter password</label><br>
-    <input type="password" id="passwordInput" name="passwordInput"><br><br>
-
+<div class="row mt-2 form-center">
+    <div class="formImage col-md-4">
     <label for="firstNameInput">Enter First Name</label><br>
-    <input type="text" id="firstNameInput" name="firstNameInput"><br><br>
+    <input type="text" id="firstNameInput" class="form-control shadow" name="firstNameInput" value="{{user.firstNameInput}}" placeholder="First Name">
+    </div>
+    <div class="formImage col-md-4">
     <label for="lastNameInput">Enter Last Name</label><br>
-    <input type="text" id="lastNameInput" name="lastNameInput"><br><br>
+    <input type="text" id="lastNameInput" class="form-control shadow" name="lastNameInput" value="{{user.lastNameInput}}" placeholder="Last Name">
+    </div>
+</div><br>
+ <div class="row mt-2 form-center">
 
-    <label for="genderId">Gender:</label><br>
-    <select name="genderInput" id="genderId">
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-    <option value="Other">Other</option>
-    </select><br><br>
-
-    <label for="userDescriptionInput">Enter userDescription</label><br>
-    <input type="text" id="userDescriptionInput" name="userDescriptionInput"><br><br>
-
-    <label for="profileImgUrlInput">Enter profileImgUrl</label><br>
-    <input type="text" id="profileImgUrlInput" name="profileImgUrlInput"><br><br>
-    <label for="cityInput">Enter city</label><br>
-    <input type="text" id="cityInput" name="cityInput"><br><br>
-
-    <label for="stateInput">Enter state</label><br>
-    <input type="text" id="stateInput" name="stateInput"><br><br>
-    <label for="streetAddressInput">Enter streetAddress</label><br>
-    <input type="text" id="streetAddressInput" name="streetAddressInput"><br><br>
-
-    <label for="phoneNumberInput">Enter phoneNumber</label><br>
-    <input type="text" id="phoneNumberInput" name="phoneNumberInput"><br><br>
-    
-    <button type="submit">submit</button>
+    <div class="col-md-4">
+        <label for="genderInput">Gender:</label><br>
+        <select name="genderInput" id="genderInput" class="form-select form-select-md mb-3 shadow">
+        <option value="Select" selected disabled hidden>Select</option> 
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+        </select>
+        </div>
+<div class="formImage col-md-4">
+        <label for="cityInput">Enter city</label><br>
+        <input type="text" id="cityInput" class="form-control shadow" name="cityInput" value="{{user.cityInput}}" placeholder="City">   
+    </div>
+</div><br>
+ <div class="row mt-2 form-center">
+    <div class="formImage col-md-4">
+        <label for="stateInput">Enter state</label>
+        <input type="text" id="stateInput" class="form-control shadow" name="stateInput" value="{{user.stateInput}}" placeholder="State">
+    </div>
+    <div class="formImage col-md-4">
+        <label for="streetAddressInput">Enter streetAddress</label>
+        <input type="text" id="streetAddressInput" class="form-control shadow" name="streetAddressInput" value="{{user.streetAddressInput}}" placeholder="Street Address">
+    </div>
+</div><br>
+<div class="row mt-2 form-center">
+    <div class="formImage col-md-4">
+        <label for="phoneNumberInput">Enter phoneNumber</label>
+        <input type="text" id="phoneNumberInput" class="form-control shadow" name="phoneNumberInput" value="{{user.phoneNumberInput}}" placeholder="Phone Number">
+    </div>
+    <div class="formImage col-md-4">
+        <label for="userDescriptionInput">Enter userDescription</label>
+        <input type="text" id="userDescriptionInput" class="form-control shadow" name="userDescriptionInput" value="{{user.userDescriptionInput}}" placeholder="Description">
+    </div>
+</div><br>
+<div class="row mt-2 form-center">
+    <div class="formImage col-md-4" style="margin-left:16%;">
+        <div class="formImage col-md-5">Interested in:</div>
+        <input type="checkbox" id="interestedOTT" name="interestedOTT" value="OTT" {{user.interestedOTT}}>
+        <label for="interestedOTT">OTT</label><br>
+        <input type="checkbox" id="interestedMusicStreaming" name="interestedMusicStreaming" value="Music Streaming" {{user.interestedMusicStreaming}}>
+        <label for="interestedMusicStreaming">Music Streaming</label><br>
+        <input type="checkbox" id="interestedNetworkServiceProviders" name="interestedNetworkServiceProviders" value="Network Service Providers" {{user.interestedNetworkServiceProviders}}>
+        <label for="interestedNetworkServiceProviders">Network Service Providers</label><br>
+        <input type="checkbox" id="interestedEducation" name="interestedEducation" value="Education" {{user.interestedEducation}}>
+        <label for="interestedEducation">Education</label><br>
+        <input type="checkbox" id="interestedECommerce" name="interestedECommerce" value="E-Commerce" {{user.interestedECommerce}}>
+        <label for="interestedECommerce">E-Commerce</label><br>
+        <input type="checkbox" id="interestedOther" name="interestedOther" value="Other" {{user.interestedOther }}>
+        <label for="interestedOther">Other</label><br>
+    </div>
+</div>
+    <button type="submit" class="btn btn-primary col-md-4" style="display:block; margin-left: auto; margin-right:auto;margin-top:20px;margin-bottom:30px">Submit</button>
 
 </form>
-<a href="/login">Already have an account? Click here to log-in</a>
+<a style="color:blue;display:block;margin-bottom:20px;text-align:center " class="h5" href="/login">Already have an account? Click here to log-in</a><br>
 <script src='../public/js/register.js'></script>

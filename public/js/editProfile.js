@@ -1,7 +1,5 @@
-let myForm = document.getElementById("registration-form");
+let myForm = document.getElementById("editUser-form");
 let emailId = document.getElementById("emailIdInput");
-let password = document.getElementById("passwordInput");
-let rePassword = document.getElementById("rePasswordInput");
 let firstName = document.getElementById("firstNameInput");
 let lastName = document.getElementById("lastNameInput");
 let gender = document.getElementById("genderInput");
@@ -31,12 +29,10 @@ function checkString(strVal, varName) {
   return strVal;
 }
 
-function createUserValidation(
+function editUserValidation(
   emailId,
   firstName,
   lastName,
-  password,
-  rePassword,
   phoneNumber,
   ott,
   musicStreaming,
@@ -48,7 +44,7 @@ function createUserValidation(
 ) {
   // Email-id Validation
   if (emailId.trim().length < 4) {
-    throw "emailId should be atleast of length 4";
+    throw "Enter a valid length email-id";
   }
   if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailId.trim())) {
     throw "Enter a valid email-id";
@@ -66,23 +62,6 @@ function createUserValidation(
   }
   if (lastName.trim().search(/[^a-zA-Z0-9]/g) != -1) {
     throw "Last Name should be alphanumeric";
-  }
-  //password validation
-  if (password.trim().length < 6) {
-    throw "Password should be atleast of length 6";
-  }
-  if (password.trim().search(/[A-Z]/g) == -1) {
-    throw "Password should contain atleast 1 uppercase character, 1 number and 1 special character";
-  }
-  if (password.trim().search(/[0-9]/g) == -1) {
-    throw "Password should contain atleast 1 uppercase character, 1 number and 1 special character";
-  }
-  if (password.trim().search(/[^A-Za-z0-9]/g) == -1) {
-    throw "Password should contain atleast 1 uppercase character, 1 number and 1 special character";
-  }
-  // Re-Password Validation
-  if (rePassword.trim() != password.trim()) {
-    throw "Re-entered pasword should match initial password";
   }
   // phoneNumber validation
   if (!phoneNumber) throw `Error: You must supply a phoneNumber!`;
@@ -134,8 +113,6 @@ if (myForm) {
   myForm.addEventListener("submit", (event) => {
     event.preventDefault();
     emailId = document.getElementById("emailIdInput");
-    password = document.getElementById("passwordInput");
-    rePassword = document.getElementById("rePasswordInput");
     firstName = document.getElementById("firstNameInput");
     lastName = document.getElementById("lastNameInput");
     gender = document.getElementById("genderInput");
@@ -162,15 +139,6 @@ if (myForm) {
       errorDiv.innerHTML = "You must enter a email-id";
       emailId.focus();
     }
-    // password
-    if (password.value.trim()) {
-      errorDiv.hidden = true;
-    } else {
-      password.value = "";
-      errorDiv.hidden = false;
-      errorDiv.innerHTML = "You must enter a password";
-      password.focus();
-    }
     // firstName
     if (firstName.value.trim()) {
       errorDiv.hidden = true;
@@ -190,9 +158,12 @@ if (myForm) {
       lastName.focus();
     }
     // city
+    console.log(city.value.trim(), "in here");
+
     if (city.value.trim()) {
       errorDiv.hidden = true;
     } else {
+      console.log(city.value.trim(), "in here");
       city.value = "";
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a City";
@@ -229,8 +200,6 @@ if (myForm) {
       emailId = checkString(emailId.value, "emailId");
       firstName = checkString(firstName.value, "firstName");
       lastName = checkString(lastName.value, "lastName");
-      password = checkString(password.value, "password");
-      rePassword = checkString(rePassword.value, "re-enteredPassword");
       phoneNumber = phoneNumber.value;
       if (ott.value) {
         ott = checkString(ott.value, "OTTString");
@@ -257,12 +226,10 @@ if (myForm) {
         other = checkString(other.value, "otherString");
       }
       gender = checkString(gender.value, "genderString");
-      createUserValidation(
+      editUserValidation(
         emailId,
         firstName,
         lastName,
-        password,
-        rePassword,
         phoneNumber,
         ott,
         musicStreaming,

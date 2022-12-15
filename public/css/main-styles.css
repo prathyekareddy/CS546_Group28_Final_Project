@@ -1,0 +1,138 @@
+body {
+	background-color: #eceeef !important;
+}
+
+.search-form {
+	height: calc(100vh - 110px);
+	margin: 0px 24px 15px 24px;
+	padding: 24px;
+}
+
+.platform {
+	font-size: 12px;
+}
+
+.payment {
+	color: red;
+}
+
+.members {
+	color: blue;
+	font-size: 14px;
+}
+
+.empty-search {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 35px;
+	font-weight: 300;
+}
+
+.error {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 35px;
+	font-weight: 300;
+	color: red;
+}
+
+.search-button {
+	background-color: #5cb85c !important;
+	color: white !important;
+}
+
+.req-btn {
+	color: white !important;
+}
+
+.custom-align {
+	font-weight: 400;
+	line-height: 1.7;
+	padding: 0.375rem 0.75rem;
+}
+
+.fg-1{
+	flex-grow: 1;
+}
+
+.send-form{
+	position: fixed;
+	padding: 5px 15px 15px 15px;
+    bottom: 0;
+    background-color: #eceeef;
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+}
+
+#message-container {
+	width: 100%;
+	max-width: 1200px;
+}
+
+#message-container div {
+	background-color: #CCC;
+	padding: 5px;
+  }
+
+#message-container div:nth-child(2n) {
+	background-color: #FFF;
+}
+
+/*================ USER RATING REVIEW CSS ================*/
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+
+/* ------------------------------------------------------------ */
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+.labels {
+    font-size: 11px;
+}
+
+.form-center {
+	display:flex;
+	justify-content: center;
+  }

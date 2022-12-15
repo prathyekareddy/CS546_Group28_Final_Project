@@ -3,11 +3,13 @@ const users = mongoCollections.users;
 const validation = require("../validations/helper");
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcryptjs');
+const helper = require("../validations/helper");
 const saltRounds = 10;
 
 
 const createUser = async (
   password,
+  rePassword,
   firstName,
   lastName,
   email,
@@ -17,20 +19,32 @@ const createUser = async (
   city,
   state,
   streetAddress,
-  phoneNumber
+  phoneNumber,
+  interestedOTT,
+  interestedMusicStreaming,
+  interestedNetworkServiceProviders,
+  interestedEducation,
+  interestedECommerce,
+  interestedOther
 ) => {
-  email = validation.checkString(emailId,"email")
+  email = validation.checkString(email,"email")
   firstName = validation.checkString(firstName,"firstName")
   lastName = validation.checkString(lastName,"lastName")
   password = validation.checkString(password,"password")
-  validation.createUserValidation(firstName,lastName,password,phoneNumber)
+  rePassword = validation.checkString(rePassword,"rePassword")
+  let interestedIn = []
+  if(interestedOTT){interestedIn.push(interestedOTT)}
+  if(interestedMusicStreaming){interestedIn.push(interestedMusicStreaming)}
+  if(interestedNetworkServiceProviders){interestedIn.push(interestedNetworkServiceProviders)}
+  if(interestedEducation){interestedIn.push(interestedEducation)}
+  if(interestedECommerce){interestedIn.push(interestedECommerce)}
+  if(interestedOther){interestedIn.push(interestedOther)}
+  validation.createUserValidation(email,firstName,lastName,password,rePassword,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther,gender)
 
   const userCollection = await users();
-  const emailsList = await userCollection.find({},{projection: {_id: 0,email:1}}).toArray();
-  if (!emailsList) throw "Could not get all emails";
- for(let i in emailsList){
-  if (emailsList[i]["email"].toLowerCase()==email.toLowerCase()){throw "email-id already exists kindly choose other email-id"}
- }
+  const emailFound = await userCollection.findOne({email:email});
+  if(emailFound){
+  if (emailFound.email.toLowerCase()==email.toLowerCase()){throw "email-id already exists kindly choose other email-id"}}
   
  const hash = await bcrypt.hash(password, saltRounds);
 
@@ -41,9 +55,11 @@ const createUser = async (
     email: email.toLowerCase(),
     gender: gender,
     userDescription: userDescription,
-    profileImgUrl: "profileImgUrl",
+    profileImgUrl: profileImgUrl,
     address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
+    listOfGroups: [],
+    interestedIn:interestedIn
   };
 
   const insertedUser = await userCollection.insertOne(newUser);
@@ -61,9 +77,10 @@ const getAllUsers = async () => {
 };
 
 const getUserById = async (userId) => {
-  userId = validation.checkId(userId, "id");
+  // userId = validation.checkId(userId, "id");
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: ObjectId(userId) });
+  let user = await userCollection.findOne({ _id: ObjectId(userId) });
+  user._id=user._id.toString()
   if (!user) throw "User not found";
   return user;
 };
@@ -89,7 +106,6 @@ const removeUser = async (userId) => {
 
 const updateUser = async (
   userId,
-  password,
   firstName,
   lastName,
   email,
@@ -99,14 +115,32 @@ const updateUser = async (
   city,
   state,
   streetAddress,
-  phoneNumber
+  phoneNumber,
+  interestedOTT,
+  interestedMusicStreaming,
+  interestedNetworkServiceProviders,
+  interestedEducation,
+  interestedECommerce,
+  interestedOther
 ) => {
-  userId = validation.checkId(userId, "movieId");
+  console.log(userId,firstName,lastName,email,gender,userDescription,profileImgUrl,city,state,streetAddress,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther)
+  userId = validation.checkId(userId, "userId");
+
+  email = validation.checkString(email,"email")
+  firstName = validation.checkString(firstName,"firstName")
+  lastName = validation.checkString(lastName,"lastName")
+  let interestedIn = []
+  if(interestedOTT){interestedIn.push(interestedOTT)}
+  if(interestedMusicStreaming){interestedIn.push(interestedMusicStreaming)}
+  if(interestedNetworkServiceProviders){interestedIn.push(interestedNetworkServiceProviders)}
+  if(interestedEducation){interestedIn.push(interestedEducation)}
+  if(interestedECommerce){interestedIn.push(interestedECommerce)}
+  if(interestedOther){interestedIn.push(interestedOther)}
+  validation.editUserValidation(email,firstName,lastName,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther,gender)
 
   const userCollection = await users();
   // const oldUserData = await getMovieById(userId);
   let newUser = {
-    password: password,
     firstName: firstName,
     lastName: lastName,
     email: email,
@@ -115,6 +149,7 @@ const updateUser = async (
     profileImgUrl: profileImgUrl,
     address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
+    interestedIn: interestedIn
   };
 
   const updateUser = await userCollection.updateOne(
@@ -150,6 +185,28 @@ const checkUser = async (emailId, password) => {
 
 };
 
+//Add Group to User function
+const addGroupToUser = async (userId, groupId) => {
+  userId = helper.checkId(userId.toString());
+  groupId = helper.checkId(groupId.toString());
+  const usersCollection = await users();
+  const oldUserData = await getUserById(userId);
+
+  oldUserData.listOfGroups.push(groupId);
+  let updateUserDetails = {
+    listOfGroups: oldUserData.listOfGroups
+  };
+
+  const updateUserInfo = await usersCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $set: updateUserDetails }
+  );
+
+  if (!updateUserInfo.modifiedCount || !updateUserInfo.acknowledged) {
+    throw 'The list of groups could not be updated';
+  }
+  return true;
+}
 
 module.exports = {
   createUser,
@@ -158,5 +215,6 @@ module.exports = {
   getUserByemail,
   removeUser,
   updateUser,
-  checkUser
+  checkUser,
+  addGroupToUser
 };

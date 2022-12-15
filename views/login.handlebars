@@ -1,12 +1,22 @@
-<p>{{error}}</p>
+<h1 class="display-4" style="text-align: center; margin-top:30px;">Welcome to SubSplit Subscriptions</h1>
+<h2 style="text-align: center;; margin-top:20px;">Login</h2><br>
+<div id="error" class="error" hidden>I'm an error</div>
+<p class="error">{{error}}</p>
 <form method="POST" action="/login" id="login-form">
+<div class="form-center">
+    <div class="formImage col-md-6">
+        <label for="emailIdInput" class="">Enter email-Id</label>
+        <input type="text" id="emailIdInput" class="form-control shadow" name="emailIdInput" value="{{user.emailIdInput}}" placeholder="Email-id">
+    </div>
 
-    <label for="emailIdInput">Enter email-Id</label><br>
-    <input type="text" id="emailIdInput" name="emailIdInput"><br><br>
-    <label for="passwordInput">Enter password</label><br>
-    <input type="password" id="passwordInput" name="passwordInput"><br><br>
-    <button type="submit">submit</button>
-
+</div><br>
+<div class="form-center">
+    <div class="formImage col-md-6">
+        <label for="passwordInput">Enter password</label><br>
+        <input type="password" id="passwordInput" name="passwordInput" class="form-control shadow" value="{{user.emailIdInput}}" placeholder="Email-id">
+    </div>
+</div><br>
+<button type="submit" class="btn btn-primary col-md-4" style="display:block; margin-left: auto; margin-right:auto;margin-top:20px;margin-bottom:30px">Submit</button>
 </form>
-<a href="/register">Click here to register!</a>
+<a style="color:blue;display:block;margin-bottom:20px;text-align:center " class="h5" href="/register">Not a user? Click here to register</a>
 <script src='../public/js/login.js'></script>
