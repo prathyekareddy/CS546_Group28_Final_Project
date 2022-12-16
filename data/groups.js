@@ -6,6 +6,7 @@ const createGroupValidation = require("../validations/createGroupValidation");
 const userGroupData = require("./usergroup")
 const helper = require("../validations/helper");
 const userData = require('./users');
+const  groupchat  = require("../data/groupchat");
 
 // const createGroup = async (
 //   groupName,
@@ -66,6 +67,25 @@ const userData = require('./users');
 //     throw "Could not create the group";
 
 // };
+
+const addGroupChatIdToGroup = async (groupId, groupChatId) => {
+  groupId = helper.checkId(groupId.toString());
+  groupChatId = helper.checkId(groupChatId.toString());
+
+  const grpCollection = await groups();
+  let updateGrpDetails = {
+    groupChatId: ObjectId(groupChatId)
+  };
+
+  const newUpdatedGrp = await grpCollection.updateOne(
+    { _id: ObjectId(groupId) },
+    { $set: updateGrpDetails }
+  );
+  if (!newUpdatedGrp.modifiedCount || !newUpdatedGrp.acknowledged) {
+    throw "Cannot update List of Users";
+  }
+  return true;
+}
 
 const sendRequest = async (groupId, userId) => {
   groupId = helper.checkId(groupId);
@@ -174,24 +194,34 @@ const searchGroup = async (input) => {
 const createGroup = async (
   userid,
   groupName,
-  // profileImgUrl,
+  groupImage,
   category,
   platformName,
-  platformLoginId,
-  platFormPassword,
   groupLimit,
   duePaymentDate,
+  platformLoginId,
+  platFormPassword,
   totalPaymentPrice,
-  paymentPlanSpanInMonths
+  paymentPlanSpanInMonths,
+  hashtags
 ) => {
 
   //Profile Images and memberIds who joins the grp will have to be updated
 
   const grpCollection = await groups();
   montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
+
+  hashtagArr = []
+  if(hashtags){
+    hashtagArr = hashtags.split("#");
+    hashtagArr = hashtagArr.filter(element => {
+      return element !== '';
+    });
+  }
+  
   let newGrp = {
     groupName:groupName,
-    profileImgUrl:"",
+    groupImage:groupImage,
     category:category,
     platform:{
       platformName:platformName,
@@ -207,7 +237,8 @@ const createGroup = async (
       montlyPaymentForGroup: montlyPaymentForGroup
     },
     listOfUsers:[userid],//userId list
-    requestToJoin: []
+    requestToJoin: [],
+    hashtags:hashtagArr
   };
   const insertedGrp = await grpCollection.insertOne(newGrp);
 
@@ -217,6 +248,16 @@ const createGroup = async (
   const group = await getGroupById(insertedGrpId);
 
   await userData.addGroupToUser(userid, insertedGrpId);
+  let groupChatCreated;
+  try{
+    groupChatCreated = await groupchat.createGroupChat(insertedGrpId)
+  }catch(e){
+    console.log("Group chat Creating unsuccessful",e)
+    return;
+  }
+  
+  await addGroupChatIdToGroup(insertedGrpId,groupChatCreated._id);
+
 
   if(userid){
     await userGroupData.createUserGroup(userid,insertedGrpId,montlyPaymentForGroup)
@@ -260,24 +301,38 @@ const removeGroup = async (groupId) => {
   return true;
 };
 
-const updateGroup = async (groupId,groupName,
-  profileImgUrl,
-  // memberIds
+const updateGroup = async (
+  groupId,
+  groupName,
+  category,
+  platformName,
+  platformLoginId,
+  platFormPassword,
+  groupLimit,
+  hashtags
 ) => {
-  groupId = validation.checkId(groupId, "groupId");
+  // groupId = validation.checkId(groupId, "groupId");
+
+  hashtagArr = []
+  if(hashtags){
+    hashtagArr = hashtags.split("#");
+    hashtagArr = hashtagArr.filter(element => {
+      return element !== '';
+    });
+  }
 
   const grpCollection = await groups();
   const oldGrpData = await getGroupById(groupId);
   let updateGrpDetails = {
     groupName:groupName,
-    profileImgUrl:"",
-    platFormName:oldGrpData.platFormName,
-    groupdLeaderId:oldGrpData.groupdLeaderId,
-    groupLimit:oldGrpData.groupLimit,
-    duePaymentDate:oldGrpData.duePaymentDate,
-    loginId:oldGrpData.loginId,
-    password:oldGrpData.password,
-    subscriptionLengthInDays:oldGrpData.subscriptionLengthInDays
+    category:category,
+    platform:{
+      platformName:platformName,
+      platformLoginId: platformLoginId,
+      platformPassword:platFormPassword
+    },
+    groupLimit:groupLimit,
+    hashtags:hashtagArr
   };
 
   const newUpdatedGrp = await grpCollection.updateOne(
