@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const {fileURLToPath} = require('url')
+const multer = require('multer');
+const fs = require("fs");
 const data = require('../data');
 const { updateUserGroup } = require('../data/usergroup');
 const groupData = data.groups;
@@ -12,6 +15,7 @@ const helper = require("../validations/helper");
 const stripe = require("stripe")(
   "sk_test_51MAdqdGXsyLIL2myfowY9UaAZt0rMOB9Z7A26k5yxVMMjLPunw4OTm8ZZMYp9HzvuOLUyBQPMd1NiMZqFd0Jr4Ci00chGfRsuW"
 );
+const dirName = path.resolve(path.dirname('../'));
 
 router
     .route("/homepage")
@@ -252,5 +256,206 @@ router
         console.log(e);
       }
     })
+
+router.route("/userProfile").get(async (req, res) => {
+  if (req.session.user) {
+    const userDetails = await data.users.getUserById(req.session.user._id);
+    return res.render("userProfile", {
+      title: "RProfile Page",
+      user: userDetails,
+    });
+  } else {
+  }
+});
+
+const destination = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename: (_, file, callback) => {
+    callback(
+      null,
+      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
+    );
+  },
+});
+
+const upload = multer({
+  storage: destination,
+  fileFilter: (req, file, callback) => {
+    if (!/\.(png|jpg|jpeg)$/.test(file.originalname))
+      return callback(
+        new Error(
+          "Error: Upload a valid image file of extension .png or .jpg or .jpeg"
+        )
+      );
+    callback(null, true); // file accepted
+  },
+});
+
+const removeFile = (filePath) => {
+  const directoryPath = path.join(dirName, filePath);
+  try {
+    fs.unlinkSync(directoryPath);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+router
+  .route("/editProfile")
+  .get(async (req, res) => {
+    if (req.session.user) {
+      const userDetailsGetEdit = await data.users.getUserById(
+        req.session.user._id
+      );
+      let interestedGetEdit = userDetailsGetEdit.interestedIn;
+      for (let i in interestedGetEdit) {
+        if (interestedGetEdit[i] == "OTT") {
+          userDetailsGetEdit["OTT"] = "checked";
+        } else if (interestedGetEdit[i] == "Music Streaming") {
+          userDetailsGetEdit["MusicStreaming"] = "checked";
+        } else if (interestedGetEdit[i] == "Education") {
+          userDetailsGetEdit["Education"] = "checked";
+        } else if (interestedGetEdit[i] == "Network Service Providers") {
+          userDetailsGetEdit["NetworkServiceProviders"] = "checked";
+        } else if (interestedGetEdit[i] == "E-Commerce") {
+          userDetailsGetEdit["ECommerce"] = "checked";
+        } else if (interestedGetEdit[i] == "Other") {
+          userDetailsGetEdit["Other"] = "checked";
+        }
+      }
+      return res.render("editProfile", {
+        title: "Edit-Profile Page",
+        user: userDetailsGetEdit,
+      });
+    } else {
+    }
+  })
+  .post(async (req, res) => {
+    const profileUpload = upload.single("profileImageInput");
+    profileUpload(req, res, async (err) => {
+      let profileImgUrl = null;
+      try {
+        if (err) {
+          throw err;
+        }
+        let emailId = req.body.emailIdInput;
+        let firstName = req.body.firstNameInput;
+        let lastName = req.body.lastNameInput;
+        let userDescription = req.body.userDescriptionInput;
+        let gender = req.body.genderInput;
+        if (req.file) {
+          profileImgUrl = req.file.destination + req.file.filename;
+        }
+        let city = req.body.cityInput;
+        let state = req.body.stateInput;
+        let streetAddress = req.body.streetAddressInput;
+        let phoneNumber = req.body.phoneNumberInput;
+        let ott = req.body.interestedOTT;
+        let musicStreaming = req.body.interestedMusicStreaming;
+        let networkServiceProviders =
+          req.body.interestedNetworkServiceProviders;
+        let education = req.body.interestedEducation;
+        let eCommerce = req.body.interestedECommerce;
+        let other = req.body.interestedOther;
+
+        //// Validations
+        emailId = helper.checkString(emailId, "emailId");
+        firstName = helper.checkString(firstName, "firstName");
+        lastName = helper.checkString(lastName, "lastName");
+        helper.editUserValidation(
+          emailId,
+          firstName,
+          lastName,
+          phoneNumber,
+          ott,
+          musicStreaming,
+          networkServiceProviders,
+          education,
+          eCommerce,
+          other,
+          gender
+        );
+        //// DB
+        if (req.file) {
+          const oldUser = await data.users.getUserById(req.session.user._id);
+          if (oldUser.profileImgUrl != null) {
+            removeFile(oldUser.profileImgUrl);
+          }
+        } else {
+          const oldUser = await data.users.getUserById(req.session.user._id);
+          profileImgUrl = oldUser.profileImgUrl;
+        }
+        const ans = await data.users.updateUser(
+          req.session.user._id,
+          firstName,
+          lastName,
+          emailId,
+          gender,
+          userDescription,
+          profileImgUrl,
+          city,
+          state,
+          streetAddress,
+          phoneNumber,
+          ott,
+          musicStreaming,
+          networkServiceProviders,
+          education,
+          eCommerce,
+          other
+        );
+        if (ans._id == req.session.user._id) {
+          return res.redirect("/navigation/userProfile");
+        }
+      } catch (e) {
+        const user = req.body;
+        user.firstName = user.firstNameInput;
+        user.lastName = user.lastNameInput;
+        user.email = user.emailIdInput;
+        user.phoneNumber = user.phoneNumberInput;
+        user.gender = user.genderInput;
+        user.address = {
+          streetAddress: user.streetAddressInput,
+          city: user.cityInput,
+          state: user.stateInput,
+        };
+        user.userDescription = user.userDescriptionInput;
+        if (user.interestedOTT) {
+          user.OTT = "checked";
+        }
+        if (user.interestedMusicStreaming) {
+          user.MusicStreaming = "checked";
+        }
+        if (user.interestedNetworkServiceProviders) {
+          user.NetworkServiceProviders = "checked";
+        }
+        if (user.interestedEducation) {
+          user.Education = "checked";
+        }
+        if (user.interestedECommerce) {
+          user.ECommerce = "checked";
+        }
+        if (user.interestedOther) {
+          user.Other = "checked";
+        }
+        const userDetails = await data.users.getUserById(req.session.user._id);
+        user.profileImgUrl = userDetails.profileImgUrl;
+        if (profileImgUrl != null && e != "Cannot update user") {
+          removeFile(profileImgUrl);
+        }
+        if (e == "Cannot update user") {
+          e = e + ". No changes to update";
+        }
+        return res
+          .status(400)
+          .render("editProfile", {
+            title: "Edit-Profile Page",
+            user: user,
+            error: e,
+          });
+      }
+    });
+  });
 
 module.exports = router;

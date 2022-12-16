@@ -120,3 +120,19 @@ body {
 .rate > label:hover ~ input:checked ~ label {
     color: #c59b08;
 }
+
+
+/* ------------------------------------------------------------ */
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+.labels {
+    font-size: 11px;
+}
+
+.form-center {
+	display:flex;
+	justify-content: center;
+  }
