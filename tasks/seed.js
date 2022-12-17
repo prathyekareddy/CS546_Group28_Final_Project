@@ -27,7 +27,8 @@ async function main() {
   //  );}
 
   try{
-    userCreated = await users.createUser("password",
+    userCreated = await users.createUser("Password@123",
+    "Password@123",
     "Prathyeka reddy",
     "Reddy",
     "prathyeka@gmail.com",
@@ -142,10 +143,11 @@ async function main() {
 // )
 
 try{
-  userCreated123 = await users.createUser("password",
+  userCreated123 = await users.createUser("Password@123",
+  "Password@123",
   "Prathyeka reddy",
   "Reddy",
-  `testuser@gmail.com`,
+  "testuser@gmail.com",
   "Female",
   "Student",
   "",
@@ -163,7 +165,7 @@ try{
   "4",
   "19/11/2023",
   "punugu@netflix.com",
-  "password",
+  "Password@123",
   300,
   12,
   "#asdxas#asdasd#sada")
@@ -188,7 +190,8 @@ async function createEverythingEverywhereAllAtOnce(){
   console.log("Creating 5 Groups where the group limit is full. This won't appear in the search");
   for(let i = 0; i < 5; i++){
     try{
-      userCreated = await users.createUser("password",
+      userCreated = await users.createUser("Password@123",
+      "Password@123",
       "Prathyeka reddy",
       "Reddy",
       `prathyekaAdmin${i}@gmail.com`,
@@ -214,7 +217,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "4",
           "19/11/2022",
           "yash@netflix.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -232,7 +235,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "4",
           "19/11/2022",
           "yash@netflix.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -246,7 +249,8 @@ async function createEverythingEverywhereAllAtOnce(){
         for(let j = 0; j<3 ; j++){
           let userCreated2 = null;
           try{
-            userCreated2 = await users.createUser("password",
+            userCreated2 = await users.createUser("Password@123",
+              "Password@123",
               "Prathyeka reddy",
               "Reddy",
               `prathyeka${i}${j}@gmail.com`,
@@ -273,7 +277,8 @@ async function createEverythingEverywhereAllAtOnce(){
   console.log("Creating 10 OTT Groups where there are slots to join. This will appear in the search");
   for(let i = 0; i < 10; i++){
     try{
-      userCreated = await users.createUser("password",
+      userCreated = await users.createUser("Password@123",
+      "Password@123",
       "Prathyeka reddy",
       "Reddy",
       `prathyekaOTTAdmin${i}@gmail.com`,
@@ -299,7 +304,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "4",
           "19/11/2022",
           "yash@netflix.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -314,7 +319,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "5",
           "19/11/2022",
           "yash@hbomax.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -329,7 +334,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "6",
           "19/11/2022",
           "yash@hulu.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -343,7 +348,8 @@ async function createEverythingEverywhereAllAtOnce(){
         for(let j = 0; j<1 ; j++){
           let userCreated2 = null;
           try{
-            userCreated2 = await users.createUser("password",
+            userCreated2 = await users.createUser("Password@123",
+            "Password@123",
               "Prathyeka reddy",
               "Reddy",
               `prathyekaOTT${i}${j}@gmail.com`,
@@ -370,7 +376,8 @@ async function createEverythingEverywhereAllAtOnce(){
   console.log("Creating 10 Network Service Provider Groups where there are slots to join. This will appear in the search");
   for(let i = 0; i < 10; i++){
     try{
-      userCreated = await users.createUser("password",
+      userCreated = await users.createUser("Password@123",
+      "Password@123",
       "Prathyeka reddy",
       "Reddy",
       `prathyekaNSPAdmin${i}@gmail.com`,
@@ -396,7 +403,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "6",
           "19/11/2022",
           "yash@AT&T.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -411,7 +418,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "6",
           "19/11/2022",
           "yash@TMobile.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -426,7 +433,7 @@ async function createEverythingEverywhereAllAtOnce(){
           "10",
           "19/11/2022",
           "yash@Verizon.com",
-          "password",
+          "Password@123",
           30,
           2,
           "#asdxas#asdasd#sada")
@@ -440,7 +447,8 @@ async function createEverythingEverywhereAllAtOnce(){
         for(let j = 0; j<1 ; j++){
           let userCreated2 = null;
           try{
-            userCreated2 = await users.createUser("password",
+            userCreated2 = await users.createUser("Password@123",
+            "Password@123",
               "Prathyeka reddy",
               "Reddy",
               `prathyekaNSP${i}${j}@gmail.com`,

@@ -35,15 +35,15 @@
       </div>
     </div>
     {{!-- GroupName Display --}}
-    <div class="d-flex justify-content-center">
-      <h4 class="mx-auto" style="color: rgb(44, 42, 42);">Group Name: {{group.groupName}}</h4>
-    </div>
-    <br>
-    <br>
+    {{!-- <div class="d-flex justify-content-center">
+      <h3 class="mx-auto" style="color: rgb(44, 42, 42);">Group Name: {{group.groupName}}</h3>
+    </div> --}}
+    {{!-- <br>
+    <br> --}}
     {{!-- User details cards --}}
 
     <div class="container">
-      <h5 class="text-center">User in this group</h5>
+      <h3 class="text-center">Users in this Group</h3>
       <div class="card-deck">
           {{#each user}}
               <div class="col-3 " style="padding-bottom: 50px;">
@@ -70,24 +70,13 @@
                           </div>
                       </div>
                   </div>
-                    <div class="rate">
-                          <input type="radio" id="star5" name="rate" value="5" />
-                          <label for="star5" title="text">5 stars</label>
-                           <input type="radio" id="star4" name="rate" value="4" />
-                           <label for="star4" title="text">4 stars</label>
-                           <input type="radio" id="star3" name="rate" value="3" />
-                          <label for="star3" title="text">3 stars</label>
-                          <input type="radio" id="star2" name="rate" value="2" />
-                          <label for="star2" title="text">2 stars</label>
-                          <input type="radio" id="star1" name="rate" value="1" />
-                          <label for="star1" title="text">1 star</label>
-                    </div>
+                    
           {{/each}}
     </div>    
     </div>
     {{!-- request to join --}}
     <div class="container">
-      <h5 class="mx-auto">Request To join</h5>
+      <h3 class="text-center">Request to Join</h3>
       <div class="card-deck">
           {{#each requestToJoin}}
               <div class="col-3" style="padding-bottom: 50px;">
@@ -123,29 +112,26 @@
 
       {{!-- PAYMENT ACTIVITY --}}
          <div class="container">
-      <h5 class="text-center">Payment Activity</h5>
+      <h3 class="text-center">Payment Activity</h3>
       <div class="card-deck">
-          {{!-- {{#each user}} --}}
-          <form action="/navigation/checkout-page" method="get">
-              <div class="col-3 " style="padding-bottom: 50px;">
-                      <div class="card Larger shadow" style="border-radius: 40px;">
-                          <img style="border-radius: 50% ; padding: 20px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
-                          <div class="card-body">
-                              <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
-                              <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
-                              {{!-- <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.payment}} </h5> --}}
-                              <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
-                              <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
-                              
-                          </div>
-                      </div>
-                  </div>
-                  <button type="submit">Check-out</button>
-            </form>
-                  
-          {{!-- {{/each}} --}}
-    </div>    
-          </div>
+          {{#each user}}
+            <div class="col-3" style="padding-bottom: 50px;">
+              <div class="card Larger shadow" style="border-radius: 40px;">
+                <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                <div class="card-body">
+                  <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
+                  <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
+                  <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
+                  <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
+                  <form action="/navigation/checkout-page" method="get"></form>  
+                  <button type="submit" >Check-out </button>
+                  </form>  
+                </div>
+              </div>
+            </div>
+        {{/each}}
+      </div>    
+    </div>
     </div>    
     </div>
 

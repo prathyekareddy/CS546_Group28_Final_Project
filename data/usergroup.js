@@ -2,7 +2,7 @@ const mongoCollections = require("../config/mongo-collections");
 const userGroupData = mongoCollections.usergroup;
 const groups = mongoCollections.groups;
 const groupCol = mongoCollections.groups
-const validation = require("../validations/helper");
+const helper = require("../validations/helper");
 const {ObjectId} = require('mongodb');
 const groupData = require('./groups');
 const userData = require('./users');
@@ -38,14 +38,15 @@ const createUserGroup = async (
   };
   
   const getUserGroupById = async (usergroupId) => {
-    // userId = validation.checkId(usergroupId, "id");
+    usergroupId = helper.idCheck(usergroupId);
+    
     const usergroupCollection = await userGroupData();
     const usergroup = await usergroupCollection.findOne({ _id: ObjectId(usergroupId)});
     if (!usergroup) throw "Group not found for this user";
     return usergroup;
   };
   const getUserGroupByUserId = async (userId) => {
-    // userId = validation.checkId(usergroupId, "id");
+    userId = helper.idCheck(userId);
     const usergroupCollection = await userGroupData();
     const usergroup = await usergroupCollection.findOne({ userId: ObjectId(userId)});
     if (!usergroup) throw "Group not found for this user";
@@ -54,7 +55,7 @@ const createUserGroup = async (
   
   //Recommending updatePayment function along with removeUserGoup
   const removeUserGroup = async (usergroupId) => { 
-    // userId = validation.checkId(usergroupId, "id");
+    usergroupId = helper.idCheck(usergroupId);
     userGroup = await getUserGroupById(usergroupId)
     const usergroupCollection = await userGroupData();
     
@@ -71,7 +72,7 @@ const createUserGroup = async (
 
   //updatePayment function updates the payments based on the number of users in the group.
   const updatePayment = async (groupId) => {
-
+    groupId = helper.idCheck(groupId);
     const groupcollection2 = await groups();
     const group = await groupcollection2.findOne({ _id: ObjectId(groupId) });
 
@@ -102,6 +103,11 @@ const createUserGroup = async (
     curentPaymentStatus,
     paymentHistory,
   ) => {
+    console.log(typeof groupId + " groupId " + typeof userId + " userId")
+
+    userId = helper.idCheck(userId);
+    groupId = helper.idCheck(groupId);
+    
     const userGroupCollection = await userGroupData();
     const groupcollection = await groupCol();
     const group = await groupcollection.findOne({ _id: ObjectId(groupId) });
@@ -155,7 +161,8 @@ const createUserGroup = async (
   
   //This function will update the payment for each user in the group. 
   const updatePaymentForAllUsers = async(groupId,updatedPerPersonPrice) =>{
-
+    console.log(typeof groupId + " groupId")
+    groupId = helper.idCheck(groupId);
     const usergroupCollection = await userGroupData();
     const updatedUserGroup = await usergroupCollection.updateMany(
       { groupId: ObjectId(groupId) },
@@ -169,6 +176,8 @@ const createUserGroup = async (
  
   // let userGroupbyGroupIdandUserId = [];
   const getUserGroupbyGroupIdandUserId = async (groupId , userId)=>{
+    groupId = helper.idCheck(groupId);
+    userId = helper.idCheck(userId);
     const usergroupCollection = await userGroupData();
     const usergroup = await usergroupCollection.findOne({groupId: ObjectId(groupId),userId:ObjectId(userId)});
     if (!usergroup) throw "Group not found for this user";
@@ -180,10 +189,12 @@ const createUserGroup = async (
   const updateUserGroup = async (
     curentPaymentStatus,
     paymentHistory,
-    groupId,userId
+    groupId,
+    userId
   ) => {
-    // usergroupId = validation.checkId(usergroupId, "id");
-  
+    groupId = helper.idCheck(groupId);
+    userId = helper.idCheck(userId);
+    console.log(typeof groupId, typeof userId)
     const usergroupCollection = await userGroupData();
     const oldUserGroupcollection = await getUserGroupbyGroupIdandUserId(groupId,userId);
     oldUserGroupcollection.paymentHistory.push(paymentHistory);

@@ -36,6 +36,13 @@ router
         // res.sendFile(path.resolve('static/homepage.html'));
         res.render('homepage', {title: 'Home'});
     })
+   
+    router
+    .route("/aboutUs")
+    .get(async (req, res) => {
+        res.render('about-us');
+        
+    })    
 
 router
     .route("/create")
