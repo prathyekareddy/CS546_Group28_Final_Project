@@ -194,7 +194,7 @@ const searchGroup = async (input) => {
 const createGroup = async (
   userid,
   groupName,
-  // profileImgUrl,
+  groupImage,
   category,
   platformName,
   groupLimit,
@@ -221,7 +221,7 @@ const createGroup = async (
   
   let newGrp = {
     groupName:groupName,
-    profileImgUrl:"",
+    groupImage:groupImage,
     category:category,
     platform:{
       platformName:platformName,

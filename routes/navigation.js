@@ -1,8 +1,8 @@
+const multer = require('multer');
 const express = require('express');
 const router = express.Router();
 const path = require('path');
 const {fileURLToPath} = require('url')
-const multer = require('multer');
 const fs = require("fs");
 const data = require('../data');
 const { updateUserGroup } = require('../data/usergroup');
@@ -17,42 +17,59 @@ const stripe = require("stripe")(
 );
 const dirName = path.resolve(path.dirname('../'));
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../public/group-images"));
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "_" + file.originalname);
+  },
+});
+
+let uploadGrpImg = multer({
+  storage: storage,
+}).single("groupImage")
+
 router
     .route("/homepage")
     .get(async (req, res) => {
-        res.sendFile(path.resolve('static/homepage.html'));
+        // res.sendFile(path.resolve('static/homepage.html'));
+        res.render('homepage', {title: 'Home'});
     })
 
 router
     .route("/create")
     .get(async (req, res) => {
         // res.sendFile(path.resolve('static/create-group.html'));
-        res.render('create-group');
+        res.render('create-group',  {title: 'Create a Group'});
     })
-    .post(async (req, res) => {
-        try {
-          // result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
-            console.log(req.body.hashtags)
-            createGroupData = await groupData.createGroup(req.session.user._id, 
-              req.body.groupName,
-              req.body.category, 
-              req.body.platformName,
-              parseInt(req.body.groupLimit), 
-              req.body.dueDate,
-              req.body.platformEmail, 
-              req.body.platformPassword, 
-              parseFloat(req.body.totalSubsPrice),
-              parseInt(req.body.subsLength), 
-              req.body.hashtags)
-            createUserData = await userData.getUserById(req.session.user._id)
-            arrUsers = [createUserData] //this will have list of users present in the group -> need a function that gets all the users present in the group
-            res.render('group-details', {user: arrUsers, group: createGroupData})
-        }
-        catch(e) {
-          return res.status(400).json({error: e});
-        }
-      });
-
+    .post(uploadGrpImg, async (req, res) => {
+    try {
+      if (req.file.mimetype !== "image/jpeg" && req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpg" ) {
+        throw "Only JPEG or JPG or PNG file types allowed";
+      }
+      // result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
+        createGroupData = await groupData.createGroup(
+        req.session.user._id,
+        req.body.groupName,
+        req.file.filename,
+        req.body.category,
+        req.body.platformName,
+        req.body.platformEmail,
+        req.body.platformPassword,
+        parseInt(req.body.groupLimit),
+        req.body.dueDate,
+        parseFloat(req.body.totalSubsPrice),
+        parseInt(req.body.subsLength),
+        req.body.hashtags
+      );
+      createUserData = await userData.getUserById(req.session.user._id);
+      arrUsers = [createUserData]; //this will have list of users present in the group -> need a function that gets all the users present in the group
+      res.render("group-details", { user: arrUsers, group: createGroupData });
+    } catch (e) {
+      return res.status(400).json({ error: e });
+    }
+  });
 router
 .route("/updategroup")
 .post(async (req, res) => {
@@ -76,7 +93,7 @@ router
 router
     .route("/search")
     .get(async (req, res) => {
-        res.render('search-page', {notSearchedYet: true});
+        res.render('search-page', {notSearchedYet: true,  title: 'Search Groups'});
     })
 
 let result = [];
@@ -131,7 +148,7 @@ router
   for(let i = 0; i< listOfGroups.length;i++){
     arrGroups.push(await groupData.getGroupById(listOfGroups[i]))
   }
-  res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups});
+  res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups,  title: 'My Groups'});
 })
 
 let tryStripe;

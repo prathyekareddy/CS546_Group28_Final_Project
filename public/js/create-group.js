@@ -194,7 +194,7 @@ if (createGroupForm) {
         error.hidden = true;
         let validForm;
         try {
-          validForm = await createGroupFormValidation(groupName.value, category.value, platformName.value, groupLimit.value, duePaymentDate.value, platformEmail.value, platformPassword.value, subscriptionPrice.value, subscriptionLengthInMonths.value);
+          validForm = await createGroupFormValidation(groupName.value, category.value, platformName.value, platformEmail.value, platformPassword.value, groupLimit.value, duePaymentDate.value, subscriptionPrice.value, subscriptionLengthInMonths.value);
         }
         catch(e) {
           error.hidden = false;

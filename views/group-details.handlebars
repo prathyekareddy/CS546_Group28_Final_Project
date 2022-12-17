@@ -14,14 +14,15 @@
     {{!-- <h5>Userid {{user._id}}</h5> --}}
     {{!-- <h2>Group Id {{groupData._id}}</h2>
     <h2>Group Name {{groupData.groupName}}</h2> --}}
-    <div class="card shadow p-3 mb-5 bg-white mx-auto" style="width: 80rem; height:25rem; border-radius: 40px; ">
+    <div class="card shadow p-3 mb-5 bg-white mx-auto" style="width: 80rem; height:50rem; border-radius: 40px; ">
       <div class="row">
         <div class="col-md-4">
-          <img class="card-img-top img-circle" style="padding: 40px ;" src="/public/netflix.png" alt="">
+          <img class="card-img-top img-circle" style="padding: 40px;" src="/public/netflix.png" alt="">
         </div>
         <div class="card-body col-md-6">
           <br>
           <br>
+            <h2 class="card-title">Group Image: <br> <img src = "/public/group-images/{{group.groupImage}}"  alt = "test" width = "200" height = "200"></h2>
             <h2 class="card-title">Group Name: {{group.groupName}}</h2>
             <h4 class="card-title">Login ID: {{group.platform.platformLoginId}}</h4>
             <h4 class="card-title">Password: {{group.platform.platformPassword}}</h4>
@@ -33,7 +34,7 @@
         </div>
       </div>
     </div>
-    {{!-- DroupName Display --}}
+    {{!-- GroupName Display --}}
     <div class="d-flex justify-content-center">
       <h4 class="mx-auto" style="color: rgb(44, 42, 42);">Group Name: {{group.groupName}}</h4>
     </div>
