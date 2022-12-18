@@ -182,14 +182,15 @@ router
     );
 
     //updating group data
-    const updatedGroup = await groupData.updateGroup(req.body.groupid,
-      groupName,
-      category, 
-      platformName,
-      platformEmail, 
-      platformPassword,
-      parseInt(groupLimit),
-      hashtags )
+    const updatedGroup = await groupData.updateGroup(
+      xss(req.body.groupid),
+      xss(req.body.groupName),
+      xss(req.body.category), 
+      xss(req.body.platformName),
+      xss(req.body.platformEmail), 
+      xss(req.body.platformPassword),
+      parseInt(xss(req.body.groupLimit)),
+      xss(req.body.hashtags) )
     res.redirect('/navigation/groupdetails/'+req.body.groupid);
   }catch(e){
     res.render('error',  {error: e, groupId: req.body.groupid});
