@@ -1,21 +1,20 @@
 <main>
     <h2 class="text-center">Create Group</h2>
     <div id = "error" class = "error"></div>
-    <form method="POST" action="/navigation/create" id="createGroupForm">
+    <form method="POST" action="/navigation/create" id="createGroupForm" enctype="multipart/form-data" onsubmit="createGroup(event)">
     <div class="container shadow p-3 mb-5 bg-white rounded">
-        <form method="POST" action="/navigation/create" id="createGroupForm">
+        {{!-- groupImage --}}
+        <label for="groupImage">Group Image</label>
+        <input type="file" name="groupImage" id="groupImage" class="form-control" accept="image/jpeg, image/png, image/jpg" required/>
         <div class="d-flex align-items-center flex-column">
             <div id="file" class="d-flex justify-content-start align-items-center flex-column form-group col-md-3">
-                {{!-- <h2 class="text-center py-2">Profile image</h2>
-                <input type='file' class="form-control-file " id="profile-picture" name="profilePicture" accept="image/jpeg, image/png, image/jpg"/> --}}
-                {{!-- <button type = "submit" class="btn btn-primary">Upload Image</button> --}}
             </div>
         </div>
         <div class="form-row">
             {{!-- groupName --}}
             <div class="form-group col-md-12">
                 <label for="group-name">Group Name</label>
-                <input type="text" class="form-control" id="group-name" name="groupName" placeholder="Group Name">
+                <input type="text" class="form-control" id="group-name" name="groupName" placeholder="Group Name" required>
             </div>
         </div>    
         <div class="form-row">
@@ -23,60 +22,71 @@
             <div class="dropdown form-group d-flex flex-column">
                 <label for="category">Category</label>
                     <select style="width: 553px;" class="text-left btn btn-light dropdown-toggle" id="category" name="category"
-                        data-toggle="dropdown">
+                        data-toggle="dropdown" required>
                         <option disabled selected value> -- Select a Category -- </option>
                         <option value="OTT">OTT</option>
+                        <option value="Music Streaming">Music Streaming</option>
+                        <option value="Network Service Providers">Network Service Providers</option>
                         <option value="Education">Education</option>
                         <option value="E-commerce">E-commerce</option>
-                        <option value="Network Carrier Plans">Network Carrier Plans</option>
+                        <option value="Other">Other</option>
+                        
                     </select>
             </div>
             {{!-- Platform --}}
             <div class="form-group col-md-6">
             <label for="platform-name">Platform</label>
-            <input type="text" class="form-control" id="platform-name" name="platformName" placeholder="Platform Name">
+            <input type="text" class="form-control" id="platform-name" name="platformName" placeholder="Platform Name" required>
             </div>
         </div> 
         <div class="form-row">   
             {{!-- email --}}
             <div class="form-group col-md-6">
             <label for="platform-email">Email</label>
-            <input type="email" class="form-control" id="platform-email" name="platformEmail" placeholder="Platform Login Email">
+            <input type="email" class="form-control" id="platform-email" name="platformEmail" placeholder="Platform Login Email" required>
             </div>
             {{!-- password --}}
             <div class="form-group col-md-6">
             <label for="platform-password">Password</label>
-            <input type="password" class="form-control" id="platform-password" name="platformPassword" placeholder="Platform Login Password">
+            <input type="password" class="form-control" id="platform-password" name="platformPassword" placeholder="Platform Login Password" required>
             </div>
         </div>     
         <div class="form-row"> 
             {{!-- groupLimit --}}
             <div class="form-group col-md-6">
             <label for="group-limit">Group Limit</label>
-            <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit">
+            <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit" required>
             </div>
             {{!-- DuePaymentDate --}}
             <div class="form-group col-md-6">
             <label for="due-date">Payment Due Date</label>
-            <input type="date" class="form-control" id="due-date" name="dueDate" placeholder="Payment Due Date">
+            <input type="date" class="form-control" id="due-date" name="dueDate" placeholder="Payment Due Date" required>
             </div>
         </div>    
         <div class="form-row">
             {{!-- TotalPriceForSubscription --}}
             <div class="form-group col-md-6">
             <label for="total-subs-price">Total Price For Subscription</label>
-            <input type= "number" class="form-control" id="total-subs-price" name="totalSubsPrice" placeholder="Total Price For Subscription">
+            <input type= "number" class="form-control" id="total-subs-price" name="totalSubsPrice" placeholder="Total Price For Subscription" required>
             </div>
             {{!-- PaymentPlanInMonths --}}
             <div class="form-group col-md-6">
             <label for="subs-length">Subscription Payment Plan In Months</label>
-            <input type="number" class="form-control" id="subs-length" name="subsLength" placeholder="Subscription Payment Plan In Months">
+            <input type="number" class="form-control" id="subs-length" name="subsLength" placeholder="Subscription Payment Plan In Months" required>
+            </div>
+        </div>    
+            {{!-- hashtags --}}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="platform-name">Hash Tags</label>
+                <input type="text" class="form-control" id="hashtags" name="hashtags" placeholder="Add # before every tag">
+                <small id="emailHelp" class="form-text text-muted">#tags are not required.</small>
             </div>
         </div>
         <div class="container">
         <div class="row">
             <div class="col text-center">
-            <button class="btn btn-primary" data-toggle="tooltip" title="Create Group">Create Group</button>
+            <button class="btn btn-primary" type="submit" data-toggle="tooltip" title="Create Group">Create Group</button>
             </div>
         </div>
         </div>
