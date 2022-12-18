@@ -4,6 +4,7 @@ const session = require("express-session");
 const static = express.static(__dirname + "/public");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
+// const multer  = require('multer')
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
   partialsDir: ['views/partials/']
@@ -34,6 +35,13 @@ app.use("/navigation/*", (req, res, next) => {
 });
 
 app.use(express.urlencoded({ extended: true }));
+
+
+// const upload = multer({ dest: 'public/uploads/' })
+// app.use("/register",upload.single('profileImageInput'),(req,res,next) =>{
+//   console.log(req.file,"svewakmenvdkvsame")
+//   next();
+// })
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set("view engine", "handlebars");

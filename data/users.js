@@ -6,9 +6,173 @@ const bcrypt = require('bcryptjs');
 const helper = require("../validations/helper");
 const saltRounds = 10;
 
+const sendInvite = async (groupId, userId) => {
+  groupId = helper.checkId(groupId);
+  userId = helper.checkId(userId);
+  const userCollection = await users();
+  const oldUserData = await getUserById(userId);
+
+  oldUserData.invitedTo.push(groupId);
+  let updateUserDetails = {
+    invitedTo: oldUserData.invitedTo
+  };
+
+  const newUpdatedUser = await userCollection.updateOne(
+    { _id: ObjectId(userId) },
+    { $set: updateUserDetails }
+  );
+  if (!newUpdatedUser.modifiedCount || !newUpdatedUser.acknowledged) {
+    throw "Cannot update List of Users";
+  }
+  return true;
+}
+
+const searchUser = async (input) => {
+
+  // try {
+  //   helper.checkSearch(input.groupName, input.category);
+  // } catch (e) {
+  //   console.log("Error: ", e);
+  // }
+
+  const listOfUsers = await getAllUsers();
+  let result = [];
+
+  if (input.category) {
+    listOfUsers.forEach(user => {
+      if (user._id.toString() !== input.userId.toString()){
+        if(user.interestedIn.includes(input.category)) {
+          let newEntry = {
+            userId: user._id,
+            Name: `${user.firstName} ${user.lastName}`,
+            interestedIn: user.interestedIn,
+            invited: user.invitedTo.includes(input.groupId), 
+          }
+          newEntry.notInvited = !newEntry.invited;
+          result.push(newEntry);
+        }
+      }
+    });
+  }
+  return result;
+  // if (input.category && input.groupName) {
+  //   let tempResult = [];
+  //   listOfGroups.forEach(group => {
+  //     if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
+  //       let newEntry = {
+  //         groupName: group.groupName,
+  //         platform: group.platform.platformName,
+  //         monthlyPayment: group.payment.montlyPaymentForGroup, 
+  //         requested: group.requestToJoin.includes(input.userId), 
+  //         groupId: group._id, 
+  //         groupLimit: group.groupLimit, 
+  //         totalMembers: group.listOfUsers.length, 
+  //       }
+  //       newEntry.notRequested = !newEntry.requested;
+  //       tempResult.push(newEntry);
+  //     }
+  //   });
+  //   tempResult.forEach(group => {
+  //     if (group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
+  //       let newEntry = {
+  //         groupName: group.groupName,
+  //         platform: group.platform,
+  //         monthlyPayment: group.monthlyPayment,
+  //         requested: group.requested,
+  //         notRequested: group.notRequested,
+  //         groupId: group.groupId,
+  //         groupLimit: group.groupLimit,
+  //         totalMembers: group.totalMembers,
+  //       }
+  //       newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
+  //       result.push(newEntry);
+  //     }
+  //   });
+  // }
+  // else 
+  
+  // else if (input.groupName) {
+  //   listOfGroups.forEach(group => {
+  //     if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
+  //       let newEntry = {
+  //         groupName: group.groupName,
+  //         platform: group.platform.platformName,
+  //         monthlyPayment: group.payment.montlyPaymentForGroup,
+  //         requested: group.requestToJoin.includes(input.userId),
+  //         groupId: group._id,
+  //         groupLimit: group.groupLimit,
+  //         totalMembers: group.listOfUsers.length,
+  //       }
+  //       newEntry.notRequested = !newEntry.requested;
+  //       newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
+  //       result.push(newEntry);
+  //     }
+    // });
+  // }
+  
+}
+
+// Sabah
+async function getAllUsersByUserIdList(groupCollections) {
+  const userCollection = await users();
+  let result=[];
+  for (let group of groupCollections) {
+
+    let requestToJoin = group.requestToJoin;
+
+    let readRequToJoin = [];
+    if (group.readRequestToJoin) {
+      readRequToJoin = group.readRequestToJoin;
+    }
+
+    let unReadUserList = [];
+    for (let requestToJoinUser of requestToJoin) {
+      if (!readRequToJoin.includes(requestToJoinUser)) {
+        let userId = ObjectId(requestToJoinUser)
+        const unReadUser = await userCollection.findOne({ _id: userId })
+        unReadUserList.push(unReadUser)
+      }
+    }
+    if(unReadUserList.length>0){
+      group.unReadUser = unReadUserList;
+      result.push(group);
+    }
+  };
+  return result;
+}
+
+// Sabah
+async function getAllUsersByUserIdList(groupCollections) {
+  const userCollection = await users();
+  let result=[];
+  for (let group of groupCollections) {
+
+    let requestToJoin = group.requestToJoin;
+
+    let readRequToJoin = [];
+    if (group.readRequestToJoin) {
+      readRequToJoin = group.readRequestToJoin;
+    }
+
+    let unReadUserList = [];
+    for (let requestToJoinUser of requestToJoin) {
+      if (!readRequToJoin.includes(requestToJoinUser)) {
+        let userId = ObjectId(requestToJoinUser)
+        const unReadUser = await userCollection.findOne({ _id: userId })
+        unReadUserList.push(unReadUser)
+      }
+    }
+    if(unReadUserList.length>0){
+      group.unReadUser = unReadUserList;
+      result.push(group);
+    }
+  };
+  return result;
+}
 
 const createUser = async (
   password,
+  rePassword,
   firstName,
   lastName,
   email,
@@ -18,14 +182,32 @@ const createUser = async (
   city,
   state,
   streetAddress,
-  phoneNumber
+  phoneNumber,
+  interestedOTT,
+  interestedMusicStreaming,
+  interestedNetworkServiceProviders,
+  interestedEducation,
+  interestedECommerce,
+  interestedOther
 ) => {
+  email = validation.checkString(email,"email")
+  firstName = validation.checkString(firstName,"firstName")
+  lastName = validation.checkString(lastName,"lastName")
+  password = validation.checkString(password,"password")
+  rePassword = validation.checkString(rePassword,"rePassword")
+  let interestedIn = []
+  if(interestedOTT){interestedIn.push(interestedOTT)}
+  if(interestedMusicStreaming){interestedIn.push(interestedMusicStreaming)}
+  if(interestedNetworkServiceProviders){interestedIn.push(interestedNetworkServiceProviders)}
+  if(interestedEducation){interestedIn.push(interestedEducation)}
+  if(interestedECommerce){interestedIn.push(interestedECommerce)}
+  if(interestedOther){interestedIn.push(interestedOther)}
+  validation.createUserValidation(email,firstName,lastName,password,rePassword,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther,gender)
+
   const userCollection = await users();
-  const emailsList = await userCollection.find({},{projection: {_id: 0,email:1}}).toArray();
-  if (!emailsList) throw "Could not get all emails";
- for(let i in emailsList){
-  if (emailsList[i]["email"].toLowerCase()==email.toLowerCase()){throw "email-id already exists kindly choose other email-id"}
- }
+  const emailFound = await userCollection.findOne({email:email});
+  if(emailFound){
+  if (emailFound.email.toLowerCase()==email.toLowerCase()){throw "email-id already exists kindly choose other email-id"}}
   
  const hash = await bcrypt.hash(password, saltRounds);
 
@@ -33,13 +215,15 @@ const createUser = async (
     password: hash,
     firstName: firstName,
     lastName: lastName,
-    email: email,
+    email: email.toLowerCase(),
     gender: gender,
     userDescription: userDescription,
-    profileImgUrl: "profileImgUrl",
+    profileImgUrl: profileImgUrl,
     address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
-    listOfGroups: []
+    listOfGroups: [],
+    interestedIn: interestedIn,
+    invitedTo: []
   };
 
   const insertedUser = await userCollection.insertOne(newUser);
@@ -59,7 +243,8 @@ const getAllUsers = async () => {
 const getUserById = async (userId) => {
   // userId = validation.checkId(userId, "id");
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: ObjectId(userId) });
+  let user = await userCollection.findOne({ _id: ObjectId(userId) });
+  user._id=user._id.toString()
   if (!user) throw "User not found";
   return user;
 };
@@ -85,7 +270,6 @@ const removeUser = async (userId) => {
 
 const updateUser = async (
   userId,
-  password,
   firstName,
   lastName,
   email,
@@ -95,14 +279,32 @@ const updateUser = async (
   city,
   state,
   streetAddress,
-  phoneNumber
+  phoneNumber,
+  interestedOTT,
+  interestedMusicStreaming,
+  interestedNetworkServiceProviders,
+  interestedEducation,
+  interestedECommerce,
+  interestedOther
 ) => {
-  userId = validation.checkId(userId, "movieId");
+  console.log(userId,firstName,lastName,email,gender,userDescription,profileImgUrl,city,state,streetAddress,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther)
+  userId = validation.checkId(userId, "userId");
+
+  email = validation.checkString(email,"email")
+  firstName = validation.checkString(firstName,"firstName")
+  lastName = validation.checkString(lastName,"lastName")
+  let interestedIn = []
+  if(interestedOTT){interestedIn.push(interestedOTT)}
+  if(interestedMusicStreaming){interestedIn.push(interestedMusicStreaming)}
+  if(interestedNetworkServiceProviders){interestedIn.push(interestedNetworkServiceProviders)}
+  if(interestedEducation){interestedIn.push(interestedEducation)}
+  if(interestedECommerce){interestedIn.push(interestedECommerce)}
+  if(interestedOther){interestedIn.push(interestedOther)}
+  validation.editUserValidation(email,firstName,lastName,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther,gender)
 
   const userCollection = await users();
   // const oldUserData = await getMovieById(userId);
   let newUser = {
-    password: password,
     firstName: firstName,
     lastName: lastName,
     email: email,
@@ -111,6 +313,7 @@ const updateUser = async (
     profileImgUrl: profileImgUrl,
     address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
+    interestedIn: interestedIn
   };
 
   const updateUser = await userCollection.updateOne(
@@ -126,22 +329,16 @@ const updateUser = async (
 };
 
 
-const checkUser = async (username, password) => {
-  // username = validation.checkString(username,"username")
-  // username = username.trim().toLowerCase()
-  // password = validation.checkString(password,"password")
-  // if(username.trim().length<4){ throw "Username should be atleast of length 4"}
-  // if(password.trim().length<6){ throw "Password should be atleast of length 4"}
-  // if(username.trim().search(/[^a-zA-Z0-9]/g) != -1){ throw "Username should be alphanumeric"}
-  // if(password.trim().search(/[A-Z]/g)==-1){throw "Password should contain atleast 1 uppercase character"}
-  // if(password.trim().search(/[0-9]/g)==-1){throw "Password should contain atleast 1 number"}
-  // if(password.trim().search(/[^A-Za-z0-9]/g)==-1){throw "Password should contain atleast 1 special character"}
+const checkUser = async (emailId, password) => {
 
-  //Match regex for special characters is yet to be done
+  emailId = validation.checkString(emailId,"username")
+  emailId = emailId.toLowerCase()
+  password = validation.checkString(password,"password")
+  validation.checkUserValidation(emailId,password)
 
   const usersCollection = await users();
-  const user = await usersCollection.findOne({email:username})
-  if (user === null) throw "No user with that username";
+  const user = await usersCollection.findOne({email:emailId})
+  if (user === null) throw "No user with that email-id";
 
   let compareToMatch = await bcrypt.compare(password, user.password);
   if (compareToMatch==true){
@@ -183,5 +380,8 @@ module.exports = {
   removeUser,
   updateUser,
   checkUser,
-  addGroupToUser
+  addGroupToUser,
+  getAllUsersByUserIdList,
+  searchUser,
+  sendInvite
 };
