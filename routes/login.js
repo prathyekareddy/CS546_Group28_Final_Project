@@ -6,6 +6,7 @@ const multer = require('multer');
 const fs = require("fs");
 const usersData = require('../data')
 const validation = require("../validations/helper");
+const xss = require("xss");
 
 const dirName = path.resolve(path.dirname('../'));
 
@@ -30,8 +31,8 @@ router
     .post(async (req, res) => {
         try{
 
-          let emailId = req.body.emailIdInput
-          let password = req.body.passwordInput
+          let emailId = xss(req.body.emailIdInput)
+          let password = xss(req.body.passwordInput)
           // Validation
           emailId = validation.checkString(emailId,"emailId")    
           password = validation.checkString(password,"password")
@@ -96,18 +97,18 @@ router
             if (err) {
               throw err
             }
-            let emailId = req.body.emailIdInput
-            let password = req.body.passwordInput
-            let rePassword = req.body.rePasswordInput
-            let firstName = req.body.firstNameInput
-            let lastName = req.body.lastNameInput
-            let gender = req.body.genderInput
-            let userDescription = req.body.userDescriptionInput
-            if(req.file){profileImgUrl = req.file.destination+req.file.filename}
-            let city = req.body.cityInput
-            let state = req.body.stateInput
-            let streetAddress = req.body.streetAddressInput
-            let phoneNumber = req.body.phoneNumberInput
+            let emailId = xss(req.body.emailIdInput);
+            let password = xss(req.body.passwordInput);
+            let rePassword = xss(req.body.rePasswordInput);
+            let firstName = xss(req.body.firstNameInput);
+            let lastName = xss(req.body.lastNameInput)
+            let gender = xss(req.body.genderInput);
+            let userDescription = xss(req.body.userDescriptionInput);
+            if(req.file){profileImgUrl = req.file.destination+req.file.filename};
+            let city = xss(req.body.cityInput);
+            let state = xss(req.body.stateInput);
+            let streetAddress = xss(req.body.streetAddressInput);
+            let phoneNumber = xss(req.body.phoneNumberInput);
             //// Validations
             emailId = validation.checkString(emailId,"emailId")
             firstName = validation.checkString(firstName,"firstName")

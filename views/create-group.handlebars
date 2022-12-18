@@ -1,7 +1,7 @@
 <main>
     <h2 class="text-center">Create Group</h2>
     <div id = "error" class = "error"></div>
-    <form method="POST" action="/navigation/create" id="createGroupForm" enctype="multipart/form-data">
+    <form method="POST" action="/navigation/create" id="createGroupForm" enctype="multipart/form-data" onsubmit="createGroup(event)">
     <div class="container shadow p-3 mb-5 bg-white rounded">
         {{!-- groupImage --}}
         <label for="groupImage">Group Image</label>
@@ -52,24 +52,24 @@
             {{!-- groupLimit --}}
             <div class="form-group col-md-6">
             <label for="group-limit">Group Limit</label>
-            <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit">
+            <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit" required>
             </div>
             {{!-- DuePaymentDate --}}
             <div class="form-group col-md-6">
             <label for="due-date">Payment Due Date</label>
-            <input type="date" class="form-control" id="due-date" name="dueDate" placeholder="Payment Due Date">
+            <input type="date" class="form-control" id="due-date" name="dueDate" placeholder="Payment Due Date" required>
             </div>
         </div>    
         <div class="form-row">
             {{!-- TotalPriceForSubscription --}}
             <div class="form-group col-md-6">
             <label for="total-subs-price">Total Price For Subscription</label>
-            <input type= "number" class="form-control" id="total-subs-price" name="totalSubsPrice" placeholder="Total Price For Subscription">
+            <input type= "number" class="form-control" id="total-subs-price" name="totalSubsPrice" placeholder="Total Price For Subscription" required>
             </div>
             {{!-- PaymentPlanInMonths --}}
             <div class="form-group col-md-6">
             <label for="subs-length">Subscription Payment Plan In Months</label>
-            <input type="number" class="form-control" id="subs-length" name="subsLength" placeholder="Subscription Payment Plan In Months">
+            <input type="number" class="form-control" id="subs-length" name="subsLength" placeholder="Subscription Payment Plan In Months" required>
             </div>
         </div>    
             {{!-- hashtags --}}
@@ -83,7 +83,7 @@
         <div class="container">
         <div class="row">
             <div class="col text-center">
-            <button class="btn btn-primary" data-toggle="tooltip" title="Create Group">Create Group</button>
+            <button class="btn btn-primary" type="submit" data-toggle="tooltip" title="Create Group">Create Group</button>
             </div>
         </div>
         </div>
