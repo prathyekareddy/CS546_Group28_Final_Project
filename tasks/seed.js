@@ -62,7 +62,7 @@ try{
   console.log("User Creating unsuccessful",e)
 }
 try{
-  groupCreated123 = await groups.createGroup(userCreated123._id,`World`,"",
+  groupCreated123 = await groups.createGroup(userCreated123._id,`World`,"common_netflix.png",
   "OTT",
   "Netflix",
   "punugu@netflix.com",
@@ -122,7 +122,7 @@ async function createEverythingEverywhereAllAtOnce(){
 
       if(i<3){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,"common_netflix.png",
           "OTT",
           "Netflix",
           "yash@netflix.com",
@@ -221,7 +221,7 @@ async function createEverythingEverywhereAllAtOnce(){
   
       if(i<3){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i}`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i}`,"common_netflix.png",
           "OTT",
           "Netflix",
           "yash@netflix.com",
@@ -236,7 +236,7 @@ async function createEverythingEverywhereAllAtOnce(){
         }
       } else if(2<i && i<6){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`HBO MAX Group${i - 3}`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`HBO MAX Group${i - 3}`,"common_hbo.png",
           "OTT",
           "HBO MAX",
           "yash@hbomax.com",
@@ -251,7 +251,7 @@ async function createEverythingEverywhereAllAtOnce(){
         }
       } else if(5<i && i<10){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Hulu Group${i - 6}`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`Hulu Group${i - 6}`,"common_hulu.png",
           "OTT",
           "Hulu",
           "yash@hulu.com",
@@ -332,7 +332,7 @@ async function createEverythingEverywhereAllAtOnce(){
   
       if(i<3){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`AT&T Group ${i}`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`AT&T Group ${i}`,"common_atnt.jpg",
           "Network Service Providers",
           "AT&T",
           "yash@ATT.com",
@@ -347,7 +347,7 @@ async function createEverythingEverywhereAllAtOnce(){
         }
       } else if(2<i && i<6){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`T-Mobile Group${i - 3}`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`T-Mobile Group${i - 3}`,"common_tmobile.jpg",
           "Network Service Providers",
           "T-Mobile",
           "yash@TMobile.com",
@@ -362,7 +362,7 @@ async function createEverythingEverywhereAllAtOnce(){
         }
       } else if(5<i && i<10){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Verizon Group${i - 6}`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`Verizon Group${i - 6}`,"common_verizon.jpg",
           "Network Service Providers",
           "Verizon",
           "yash@Verizon.com",

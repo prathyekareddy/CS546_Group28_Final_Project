@@ -6,55 +6,55 @@ const bcrypt = require('bcryptjs');
 const helper = require("../validations/helper");
 const saltRounds = 10;
 
-const sendInvite = async (groupId, userId) => {
-  groupId = helper.checkId(groupId);
-  userId = helper.checkId(userId);
-  const userCollection = await users();
-  const oldUserData = await getUserById(userId);
+// const sendInvite = async (groupId, userId) => {
+//   groupId = helper.checkId(groupId);
+//   userId = helper.checkId(userId);
+//   const userCollection = await users();
+//   const oldUserData = await getUserById(userId);
 
-  oldUserData.invitedTo.push(groupId);
-  let updateUserDetails = {
-    invitedTo: oldUserData.invitedTo
-  };
+//   oldUserData.invitedTo.push(groupId);
+//   let updateUserDetails = {
+//     invitedTo: oldUserData.invitedTo
+//   };
 
-  const newUpdatedUser = await userCollection.updateOne(
-    { _id: ObjectId(userId) },
-    { $set: updateUserDetails }
-  );
-  if (!newUpdatedUser.modifiedCount || !newUpdatedUser.acknowledged) {
-    throw "Cannot update List of Users";
-  }
-  return true;
-}
+//   const newUpdatedUser = await userCollection.updateOne(
+//     { _id: ObjectId(userId) },
+//     { $set: updateUserDetails }
+//   );
+//   if (!newUpdatedUser.modifiedCount || !newUpdatedUser.acknowledged) {
+//     throw "Cannot update List of Users";
+//   }
+//   return true;
+// }
 
-const searchUser = async (input) => {
+// const searchUser = async (input) => {
 
-  // try {
-  //   helper.checkSearch(input.groupName, input.category);
-  // } catch (e) {
-  //   console.log("Error: ", e);
-  // }
+//   // try {
+//   //   helper.checkSearch(input.groupName, input.category);
+//   // } catch (e) {
+//   //   console.log("Error: ", e);
+//   // }
 
-  const listOfUsers = await getAllUsers();
-  let result = [];
+//   const listOfUsers = await getAllUsers();
+//   let result = [];
 
-  if (input.category) {
-    listOfUsers.forEach(user => {
-      if (user._id.toString() !== input.userId.toString()){
-        if(user.interestedIn.includes(input.category)) {
-          let newEntry = {
-            userId: user._id,
-            Name: `${user.firstName} ${user.lastName}`,
-            interestedIn: user.interestedIn,
-            invited: user.invitedTo.includes(input.groupId), 
-          }
-          newEntry.notInvited = !newEntry.invited;
-          result.push(newEntry);
-        }
-      }
-    });
-  }
-  return result;
+//   if (input.category) {
+//     listOfUsers.forEach(user => {
+//       if (user._id.toString() !== input.userId.toString()){
+//         if(user.interestedIn.includes(input.category)) {
+//           let newEntry = {
+//             userId: user._id,
+//             Name: `${user.firstName} ${user.lastName}`,
+//             interestedIn: user.interestedIn,
+//             invited: user.invitedTo.includes(input.groupId), 
+//           }
+//           newEntry.notInvited = !newEntry.invited;
+//           result.push(newEntry);
+//         }
+//       }
+//     });
+//   }
+//   return result;
   // if (input.category && input.groupName) {
   //   let tempResult = [];
   //   listOfGroups.forEach(group => {
@@ -110,36 +110,7 @@ const searchUser = async (input) => {
     // });
   // }
   
-}
-
-// Sabah
-async function getAllUsersByUserIdList(groupCollections) {
-  const userCollection = await users();
-  let result=[];
-  for (let group of groupCollections) {
-
-    let requestToJoin = group.requestToJoin;
-
-    let readRequToJoin = [];
-    if (group.readRequestToJoin) {
-      readRequToJoin = group.readRequestToJoin;
-    }
-
-    let unReadUserList = [];
-    for (let requestToJoinUser of requestToJoin) {
-      if (!readRequToJoin.includes(requestToJoinUser)) {
-        let userId = ObjectId(requestToJoinUser)
-        const unReadUser = await userCollection.findOne({ _id: userId })
-        unReadUserList.push(unReadUser)
-      }
-    }
-    if(unReadUserList.length>0){
-      group.unReadUser = unReadUserList;
-      result.push(group);
-    }
-  };
-  return result;
-}
+// }
 
 // Sabah
 async function getAllUsersByUserIdList(groupCollections) {
@@ -382,6 +353,6 @@ module.exports = {
   checkUser,
   addGroupToUser,
   getAllUsersByUserIdList,
-  searchUser,
-  sendInvite
+  // searchUser,
+  // sendInvite
 };

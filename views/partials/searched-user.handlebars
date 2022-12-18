@@ -1,0 +1,34 @@
+{{!-- <div class="row row-cols-1 row-cols-md-2 g-4 card-deck">
+    {{#each sampleResult}}
+    <div class="col" style="padding-bottom: 50px;">
+        <div class="card Larger shadow" style="border-radius: 40px;">
+            <img style="border-radius: 50% ; padding: 20px 40px 20px 40px ; width: 20rem;" class="card-img-top mx-auto"
+                src="/public/profile.png"
+                onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';"
+                alt="Card Image cap" />
+            <div class="card-body">
+                <h5 class="card-title d-flex justify-content-center">{{ Name }}</h5>
+                <h5 class="card-title d-flex justify-content-center">{{ userId }}</h5>
+                <div class="card-text">
+                    <ul>
+                        {{#each interestedIn}}
+                        <li>{{ this }}</li>
+                        {{/each}}
+                    </ul>
+                </div>
+                
+                <div class="d-flex justify-content-center">
+                    {{#if notInvited }}
+                    <button class="btn btn-primary req-btn align" data-id="{{userId}}">Invite to Group
+                        {{/if}}
+                        {{#if invited }}
+                        <div class="align custom-align">
+                            <em>Invite Sent!</em>
+                        </div>
+                        {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div> --}}

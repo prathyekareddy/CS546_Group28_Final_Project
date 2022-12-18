@@ -268,7 +268,7 @@ router
   for(let i = 0; i< listOfGroups.length;i++){
     arrGroups.push(await groupData.getGroupById(listOfGroups[i]))
   }
-  res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups,  title: 'My Groups'});
+  res.render('my-groups',{user:currentUser, arrGroups:arrGroups,  title: 'My Groups: '});
 })
 
 let tryStripe;
@@ -500,14 +500,14 @@ router
     })
 
 router.route("/userProfile").get(async (req, res) => {
-  if (req.session.user) {
-    const userDetails = await data.users.getUserById(req.session.user._id);
-    return res.render("userProfile", {
-      title: "RProfile Page",
-      user: userDetails,
-    });
-  } else {
-  }
+    if (req.session.user) {
+      const userDetails = await data.users.getUserById(req.session.user._id);
+      return res.render("userProfile", {
+        title: "Profile Page",
+        user: userDetails,
+      });
+    } else {
+    }
 });
 
 const destination = multer.diskStorage({
