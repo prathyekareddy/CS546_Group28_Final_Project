@@ -136,3 +136,8 @@ body {
 	display:flex;
 	justify-content: center;
   }
+
+  span.zero {
+    margin: 10px;
+    color: #b9b9b9;
+}

@@ -8,11 +8,26 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/public/css/main-styles.css">
-    <script src="/public/script.js"></script>
+    {{!-- <script src="/public/script.js"></script> --}}
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+     {{!-- Fontawesome CDN --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    {{!-- Bootstrap icon CDN --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <script>
+        let notificationData = {{{ data }}}
+    </script>
+    <script src="/public/js/homepage.js"></script>
+    <script src="/public/js/notification.js"></script>
+
+
+
 </head>
 
 <body>
@@ -23,10 +38,17 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" style="display: flex;
+    justify-content: space-between;
+    margin-right: 100px;
+    float: none;">
+                <span style="display: flex;">
             <li class="nav-item active">
                 <a class="nav-link" href="/navigation/homepage">Home <span class="sr-only">(current)</span></a>
-                <a class="nav-link" href="/navigation/aboutUs">About Us<span class="sr-only">(current)</span></a>
+                {{!-- <a class="nav-link" href="/navigation/aboutUs">About Us<span class="sr-only">(current)</span></a> --}}
+                <li class="nav-item active">
+                <a class="nav-link" href="/navigation/aboutUs">About Us <span class="sr-only">(current)</span></a>
+            </li>
             </li>
             <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,22 +62,16 @@
                 <a </a>
                 </div>
             </li>
-                <li class="nav-item dropdown active">
+            {{!-- <li class="nav-item active">
+                <a class="nav-link" href="#">About Us <span class="sr-only">(current)</span></a>
+            </li> --}}
+                {{!-- <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 More
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#">TBD</a>
-                </div>
-            {{!-- </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Notifications
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">TBD</a>
-                </div>
-            </li> --}}
+                </div> --}}
                 <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Profile
@@ -65,9 +81,24 @@
                 <a class="dropdown-item" href="/navigation/editProfile">Edit Profile</a>
                 </div>
             </li>
+            
+{{!-- Notification--}}
+<li class="nav-item dropdown" id="notification-read" onclick="requestNotification('notification-read')">
+    <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        <i class="fas fa-bell"></i>
+        <span class="badge rounded-pill badge-notification bg-danger" id="notification-count"></span>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="notification"></div>
+
+
+</li>
+            </span>
+            <span style="display: flex;">
                 <li class="nav-item active">
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="#" onclick="handleLogout();">Logout <span class="sr-only">(current)</span></a>
             </li>
+            </span>
             </ul>
         </div>
         </nav>       
@@ -79,7 +110,7 @@
         <div class="row mt-3">
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
             <h6 class="text-uppercase fw-bold mb-4">
-                Groups
+                Important Links
             </h6>
             <p>
                 <a href="/navigation/create" class="text-reset">Create Group</a>
@@ -88,7 +119,7 @@
                 <a href="/navigation/search" class="text-reset">Search Group</a>
             </p>
             </div>
-            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+            {{!-- <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
             <h6 class="text-uppercase fw-bold mb-4">
                 Important links
             </h6>
@@ -98,10 +129,10 @@
             <p>
                 <a href="#!" class="text-reset">TBD</a>
             </p>
-            </div>
+            </div> --}}
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
             <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-            <p><i class="fas fa-home me-3 text-secondary"></i> TBD </p>
+            <p><a href="aboutUs" class="text-reset">About Us</a> </p>
             </div>
         </div>
         </div>
@@ -111,14 +142,6 @@
         <a class="text-reset fw-bold">SubSplit Subscriptions</a>
     </div>
     </footer>
-    {{!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-        crossorigin="anonymous"></script> --}}
-    {{!-- <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </body>

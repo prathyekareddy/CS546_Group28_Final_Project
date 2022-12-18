@@ -230,6 +230,191 @@ const checkSearch = async (groupName, category) => {
   }
 }
 
+
+/**
+ * Sabah
+ * Validate String
+ */
+
+ function isStringValid(keyName, input) {
+
+  let validationDetails = {};
+  if (!input) {
+      validationDetails.isValid = false;
+      validationDetails.message = `Input=${input} is invalid for key=${keyName}`;
+  } else if (!(typeof input === 'string')) {
+      validationDetails.isValid = false;
+      validationDetails.message = `Input=${input} is not a string for key=${keyName}`;
+  } else if (input.trim().length <= 0) {
+      validationDetails.isValid = false;
+      validationDetails.message = `Input=${input} is empty string for key=${keyName}`;
+  } else {
+      validationDetails.isValid = true;
+      validationDetails.message = `Input=${input} is valid string for key=${keyName}`;
+  }
+
+  return validationDetails;
+}
+
+/**
+ * Sabah
+ * Validate Alphanumeric
+ */
+function isAlphanumericValid(keyName, input) {
+  input = input.trim();
+  let regularExp = /^[a-zA-Z0-9]+$/;
+  let validationDetails = {};
+  if (input.match(regularExp)) {
+      validationDetails.isValid = true;
+      validationDetails.message = `Input=${input} is valid alphanumeric for key=${keyName}`;
+  } else {
+      validationDetails.isValid = false;
+      validationDetails.message = `Input=${input} is not valid alphanumeric for key=${keyName}`;
+  }
+  return validationDetails;
+}
+
+
+/**
+ * Sabah
+ * Validate password contains at least one upper case char
+ */
+function passwordContainsAtleastOneUpperCaseChar(input) {
+  input = input.trim();
+  let regularExp = /([A-Z])+/;
+  let validationDetails = {};
+  if (input.match(regularExp)) {
+      validationDetails.isValid = true;
+      validationDetails.message = `Password=${input} contanis at least on uppercase character!`;
+  } else {
+      validationDetails.isValid = false;
+      validationDetails.message = `Password=${input} doesn't contani at least on uppercase character!`;
+  }
+  return validationDetails;
+}
+
+/**
+ * Sabah
+ * @param {password} input 
+ * @returns 
+ */
+function passwordContainsAtLeastOneNumber(input) {
+  input = input.trim();
+  let regularExp = /([0-9])+/;
+  let validationDetails = {};
+  if (input.match(regularExp)) {
+      validationDetails.isValid = true;
+      validationDetails.message = `Password=${input} contanis at least one number!`;
+  } else {
+      validationDetails.isValid = false;
+      validationDetails.message = `Password=${input} doesn't contain at least one number!`;
+  }
+  return validationDetails;
+}
+
+/**
+ * Sabah
+ * @param {password} input 
+ * @returns 
+ */
+function passwordContainsAtLeastOneSpeciChar(input) {
+  input = input.trim();
+  let regularExp = /([-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#])+/;
+  let validationDetails = {};
+  if (input.match(regularExp)) {
+      validationDetails.isValid = true;
+      validationDetails.message = `Password=${input} contanis at least one speical character!`;
+  } else {
+      validationDetails.isValid = false;
+      validationDetails.message = `Password=${input} doesn't contain at least one special character!`;
+  }
+  return validationDetails;
+}
+
+/**
+ * Sabah
+ * @param {password} pass 
+ * @returns 
+ */
+async function getBcryptPassword(pass) {
+  const bcryptSalt = await bcrypt.genSalt();
+  return await bcrypt.hash(pass, bcryptSalt);
+}
+
+
+/**
+ * Sabah
+ * Integer Validation
+ * 
+ * @param {input value} integerValue 
+ * @param {name of key} keyName 
+ * @returns 
+ */
+ function isValidInteger(keyName,integerValue) {
+  integerValue = integerValue.trim();
+  const regEx = /^[0-9]+$/;
+
+  let validationDetails = {};
+  if (integerValue.match(regEx)) {
+    validationDetails.isValid = true;
+    validationDetails.message = `Input=${keyName} has valid integer!`;
+  }
+  else {
+    validationDetails.isValid = false;
+    validationDetails.message = `Input=${keyName} has not valid integer!`;
+  }
+
+  return validationDetails;
+}
+
+/**
+ * Sabah
+ * String Validation By Reg
+ * 
+ * @param {input value} stringValue 
+ * @param {name of key} keyName 
+ * @returns 
+ */
+ function isValidStringByReg(keyName,stringValue) {
+  stringValue = stringValue.trim();
+  const regEx = /^[a-zA-Z]+$/;
+
+  let validationDetails = {};
+  if (stringValue.match(regEx)) {
+    validationDetails.isValid = true;
+    validationDetails.message = `Input=${keyName} has valid string!`;
+  }
+  else {
+    validationDetails.isValid = false;
+    validationDetails.message = `Input=${keyName} has not valid string!`;
+  }
+
+  return validationDetails;
+}
+
+/**
+ * Sabah
+ * Decimal Validation By Reg
+ * 
+ * @param {input value} input 
+ * @returns 
+ */
+function isDecimal(input){
+  var RE = /^-{0,1}\d*\.{0,1}\d+$/;
+  return (RE.test(input));
+}
+
+
+function checkLeapYear(year) {
+
+  //three conditions to find out the leap year
+  if ((0 == year % 4) && (0 != year % 100) || (0 == year % 400)) {
+      return true;
+  } else {
+      return false;
+  }
+}
+
 module.exports = {
   checkId(id, varName) {
     if (!id) throw `Error: You must provide a ${varName}`;
@@ -270,5 +455,15 @@ module.exports = {
     if(password.trim().search(/[0-9]/g)==-1){throw "Password should contain atleast 1 number"}
     if(password.trim().search(/[^A-Za-z0-9]/g)==-1){throw "Password should contain atleast 1 special character"}
   },
-  editUserValidation
+  editUserValidation,
+  isStringValid, 
+  isAlphanumericValid, 
+  passwordContainsAtleastOneUpperCaseChar, 
+  passwordContainsAtLeastOneNumber, 
+  passwordContainsAtLeastOneSpeciChar, 
+  getBcryptPassword,
+  isValidInteger,
+  isValidStringByReg,
+  isDecimal,
+  checkLeapYear
 };

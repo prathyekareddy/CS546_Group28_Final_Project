@@ -7,6 +7,35 @@ const helper = require("../validations/helper");
 const saltRounds = 10;
 
 
+// Sabah
+async function getAllUsersByUserIdList(groupCollections) {
+  const userCollection = await users();
+  let result=[];
+  for (let group of groupCollections) {
+
+    let requestToJoin = group.requestToJoin;
+
+    let readRequToJoin = [];
+    if (group.readRequestToJoin) {
+      readRequToJoin = group.readRequestToJoin;
+    }
+
+    let unReadUserList = [];
+    for (let requestToJoinUser of requestToJoin) {
+      if (!readRequToJoin.includes(requestToJoinUser)) {
+        let userId = ObjectId(requestToJoinUser)
+        const unReadUser = await userCollection.findOne({ _id: userId })
+        unReadUserList.push(unReadUser)
+      }
+    }
+    if(unReadUserList.length>0){
+      group.unReadUser = unReadUserList;
+      result.push(group);
+    }
+  };
+  return result;
+}
+
 const createUser = async (
   password,
   rePassword,
@@ -216,5 +245,6 @@ module.exports = {
   removeUser,
   updateUser,
   checkUser,
-  addGroupToUser
+  addGroupToUser,
+  getAllUsersByUserIdList
 };
