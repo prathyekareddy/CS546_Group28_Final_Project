@@ -103,7 +103,6 @@ const createUserGroup = async (
     curentPaymentStatus,
     paymentHistory,
   ) => {
-    console.log(typeof groupId + " groupId " + typeof userId + " userId")
 
     userId = helper.idCheck(userId);
     groupId = helper.idCheck(groupId);
@@ -161,7 +160,6 @@ const createUserGroup = async (
   
   //This function will update the payment for each user in the group. 
   const updatePaymentForAllUsers = async(groupId,updatedPerPersonPrice) =>{
-    console.log(typeof groupId + " groupId")
     groupId = helper.idCheck(groupId);
     const usergroupCollection = await userGroupData();
     const updatedUserGroup = await usergroupCollection.updateMany(
@@ -175,14 +173,14 @@ const createUserGroup = async (
   };
  
   // let userGroupbyGroupIdandUserId = [];
-  const getUserGroupbyGroupIdandUserId = async (groupId , userId)=>{
+  const getUserGroupbyGroupIdandUserId = async (groupId , userid)=>{
     groupId = helper.idCheck(groupId);
-    userId = helper.idCheck(userId);
+    userId = helper.idCheck(userid);
     const usergroupCollection = await userGroupData();
-    const usergroup = await usergroupCollection.findOne({groupId: ObjectId(groupId),userId:ObjectId(userId)});
+    const usergroup = await usergroupCollection.find({ "userId": userid, "groupId": ObjectId(groupId) }).toArray();
     if (!usergroup) throw "Group not found for this user";
-   return usergroup;
-  }
+   return usergroup[0];
+  };
   
  //this function need to be implemented when we complete payment processing. 
  //this function is to update the payment status and payment history list.
@@ -194,7 +192,6 @@ const createUserGroup = async (
   ) => {
     groupId = helper.idCheck(groupId);
     userId = helper.idCheck(userId);
-    console.log(typeof groupId, typeof userId)
     const usergroupCollection = await userGroupData();
     const oldUserGroupcollection = await getUserGroupbyGroupIdandUserId(groupId,userId);
     oldUserGroupcollection.paymentHistory.push(paymentHistory);
@@ -225,5 +222,6 @@ const createUserGroup = async (
     updateUserGroup,
     addUserToGroup,
     updatePayment,
-    getUserGroupByUserId
+    getUserGroupByUserId,
+    getUserGroupbyGroupIdandUserId
   };

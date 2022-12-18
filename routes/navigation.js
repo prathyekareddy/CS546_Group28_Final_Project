@@ -12,6 +12,8 @@ const userGroupData = data.usergroup;
 const groupChatData = data.groupchat;
 const createGroupValidation = require('../validations/createGroupValidation');
 const helper = require("../validations/helper");
+const { removeUser } = require('../data/users');
+const {ObjectId} = require('mongodb');
 const stripe = require("stripe")(
   "sk_test_51MAdqdGXsyLIL2myfowY9UaAZt0rMOB9Z7A26k5yxVMMjLPunw4OTm8ZZMYp9HzvuOLUyBQPMd1NiMZqFd0Jr4Ci00chGfRsuW"
 );
@@ -70,9 +72,22 @@ router
         parseInt(req.body.subsLength),
         req.body.hashtags
       );
+
+      if(req.session.user._id == ObjectId(createGroupData.groupLeaderId)){
+        checkGroupLeader = true
+      }
+      else{
+        checkGroupLeader = false
+      }
+      
       createUserData = await userData.getUserById(req.session.user._id);
       arrUsers = [createUserData]; //this will have list of users present in the group -> need a function that gets all the users present in the group
-      res.render("group-details", { user: arrUsers, group: createGroupData });
+      res.render("group-details", { 
+        user: arrUsers,
+        group: createGroupData,
+        checkGroupLeader: checkGroupLeader,
+        currUserId : req.session.user._id 
+        });
     } catch (e) {
       return res.status(400).json({ error: e });
     }
@@ -94,6 +109,7 @@ router
     res.redirect('/navigation/groupdetails/'+req.body.groupid);
   }catch(e){
     console.log(e);
+    res.redirect('/navigation/groupdetails/'+req.body.groupid);
   }
 })
 
@@ -190,7 +206,22 @@ router
       } catch (error) {
         console.log(error)
       }
-      res.render('group-details', { group: groupDetails, requestToJoin : requestArr, user : userArr})
+      console.log(req.session.user._id + "session")
+      console.log(groupDetails.groupLeaderId + "groupLeaderId")
+      if(ObjectId(req.session.user._id).toString() == ObjectId(groupDetails.groupLeaderId).toString()){
+        checkGroupLeader = true
+        console.log("Group Leader")
+      }
+      else{
+        console.log("Not Group Leader")
+        checkGroupLeader = false
+      }
+      res.render('group-details', { group: groupDetails,
+        requestToJoin : requestArr,
+        user : userArr,
+        currUserId : req.session.user._id,
+        checkGroupLeader: checkGroupLeader,
+      })
     })
 router
     .route("/addusertogroup")
@@ -207,6 +238,39 @@ router
     .post(async (req, res) => {
       try{
         rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
+        res.redirect('/navigation/groupdetails/'+req.body.groupid);
+      }catch(e){
+        console.log(e);
+      }
+    })
+    router
+    .route("/removeUserFromGroup")
+    .post(async (req, res) => {
+      console.log(req.body)
+      try{
+        userGroup = await userGroupData.getUserGroupbyGroupIdandUserId(req.body.groupid,req.body.userid)
+      }catch(error){
+        console.log(error);
+      }
+      try {
+        await userGroupData.removeUserGroup(userGroup._id)
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        await userGroupData.updatePayment(req.body.groupid)
+      } catch (error) {
+        console.log(error);
+      }
+      res.redirect('/navigation/groupdetails/'+req.body.groupid);
+    })
+    router
+    .route("/reportUser")
+    .post(async (req, res) => {
+      try{
+        // rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
+        console.log(req.body)
+        reportuser = await groupData.addReportToGroup(req.body.groupid, req.body.reporteduserid, req.body.userid)
         res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
         console.log(e);

@@ -256,7 +256,6 @@ module.exports = {
     if (!id) throw 'You must provide an id to search for';
     // if (id.trim().length === 0) throw 'Id cannot be an empty string or just spaces';
     if (!ObjectId.isValid(id)) throw 'invalid object ID';
-    console.log(id + " helper id ")
     return id;
   }, 
   checkSearch,

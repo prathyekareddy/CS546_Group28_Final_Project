@@ -6,8 +6,11 @@
     <br>
     <br>
     <div class="container d-flex justify-content-end">
-      <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
+      <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#updateGroupModal">
         Update Group
+      </button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportModalCenter">
+        Report List
       </button>
     </div>
     <h3 class="text-center">Group Details</h3>
@@ -48,7 +51,7 @@
           {{#each user}}
               <div class="col-3 " style="padding-bottom: 50px;">
                       <div class="card Larger shadow" style="border-radius: 40px;">
-                          <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -68,9 +71,25 @@
                                   <label for="star1" title="text">1 star</label>
                             </div>
                           </div>
+                          <div class="card-footer text-muted">
+                            <div class="row">
+                              <form method="POST" action="/navigation/reportUser" id="reportUserForm">
+                                <input type="hidden" name="groupid"  value="{{../group._id}}"/>
+                                <input type="hidden" name="reporteduserid"  value="{{this._id}}"/>
+                                <input type="hidden" name="userid" value="{{../currUserId}}">
+                                <button type="submit" class="btn btn-outline-danger">Report</button>
+                              </form>
+                              {{#if ../checkGroupLeader}}
+                                <form method="POST" action="/navigation/removeUserFromGroup" id="removeUserFromGroupForm">
+                                  <input type="hidden" name="groupid"  value="{{../group._id}}"/>
+                                  <input type="hidden" name="userid" value="{{this._id}}">
+                                  <button type="submit" class="btn btn-outline-danger">Remove</button>
+                                </form>
+                              {{/if}}
+                            </div>
+                          </div>
                       </div>
-                  </div>
-                    
+                  </div>                
           {{/each}}
     </div>    
     </div>
@@ -111,7 +130,7 @@
           {{/each}}
 
       {{!-- PAYMENT ACTIVITY --}}
-         <div class="container">
+      <div class="container">
       <h3 class="text-center">Payment Activity</h3>
       <div class="card-deck">
           {{#each user}}
@@ -130,24 +149,32 @@
               </div>
             </div>
         {{/each}}
-      </div>    
+      </div>  
     </div>
     </div>    
     </div>
 
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src='../public/js/group-details.js'></script>
+
+  <script>
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+      })
+  </script>
     {{!-- Payment below --}}
   </main>
 
   
 <!-- Modal -->
-<div class="modal fade" id="updateGroupModal" tabindex="-1" aria-labelledby="updateGroupModal" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+<div class="modal fade bd-example-modal-lg" id="updateGroupModal" tabindex="-1" aria-labelledby="updateGroupModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="updateGroupModal">Update Group</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLongTitle">Update Group</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
         {{!-- Form Start --}}
@@ -211,5 +238,33 @@
     </div>
   </div>
 </div>
-
+{{!-- Reports  Modal--}}
+<div class="modal fade" id="reportModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLongTitle">Report</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          {{#unless group.reports}}
+            <h3>No Reports yet</h3>
+          {{/unless}}
+          {{#each group.reports}}
+            <div class="card">
+              <div class="card-body">
+                <p class="card-text">{{this.message}} {{this.time}}</p>
+              </div>
+            </div>
+          {{/each}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 </section>

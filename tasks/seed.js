@@ -159,7 +159,7 @@ try{
   console.log("User Creating unsuccessful",e)
 }
 try{
-  groupCreated123 = await groups.createGroup(userCreated123._id,`World`,
+  groupCreated123 = await groups.createGroup(userCreated123._id,`World`,"tempimg",
   "OTT",
   "Netflix",
   "4",
@@ -211,7 +211,7 @@ async function createEverythingEverywhereAllAtOnce(){
 
       if(i<3){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,
+          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i} - Full`,"",
           "OTT",
           "Netflix",
           "4",
@@ -229,7 +229,7 @@ async function createEverythingEverywhereAllAtOnce(){
         }
       } else {
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Apple Music Group${i - 3} - Full`,
+          groupCreated = await groups.createGroup(userCreated._id,`Apple Music Group${i - 3} - Full`,"",
           "Music Streaming",
           "Apple Music",
           "4",
@@ -298,7 +298,7 @@ async function createEverythingEverywhereAllAtOnce(){
   
       if(i<3){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i}`,
+          groupCreated = await groups.createGroup(userCreated._id,`Netflix Group ${i}`,"",
           "OTT",
           "Netflix",
           "4",
@@ -313,7 +313,7 @@ async function createEverythingEverywhereAllAtOnce(){
         }
       } else if(2<i && i<6){
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`HBO MAX Group${i - 3}`,
+          groupCreated = await groups.createGroup(userCreated._id,`HBO MAX Group${i - 3}`,"",
           "OTT",
           "HBO MAX",
           "5",
