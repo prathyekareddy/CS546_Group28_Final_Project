@@ -230,6 +230,90 @@ const checkSearch = async (groupName, category) => {
   }
 }
 
+function editGroupDetailsValidation(
+  groupName,
+  category, 
+  platformName,
+  platformEmail, 
+  platformPassword,
+  groupLimit) {
+  //Group name validations
+  if (!groupName || groupName === 'undefined') {
+    throw 'You must provide a Group Name!';
+  }
+  groupName = groupName.trim();
+  if (groupName.length === 0) {
+    throw 'Group Name cannot be an empty string or a string with just spaces';
+  }
+  if (groupName.length < 2) {
+    throw 'The group name must be of atleast two characters';
+  }
+  let groupNameReg = new RegExp("^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$");
+  if (!groupName.match(groupNameReg)) {
+    throw new Error('Group Name can only be Alphanumerical');
+  }
+
+  //Category validation
+  if (!category) {
+    throw 'You must select a category';
+  }
+
+  //Platform name validations
+  if (!platformName || platformName === 'undefined') {
+    throw 'You must provide a Platform name';
+  }
+  platformName = platformName.trim();
+  if (platformName.length === 0) {
+    throw 'Platform name cannot be an empty string or a string with just spaces';
+  }
+  if (platformName.length < 2) {
+    throw 'The platform name must be of atleast two characters';
+  }
+  let platformNameReg = new RegExp("^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$");
+  if (!platformName.match(platformNameReg)) {
+    throw new Error('Platform name can only be Alphanumerical');
+  }
+
+  //Platform email validation
+  if (!platformEmail || platformEmail === 'undefined') {
+    throw 'You must provide the Platform email';
+  }
+  platformEmail = platformEmail.trim();
+  if (platformEmail.length === 0) {
+    throw 'The platform email cannot be an empty string or a string with just spaces';
+  }
+  let platformEmailReg =  new RegExp("^[a-zA-Z]+[a-zA-Z0-9_-]*@([a-zA-Z0-9]+){1}(\.[a-zA-Z0-9]+){1,2}");
+  if (!platformEmail.match(platformEmailReg)) {
+    throw new Error('Platform email must be in a valid email format');
+  }
+
+  //Platform password validation
+  if (!platformPassword || platformPassword === 'undefined') {
+    throw 'You must provide the Platform Password';
+  }
+  platformPassword = platformPassword.trim();
+  if (platformPassword.length === 0) {
+    throw 'The platform password cannot be an empty string or a string with just spaces';
+  }
+
+  //Group limit validations
+  if (groupLimit) {
+    console.log(typeof groupLimit + "GroupLimit")
+    if (groupLimit.includes(".")) {
+      throw 'Decimals values are not allowed';
+    }
+    groupLimit = groupLimit.trim();
+    if (groupLimit.length === 0)
+      throw 'Group Limit cannot be an empty string or a string with just spaces';
+    groupLimit = Number(groupLimit);
+    if (typeof groupLimit != "number" || Number.isNaN(groupLimit))
+      throw 'Group Limit must be an integer';
+    if (groupLimit < 1) {
+      throw 'The Group limit is atleast 1';
+    }
+  }  
+}
+
 module.exports = {
   checkId(id, varName) {
     if (!id) throw `Error: You must provide a ${varName}`;
@@ -270,5 +354,6 @@ module.exports = {
     if(password.trim().search(/[0-9]/g)==-1){throw "Password should contain atleast 1 number"}
     if(password.trim().search(/[^A-Za-z0-9]/g)==-1){throw "Password should contain atleast 1 special character"}
   },
-  editUserValidation
+  editUserValidation,
+  editGroupDetailsValidation  
 };

@@ -94,24 +94,56 @@ router
   });
 router
 .route("/updategroup")
+// .get(async (req, res) => {
+//   res.render('create-group',  {title: 'Create a Group'});
+// })
 .post(async (req, res) => {
   try{
-
+    
+    let groupName = req.body.groupName;
+    let category = req.body.category;
+    let platformName = req.body.platformName;
+    let platformEmail =  req.body.platformEmail;
+    let platformPassword =  req.body.platformPassword;
+    let groupLimit =  req.body.groupLimit;
+    let hashtags = req.body.hashtags;
     console.log("Reached to routes")
-    updatedGroup = await groupData.updateGroup(req.body.groupid,
-      req.body.groupName,
-      req.body.category, 
-      req.body.platformName,
-      req.body.platformEmail, 
-      req.body.platformPassword,
-      parseInt(req.body.groupLimit),
-      req.body.hashtags )
+
+    //validations
+    helper.editGroupDetailsValidation(
+      groupName,
+      category, 
+      platformName,
+      platformEmail, 
+      platformPassword,
+      groupLimit
+    );
+
+    //updating group data
+    const updatedGroup = await groupData.updateGroup(req.body.groupid,
+      groupName,
+      category, 
+      platformName,
+      platformEmail, 
+      platformPassword,
+      parseInt(groupLimit),
+      hashtags )
     res.redirect('/navigation/groupdetails/'+req.body.groupid);
   }catch(e){
     console.log(e);
-    res.redirect('/navigation/groupdetails/'+req.body.groupid);
+      const user = req.body;
+      user.firstName = user.firstNameInput;
+      user.lastName = user.lastNameInput;
+      user.email = user.emailIdInput;
+      user.phoneNumber = user.phoneNumberInput;
+      user.gender = user.genderInput;
+      user.address = {
+        streetAddress: user.streetAddressInput,
+        city: user.cityInput,
+        state: user.stateInput,
+      }
   }
-})
+}) 
 
 router
     .route("/search")

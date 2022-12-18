@@ -1,5 +1,6 @@
 <section>
   <main>
+    <div id = "error" class = "error"></div>
     <form action="/navigation/chat/{{group._id}}" method="get">
     <button type="submit">Open Chat</button>
   </form>
@@ -16,6 +17,8 @@
     {{!-- <h5>Userid {{user._id}}</h5> --}}
     {{!-- <h2>Group Id {{groupData._id}}</h2>
     <h2>Group Name {{groupData.groupName}}</h2> --}}
+    <br>
+    <br>
     <div class="card shadow mb-5 bg-white mx-auto" style="width: 80rem; height:35rem; width:100rem">
       <h2 class="card-header text-center">Group Details</h2>
       <div class="row">
@@ -36,16 +39,10 @@
         </div>
       </div>
     </div>
-    {{!-- GroupName Display --}}
-    {{!-- <div class="d-flex justify-content-center">
-      <h3 class="mx-auto" style="color: rgb(44, 42, 42);">Group Name: {{group.groupName}}</h3>
-    </div> --}}
-    {{!-- <br>
-    <br> --}}
-    {{!-- User details cards --}}
 
     <div class="container">
-      <h3 class="text-center">Users in this Group</h3>
+      <h3 class="text-left">Group members</h3>
+      <br>
       <div class="card-deck">
           {{#each user}}
               <div class="col-4 " style="padding-bottom: 50px;">
@@ -94,7 +91,8 @@
     </div>
     {{!-- request to join --}}
     <div class="container">
-      <h3 class="text-center">Request to Join</h3>
+      <h3 class="text-left">Request to Join</h3>
+      <br>
       <div class="card-deck">
           {{#each requestToJoin}}
               <div class="col-4" style="padding-bottom: 50px;">
@@ -130,19 +128,20 @@
 
       {{!-- PAYMENT ACTIVITY --}}
       <div class="container">
-      <h3 class="text-center">Payment Activity</h3>
+      <h3 class="text-left">Payment Activity</h3>
+      <br>
       <div class="card-deck">
           {{#each user}}
             <div class="col-3" style="padding-bottom: 50px;">
               <div class="card Larger shadow">
                 <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                 <div class="card-body">
-                  <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
+                  <h5 class="card-title d-flex justify-content-center">Pay for next month</h5>
                   <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
                   <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
                   <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
-                  <form action="/navigation/checkout-page" method="get"></form>  
-                  <button type="submit" >Check-out </button>
+                  <form action="/navigation/checkout-page" method="get"> 
+                  <button type="submit" class="btn btn-outline-danger">Check-out</button>
                   </form>  
                 </div>
               </div>
@@ -224,7 +223,7 @@
               <label for="group-limit">Group Limit</label>
               <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit" value="{{group.groupLimit}}">
               </div>
-              {{!-- DuePaymentDate --}}
+              {{!-- Hash Tags --}}
               <div class="form-group col-md-6">
               <label for="platform-name">Add Hash Tags</label>
                   <input type="text" class="form-control" id="hashtags" name="hashtags" placeholder="Add # before every tag" value="{{#each group.hashtags}}#{{this}}{{/each}}">
@@ -267,4 +266,5 @@
     </div>
   </div>
 </div>
+<script src='../public/js/editGroup.js'></script>
 </section>
