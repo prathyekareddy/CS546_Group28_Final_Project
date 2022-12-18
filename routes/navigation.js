@@ -64,10 +64,10 @@ router
         req.file.filename,
         req.body.category,
         req.body.platformName,
-        req.body.platformEmail,
-        req.body.platformPassword,
         parseInt(req.body.groupLimit),
         req.body.dueDate,
+        req.body.platformEmail,
+        req.body.platformPassword,
         parseFloat(req.body.totalSubsPrice),
         parseInt(req.body.subsLength),
         req.body.hashtags
