@@ -1,4 +1,10 @@
 <main>
-    <h1>This is an Error Page</h1>
+    {{!-- Below code is for update group errors --}}
+    <h3>This is Update Group Error Page</h3>
+    <p>Error: Updating group not successful</p>
+    <p>{{error}}</p>
+    <form action= '/navigation/groupdetails/{{groupId}}' method="get"> 
+        <button type="submit" class="btn btn-outline-danger">Close</button>
+    </form>
+    {{!-- End of update group errors --}}
 </main>
-

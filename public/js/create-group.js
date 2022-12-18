@@ -96,7 +96,7 @@ function createGroupFormValidation(
     if (groupLimit < 1) {
       throw "The Group limit is atleast 1";
     }
-
+  }
     //Payment due date validations
     const date = new Date();
 
@@ -104,64 +104,68 @@ function createGroupFormValidation(
       throw "PaymentDueDate is required";
     }
 
-    let dueDate = new Date(duePaymentDate);
-    duePaymentDate = dueDate.toLocaleDateString("en-US");
+  //   if(duePaymentDate){
 
-    if (duePaymentDate.length !== 10) {
-      throw "PaymentDueDate must be in the mm/dd/yyyy format";
-    }
-    if (
-      duePaymentDate.slice(2, 3) !== "/" ||
-      duePaymentDate.slice(5, 6) !== "/"
-    ) {
-      throw "PaymentDueDate must be in the mm/dd/yyyy format";
-    }
-    let currMonth = date.toLocaleDateString().slice(0, 2);
-    let currDay = date.toLocaleDateString().slice(-7, -5);
-    let currYear = date.toLocaleDateString().slice(-4);
+  //   let dueDate = new Date(duePaymentDate);
+  //   duePaymentDate = dueDate.toLocaleDateString("en-US");
 
-    let dueMonth = Number(duePaymentDate.slice(0, 2));
-    let dueDay = Number(duePaymentDate.slice(3, 5));
-    let dueYear = Number(duePaymentDate.slice(6));
+  //   console.log(duePaymentDate)
 
-    if (
-      Number.isNaN(dueMonth) ||
-      Number.isNaN(dueDay) ||
-      Number.isNaN(dueYear)
-    ) {
-      throw "Day, Month and Year must be numbers";
-    }
+  //   if (duePaymentDate.length !== 10) {
+  //     throw "PaymentDueDate must be in the mm/dd/yyyy format";
+  //   }
+  //   if (
+  //     duePaymentDate.slice(2, 3) !== "/" ||
+  //     duePaymentDate.slice(5, 6) !== "/"
+  //   ) {
+  //     throw "PaymentDueDate must be in the mm/dd/yyyy format";
+  //   }
+  //   let currMonth = date.toLocaleDateString().slice(0, 2);
+  //   let currDay = date.toLocaleDateString().slice(-7, -5);
+  //   let currYear = date.toLocaleDateString().slice(-4);
 
-    if (dueMonth < 1 || dueMonth > 12) {
-      throw "Month must be between 1-12";
-    }
-    if (dueDay < 1 || dueDay > 31) {
-      throw "Day must be between the range 1-31";
-    }
-    if (dueMonth === 2 && dueDay > 28) {
-      throw "February can not contain more than 28 days";
-    }
-    if (dueMonth === 4 || dueMonth === 6 || dueMonth === 9 || dueMonth === 11) {
-      if (dueDay > 30) {
-        throw `PaymentDueDate cannot be 31 for the month ${dueMonth}`;
-      }
-    }
+  //   let dueDay = Number(duePaymentDate.slice(0, 2));
+  //   let dueMonth = Number(duePaymentDate.slice(3, 5));
+  //   let dueYear = Number(duePaymentDate.slice(6));
 
-    if (dueYear < currYear) {
-      throw "Year cannot be in the past";
-    }
+  //   if (
+  //     Number.isNaN(dueMonth) ||
+  //     Number.isNaN(dueDay) ||
+  //     Number.isNaN(dueYear)
+  //   ) {
+  //     throw "Day, Month and Year must be numbers";
+  //   }
 
-    if (dueYear == currYear) {
-      if (dueMonth < currMonth) {
-        throw "PaymentDueDate cannot be in the past";
-      }
-    }
+  //   if (dueMonth < 1 || dueMonth > 12) {
+  //     throw "Month must be between 1-12";
+  //   }
+  //   if (dueDay < 1 || dueDay > 31) {
+  //     throw "Day must be between the range 1-31";
+  //   }
+  //   if (dueMonth === 2 && dueDay > 28) {
+  //     throw "February can not contain more than 28 days";
+  //   }
+  //   if (dueMonth === 4 || dueMonth === 6 || dueMonth === 9 || dueMonth === 11) {
+  //     if (dueDay > 30) {
+  //       throw `PaymentDueDate cannot be 31 for the month ${dueMonth}`;
+  //     }
+  //   }
 
-    if (dueMonth == currMonth) {
-      if (dueYear == currYear && dueDay < currDay)
-        throw "PaymentDueDate cannot be in the past";
-    }
-  }
+  //   if (dueYear < currYear) {
+  //     throw "Year cannot be in the past";
+  //   }
+
+  //   if (dueYear == currYear) {
+  //     if (dueMonth < currMonth) {
+  //       throw "PaymentDueDate cannot be in the past";
+  //     }
+  //   }
+
+  //   if (dueMonth == currMonth) {
+  //     if (dueYear == currYear && dueDay < currDay)
+  //       throw "PaymentDueDate cannot be in the past";
+  //   }
+  // }
 
   //Subscription Price validation
   if (subscriptionPrice) {
