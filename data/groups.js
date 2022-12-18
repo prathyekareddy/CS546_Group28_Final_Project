@@ -220,10 +220,10 @@ const createGroup = async (
   groupImage,
   category,
   platformName,
-  groupLimit,
-  duePaymentDate,
   platformLoginId,
   platFormPassword,
+  groupLimit,
+  duePaymentDate,
   totalPaymentPrice,
   paymentPlanSpanInMonths,
   hashtags
