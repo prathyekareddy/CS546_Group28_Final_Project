@@ -202,7 +202,7 @@ function createGroupFormValidation(
         "^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$"
       );
       if (!hashTag.match(hashTagReg)) {
-        throw new Error("Hashtags can only be Alphanumerical");
+        // throw new Error("Hashtags can only be Alphanumerical");
       }
     }
   }

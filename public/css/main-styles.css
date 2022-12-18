@@ -140,4 +140,12 @@ body {
   span.zero {
     margin: 10px;
     color: #b9b9b9;
+  }
+  
+.align{
+	width: 80%;
+    border-radius: 40px !important;
+	font-weight: 400 !important;
+	/* line-height: 1.7;
+	padding: 0.375rem 0.75rem; */
 }

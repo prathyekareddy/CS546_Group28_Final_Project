@@ -1,3 +1,4 @@
+(function ($) {
 const socket = io('http://localhost:3000')
 
 const mySearchForm = $('#send-container');
@@ -53,3 +54,4 @@ socket.on('chat-message', data => {
                                 <p><b>Message: </b>${data.message.message}</p>`
     messageContainer.append(messageElement)
 });
+})(window.jQuery);

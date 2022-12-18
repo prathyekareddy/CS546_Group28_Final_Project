@@ -1,8 +1,11 @@
 <section>
   <main>
     <form action="/navigation/chat/{{group._id}}" method="get">
-    <button type="submit">Open Chat</button>
-  </form>
+      <button type="submit">Open Chat</button>
+    </form>
+    <form action="/navigation/search-user/{{group._id}}" method="get">
+      <button type="submit">Search for Users</button>
+    </form>
     <br>
     <br>
     <div class="container d-flex justify-content-end">
@@ -19,9 +22,9 @@
     <h2>Group Name {{groupData.groupName}}</h2> --}}
     <div class="card shadow p-3 mb-5 bg-white mx-auto" style="width: 80rem; height:50rem; border-radius: 40px; ">
       <div class="row">
-        <div class="col-md-4">
+        {{!-- <div class="col-md-4">
           <img class="card-img-top img-circle" style="padding: 40px;" src="/public/netflix.png" alt="">
-        </div>
+        </div> --}}
         <div class="card-body col-md-6">
           <br>
           <br>
@@ -142,8 +145,8 @@
                   <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
                   <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
                   <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
-                  <form action="/navigation/checkout-page" method="get"></form>  
-                  <button type="submit" >Check-out </button>
+                  <form action="/navigation/checkout-page" method="get"> 
+                  <button id="pay" type="submit" >Check-out </button>
                   </form>  
                 </div>
               </div>
@@ -153,9 +156,6 @@
     </div>
     </div>    
     </div>
-
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-  <script src='../public/js/group-details.js'></script>
 
   <script>
     $('#myModal').on('shown.bs.modal', function () {
@@ -268,3 +268,6 @@
   </div>
 </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src='/public/js/group-details.js'></script>

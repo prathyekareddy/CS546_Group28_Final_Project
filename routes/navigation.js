@@ -151,11 +151,11 @@ router
     res.json({error:false,id:createGroupData._id});
   } catch (e) {
     console.log(e);
-    if(e===`There is already a group with that email`){
-      return res.status(400).json({ error: true,message:e });
-    }else{
+    // if(e===`There is already a group with that email`){
+    //   return res.status(400).json({ error: true,message:e });
+    // }else{
       return res.status(500).json({ error:true,message: 'Internal Server Error' });
-    }
+    // }
   }
   });
 router
@@ -268,7 +268,7 @@ router
   for(let i = 0; i< listOfGroups.length;i++){
     arrGroups.push(await groupData.getGroupById(listOfGroups[i]))
   }
-  res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups,  title: 'My Groups'});
+  res.render('my-groups',{user:currentUser, arrGroups:arrGroups,  title: 'My Groups: '});
 })
 
 let tryStripe;
@@ -417,12 +417,66 @@ router
 })
 
 router
-  .route('/send-message.html')
-  .post(async (req, res) => {
-    let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, xss(req.body.message));
-    res.render('partials/display-messages', { layout: null, ...newMessage });
-  });
+    .route('/send-message.html')
+    .post(async (req, res) => {
+      let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, req.body.message);
+      res.render('partials/display-messages', { layout: null, ...newMessage });
+    });
 
+let userResults = [];
+let currentGroupID;  
+
+router
+    .route('/search-user/:id')
+    .get(async (req, res) => {
+      currentGroupID = req.params.id;
+      res.render('search-user', { notSearchedYet: true });
+    });
+
+router
+    .post('/search-user.html', async (req, res) => {
+
+      console.log(req.body.category);
+
+      // try {
+      //   helper.checkSearch(req.body.groupName, req.body.category);
+      // } catch (e) {
+      //   console.log("Error: ", e);
+      //   return;
+      // }
+
+      let input = { category: req.body.category, groupId: currentGroupID, userId: req.session.user._id };
+      userResults = [];
+      userResults = await userData.searchUser(input);
+      // console.log(userResults)
+      if (userResults.length === 0) {
+        res.render('partials/searched-user', { layout: null, sampleResult: false });
+        return;
+      }
+      res.render('partials/searched-user', { layout: null, sampleResult: userResults });
+
+    });
+
+router
+    .route("/send-invite/:id")
+    .post(async (req, res) => {
+      const updateResult = async (userId) => {
+        userResults.forEach(element => {
+          if (element.userId.toString() === userId) {
+            console.log("here");
+            element.invited = true;
+            element.notInvited = false;
+          }
+        });
+      };
+      groupId = helper.checkId(currentGroupID);
+      userId = helper.checkId(req.params.id);
+      let updated = userData.sendInvite(groupId, userId);
+      if (updated) {
+        await updateResult(req.params.id);
+      }
+      res.render('partials/searched-user', { layout: null, sampleResult: userResults });
+    })
   
     router.route('/success/:id').get(async (req,res)=>{
       try {
@@ -446,14 +500,14 @@ router
     })
 
 router.route("/userProfile").get(async (req, res) => {
-  if (req.session.user) {
-    const userDetails = await data.users.getUserById(req.session.user._id);
-    return res.render("userProfile", {
-      title: "RProfile Page",
-      user: userDetails,
-    });
-  } else {
-  }
+    if (req.session.user) {
+      const userDetails = await data.users.getUserById(req.session.user._id);
+      return res.render("userProfile", {
+        title: "Profile Page",
+        user: userDetails,
+      });
+    } else {
+    }
 });
 
 const destination = multer.diskStorage({

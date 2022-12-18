@@ -172,7 +172,7 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
     return errorBag;
   }
 
-  let categoryList = ["OTT", "Education", "E-commerce", "Network Carrier Plans"];
+  let categoryList = ["OTT", "Music Streaming", "Network Service Providers", "Education", "E-commerce", "Other"];
   if (!categoryList.includes(category)) {
     errorBag.error = true;
     errorBag.message = "Invalid category!";

@@ -6,6 +6,111 @@ const bcrypt = require('bcryptjs');
 const helper = require("../validations/helper");
 const saltRounds = 10;
 
+// const sendInvite = async (groupId, userId) => {
+//   groupId = helper.checkId(groupId);
+//   userId = helper.checkId(userId);
+//   const userCollection = await users();
+//   const oldUserData = await getUserById(userId);
+
+//   oldUserData.invitedTo.push(groupId);
+//   let updateUserDetails = {
+//     invitedTo: oldUserData.invitedTo
+//   };
+
+//   const newUpdatedUser = await userCollection.updateOne(
+//     { _id: ObjectId(userId) },
+//     { $set: updateUserDetails }
+//   );
+//   if (!newUpdatedUser.modifiedCount || !newUpdatedUser.acknowledged) {
+//     throw "Cannot update List of Users";
+//   }
+//   return true;
+// }
+
+// const searchUser = async (input) => {
+
+//   // try {
+//   //   helper.checkSearch(input.groupName, input.category);
+//   // } catch (e) {
+//   //   console.log("Error: ", e);
+//   // }
+
+//   const listOfUsers = await getAllUsers();
+//   let result = [];
+
+//   if (input.category) {
+//     listOfUsers.forEach(user => {
+//       if (user._id.toString() !== input.userId.toString()){
+//         if(user.interestedIn.includes(input.category)) {
+//           let newEntry = {
+//             userId: user._id,
+//             Name: `${user.firstName} ${user.lastName}`,
+//             interestedIn: user.interestedIn,
+//             invited: user.invitedTo.includes(input.groupId), 
+//           }
+//           newEntry.notInvited = !newEntry.invited;
+//           result.push(newEntry);
+//         }
+//       }
+//     });
+//   }
+//   return result;
+  // if (input.category && input.groupName) {
+  //   let tempResult = [];
+  //   listOfGroups.forEach(group => {
+  //     if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
+  //       let newEntry = {
+  //         groupName: group.groupName,
+  //         platform: group.platform.platformName,
+  //         monthlyPayment: group.payment.montlyPaymentForGroup, 
+  //         requested: group.requestToJoin.includes(input.userId), 
+  //         groupId: group._id, 
+  //         groupLimit: group.groupLimit, 
+  //         totalMembers: group.listOfUsers.length, 
+  //       }
+  //       newEntry.notRequested = !newEntry.requested;
+  //       tempResult.push(newEntry);
+  //     }
+  //   });
+  //   tempResult.forEach(group => {
+  //     if (group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
+  //       let newEntry = {
+  //         groupName: group.groupName,
+  //         platform: group.platform,
+  //         monthlyPayment: group.monthlyPayment,
+  //         requested: group.requested,
+  //         notRequested: group.notRequested,
+  //         groupId: group.groupId,
+  //         groupLimit: group.groupLimit,
+  //         totalMembers: group.totalMembers,
+  //       }
+  //       newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
+  //       result.push(newEntry);
+  //     }
+  //   });
+  // }
+  // else 
+  
+  // else if (input.groupName) {
+  //   listOfGroups.forEach(group => {
+  //     if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
+  //       let newEntry = {
+  //         groupName: group.groupName,
+  //         platform: group.platform.platformName,
+  //         monthlyPayment: group.payment.montlyPaymentForGroup,
+  //         requested: group.requestToJoin.includes(input.userId),
+  //         groupId: group._id,
+  //         groupLimit: group.groupLimit,
+  //         totalMembers: group.listOfUsers.length,
+  //       }
+  //       newEntry.notRequested = !newEntry.requested;
+  //       newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
+  //       result.push(newEntry);
+  //     }
+    // });
+  // }
+  
+// }
 
 // Sabah
 async function getAllUsersByUserIdList(groupCollections) {
@@ -88,7 +193,8 @@ const createUser = async (
     address: {city:city , state:state , streetAddress:streetAddress},
     phoneNumber: phoneNumber,
     listOfGroups: [],
-    interestedIn:interestedIn
+    interestedIn: interestedIn,
+    invitedTo: []
   };
 
   const insertedUser = await userCollection.insertOne(newUser);
@@ -246,5 +352,7 @@ module.exports = {
   updateUser,
   checkUser,
   addGroupToUser,
-  getAllUsersByUserIdList
+  getAllUsersByUserIdList,
+  // searchUser,
+  // sendInvite
 };

@@ -1,22 +1,29 @@
 <section>
   <main>
-    {{#each listOfGroups}}
+    {{!-- {{#each listOfGroups}}
     <h5 class="mx-auto" href="/navigation/groupdetails/{{this}}">{{this}}</h5>
     <a href="/navigation/groupdetails/{{this}}">{{this}} href</a>
-    {{/each}}
+    {{/each}} --}}
 
     
     <div class="container">
-    <h5 class="mx-auto"> My Groups</h5>
+    <h2 class="mx-auto"> My Groups</h2>
     <div class="card-deck">
         {{#each arrGroups}}
-            <div class="col-6   " style="padding-bottom: 50px;">
+            <div class="col-6" style="padding-bottom: 50px;">
                     <div class="card Larger shadow">
-                        <img style="border-radius: 50% ; padding: 30px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/netflix.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                        <h2 class="card-title text-center"> <img src = "/public/group-images/{{this.groupImage}}"  alt = "test" width = "200" height = "200"></h2>
+                        {{!-- <img style="border-radius: 50% ; padding: 30px 80px 20px 80px ; width: 20rem;" class="card-img-top mx-auto" src="/public/netflix.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/> --}}
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-left">{{this.groupName}}</h5>
                             <h6 class="card-subtitle d-flex justify-content-left" style="font-weight: lighter; color: lightcoral">{{this.category}}</h6>
-                            <a href="/navigation/groupdetails/{{this._id}}">{{this._id}} href</a>
+                            <div class="text-end">
+                                <a href="/navigation/groupdetails/{{this._id}}">
+                                    <button class="btn btn-primary req-btn">
+                                        View Group
+                                    </button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

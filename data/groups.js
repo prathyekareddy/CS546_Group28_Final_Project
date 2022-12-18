@@ -123,7 +123,8 @@ const searchGroup = async (input) => {
   if (input.category && input.groupName) {
     let tempResult = []
     listOfGroups.forEach(group => {
-      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
+      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase()) 
+            && !group.listOfUsers.includes(input.userId)) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platform.platformName,
@@ -132,13 +133,14 @@ const searchGroup = async (input) => {
           groupId: group._id, 
           groupLimit: group.groupLimit, 
           totalMembers: group.listOfUsers.length, 
+          groupImage: group.groupImage
         }
         newEntry.notRequested = !newEntry.requested;
         tempResult.push(newEntry);
       }
     });
     tempResult.forEach(group => {
-      if (group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
+      if (group.groupName.toLowerCase().includes(input.groupName.toLowerCase()) ) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platform,
@@ -148,6 +150,7 @@ const searchGroup = async (input) => {
           groupId: group.groupId,
           groupLimit: group.groupLimit,
           totalMembers: group.totalMembers,
+          groupImage: group.groupImage
         }
         newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
         result.push(newEntry);
@@ -156,7 +159,7 @@ const searchGroup = async (input) => {
   }
   else if (input.category) {
     listOfGroups.forEach(group => {
-      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase())) {
+      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.category.toLowerCase().includes(input.category.toLowerCase()) && !group.listOfUsers.includes(input.userId)) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platform.platformName,
@@ -165,6 +168,7 @@ const searchGroup = async (input) => {
           groupId: group._id, 
           groupLimit: group.groupLimit, 
           totalMembers: group.listOfUsers.length, 
+          groupImage: group.groupImage
         }
         newEntry.notRequested = !newEntry.requested;
         newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
@@ -174,7 +178,7 @@ const searchGroup = async (input) => {
   }
   else if (input.groupName) {
     listOfGroups.forEach(group => {
-      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase())) {
+      if (group.groupLimit.toString() !== group.listOfUsers.length.toString() && group.groupName.toLowerCase().includes(input.groupName.toLowerCase()) && !group.listOfUsers.includes(input.userId)) {
         let newEntry = {
           groupName: group.groupName,
           platform: group.platform.platformName,
@@ -183,6 +187,7 @@ const searchGroup = async (input) => {
           groupId: group._id,
           groupLimit: group.groupLimit,
           totalMembers: group.listOfUsers.length,
+          groupImage: group.groupImage
         }
         newEntry.notRequested = !newEntry.requested;
         newEntry.yearlyPayment = Number(newEntry.monthlyPayment) * 12;
@@ -237,10 +242,10 @@ const createGroup = async (
     throw "groupNamrequired!"
    }
  
-   let isValidGroupNameAlphaNume = helper.isAlphanumericValid('groupName', groupName);
-   if (!isValidGroupNameAlphaNume.isValid) {
-    throw "Only alphanumeric is allowed in groupName!"
-   }
+  //  let isValidGroupNameAlphaNume = helper.isAlphanumericValid('groupName', groupName);
+  //  if (!isValidGroupNameAlphaNume.isValid) {
+  //   throw "Only alphanumeric is allowed in groupName!"
+  //  }
 
     // ********************************************* Category Validation ************************************************************
   let isValidCategory = helper.isStringValid('category', category);
@@ -248,8 +253,9 @@ const createGroup = async (
     throw "category is required!"
   }
 
-  let categoryList = ["OTT", "Education", "E-commerce", "Network Carrier Plans"];
+  let categoryList = ["OTT", "Music Streaming", "Network Service Providers", "Education", "E-commerce", "Other"];
   if (!categoryList.includes(category)) {
+    console.log(category);
     throw "Allowed categories are " + categoryList
   }
 
@@ -276,10 +282,10 @@ const createGroup = async (
     throw "platformName is required!"
   }
 
-  isValidPlatformName = helper.isAlphanumericValid('platformName', platformName);
-  if (!isValidPlatformName.isValid) {
-    throw "Only alphanumeric are allowed in Platform!"
-  }
+  // isValidPlatformName = helper.isAlphanumericValid('platformName', platformName);
+  // if (!isValidPlatformName.isValid) {
+  //   throw "Only alphanumeric are allowed in Platform!"
+  // }
 
   // ****************************************** platformEmail validation ************************************************
   let isValidplatformEmail = helper.isStringValid('platformLoginId', platformLoginId);
@@ -403,9 +409,9 @@ const createGroup = async (
    const grpCollection = await groups();
   // Checking existing email
   const userOne = await grpCollection.findOne({ "platform.platformLoginId":platformLoginId});
-  if (userOne) {
-    throw `There is already a group with that email`;
-  }
+  // if (userOne) {
+  //   throw `There is already a group with that email`;
+  // }
   //Profile Images and memberIds who joins the grp will have to be updated
 
   montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)

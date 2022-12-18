@@ -1,5 +1,5 @@
 notification = localStorage.getItem("notificationData");
-if (!notification || notification === "[]") {
+if(typeof notificationData !== 'undefined'){
   window.localStorage.setItem(
     "notificationData",
     JSON.stringify(notificationData)
