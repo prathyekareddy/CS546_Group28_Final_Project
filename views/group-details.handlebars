@@ -6,10 +6,17 @@
     <br>
     <br>
     <div class="container d-flex justify-content-end">
+<<<<<<< HEAD
       <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#updateGroupModal">
         Update Group
       </button>
       <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#reportModalCenter">
+=======
+      <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#updateGroupModal">
+        Update Group
+      </button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportModalCenter">
+>>>>>>> main
         Report List
       </button>
     </div>
@@ -94,9 +101,7 @@
     </div>
     {{!-- request to join --}}
     <div class="container">
-      {{#unless requestToJoin}}
-              <h3 class="text-center">Request to Join</h3>
-      {{/unless}}
+      <h3 class="text-center">Request to Join</h3>
       <div class="card-deck">
           {{#each requestToJoin}}
               <div class="col-4" style="padding-bottom: 50px;">
