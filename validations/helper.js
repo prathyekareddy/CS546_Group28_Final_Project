@@ -118,16 +118,16 @@ function createUserValidation(
   if (firstName.trim().length < 3) {
     throw "First Name should be atleast of length 3";
   }
-  if (firstName.trim().search(/[^a-zA-Z0-9]/g) != -1) {
-    throw "First Name should be alphanumeric";
-  }
+  // if (firstName.trim().search(/[^a-zA-Z0-9]/g) != -1) {
+  //   throw "First Name should be alphanumeric";
+  // }
   // lastName validation
   if (lastName.trim().length < 2) {
     throw "Last Name should be atleast of length 2";
   }
-  if (lastName.trim().search(/[^a-zA-Z0-9]/g) != -1) {
-    throw "Last Name should be alphanumeric";
-  }
+  // if (lastName.trim().search(/[^a-zA-Z0-9]/g) != -1) {
+  //   throw "Last Name should be alphanumeric";
+  // }
   //password validation
   if (password.trim().length < 6) {
     throw "Password should be atleast of length 6";
@@ -251,6 +251,13 @@ module.exports = {
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
   },
+  
+  idCheck(id){
+    if (!id) throw 'You must provide an id to search for';
+    // if (id.trim().length === 0) throw 'Id cannot be an empty string or just spaces';
+    if (!ObjectId.isValid(id)) throw 'invalid object ID';
+    return id;
+  }, 
   checkSearch,
   createUserValidation,
   checkUserValidation(emailId,password){
@@ -265,4 +272,3 @@ module.exports = {
   },
   editUserValidation
 };
- 
