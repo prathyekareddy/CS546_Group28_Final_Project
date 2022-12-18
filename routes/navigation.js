@@ -94,9 +94,6 @@ router
   });
 router
 .route("/updategroup")
-// .get(async (req, res) => {
-//   res.render('create-group',  {title: 'Create a Group'});
-// })
 .post(async (req, res) => {
   try{
     
@@ -107,7 +104,6 @@ router
     let platformPassword =  req.body.platformPassword;
     let groupLimit =  req.body.groupLimit;
     let hashtags = req.body.hashtags;
-    console.log("Reached to routes")
 
     //validations
     helper.editGroupDetailsValidation(
@@ -130,18 +126,7 @@ router
       hashtags )
     res.redirect('/navigation/groupdetails/'+req.body.groupid);
   }catch(e){
-    console.log(e);
-      const user = req.body;
-      user.firstName = user.firstNameInput;
-      user.lastName = user.lastNameInput;
-      user.email = user.emailIdInput;
-      user.phoneNumber = user.phoneNumberInput;
-      user.gender = user.genderInput;
-      user.address = {
-        streetAddress: user.streetAddressInput,
-        city: user.cityInput,
-        state: user.stateInput,
-      }
+    res.render('error',  {error: e, groupId: req.body.groupid});
   }
 }) 
 
@@ -238,14 +223,14 @@ router
       } catch (error) {
         console.log(error)
       }
-      console.log(req.session.user._id + "session")
-      console.log(groupDetails.groupLeaderId + "groupLeaderId")
+      // console.log(req.session.user._id + "session")
+      // console.log(groupDetails.groupLeaderId + "groupLeaderId")
       if(ObjectId(req.session.user._id).toString() == ObjectId(groupDetails.groupLeaderId).toString()){
         checkGroupLeader = true
-        console.log("Group Leader")
+        // console.log("Group Leader")
       }
       else{
-        console.log("Not Group Leader")
+        // console.log("Not Group Leader")
         checkGroupLeader = false
       }
       res.render('group-details', { group: groupDetails,
@@ -278,7 +263,6 @@ router
     router
     .route("/removeUserFromGroup")
     .post(async (req, res) => {
-      console.log(req.body)
       try{
         userGroup = await userGroupData.getUserGroupbyGroupIdandUserId(req.body.groupid,req.body.userid)
       }catch(error){
@@ -300,8 +284,6 @@ router
     .route("/reportUser")
     .post(async (req, res) => {
       try{
-        // rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
-        console.log(req.body)
         reportuser = await groupData.addReportToGroup(req.body.groupid, req.body.reporteduserid, req.body.userid)
         res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
