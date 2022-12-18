@@ -18,10 +18,6 @@ const stripe = require("stripe")(
   "sk_test_51MAdqdGXsyLIL2myfowY9UaAZt0rMOB9Z7A26k5yxVMMjLPunw4OTm8ZZMYp9HzvuOLUyBQPMd1NiMZqFd0Jr4Ci00chGfRsuW"
 );
 const dirName = path.resolve(path.dirname('../'));
-const trimRequest = require('trim-request');
-const xss = require("xss");
-const { request } = require('http');
-// const nodemailer = require("nodemailer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -39,13 +35,8 @@ let uploadGrpImg = multer({
 router
     .route("/homepage")
     .get(async (req, res) => {
-
-      //Notification
-      let groupAdminId = req.session.user._id;
-      let createGroupData = await groupData.getRequestedUserByGroupLeaderId(
-        groupAdminId
-      );
-      res.render("homepage", { data: JSON.stringify(createGroupData), title: 'Home'});
+        // res.sendFile(path.resolve('static/homepage.html'));
+        res.render('homepage', {title: 'Home'});
     })
    
     router
@@ -55,130 +46,90 @@ router
         
     })    
 
-  router
-    .route("/notifications-list")
-    .get(async (req, res) => {
-      let groupAdminId=req.session.user._id;
-      let createGroupData=await groupData.getRequestedUserByGroupLeaderId(groupAdminId);
-     
-    return res.json({data:createGroupData});
-    })
-
-  router
-    .route("/notifications-read-update")
-    .post(async (req, res) => {
-      let readRequestList=xss(req.body.readRequestList);
-       
-      readRequestList=req.body.readRequestList;
-      if(!readRequestList){
-        return res.status(400).json({ error: true,message:'readRequestList is required!' });
-      }
-      await groupData.udpateReadRequest(readRequestList)
-      return res.json({message:"successfully updated!"});
-    })
-  
-
-  // router
-  // .route("/group-details/:id")
-  // .get(async (req, res) => {
-  //   let groupId = xss(req.params.id);
-  //   try{
-  //     helper.checkId(groupId)
-  //   }catch(e){
-  //     return res.status(400).json({ error: true,message:e });
-  //   }
-    
-  //   let createGroupData=await groupData.getGroupById(groupId);
-  //   let createUserData = await userData.getUserById(req.session.user._id);
-  //   arrUsers = [createUserData]; //this will have list of users present in the group -> need a function that gets all the users present in the group
-  //   res.render("group-details", { user: arrUsers, group: createGroupData, checkGroupLeader: checkGroupLeader, currUserId : req.session.user._id });
-  // })
 router
     .route("/create")
     .get(async (req, res) => {
         // res.sendFile(path.resolve('static/create-group.html'));
         res.render('create-group',  {title: 'Create a Group'});
     })
-    .post(uploadGrpImg,trimRequest.all, async (req, res) => {
+    .post(uploadGrpImg, async (req, res) => {
     try {
-    if(!req.file) {
-      return res.status(400).json({ error: true,message:'Invalid groupImage!',groupImage:"groupImage is required!"
-      })}
+      if (req.file.mimetype !== "image/jpeg" && req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpg" ) {
+        throw "Only JPEG or JPG or PNG file types allowed";
+      }
+      // result = createGroupValidation.checkCreateGroup(req.body.groupName, req.body.platFormName, req.session.user._id, req.body.groupLimit, req.body.dueDate, 'sabah@gmail.com', 'Password', req.body.subsLength);
+        createGroupData = await groupData.createGroup(
+        req.session.user._id,
+        req.body.groupName,
+        req.file.filename,
+        req.body.category,
+        req.body.platformName,
+        parseInt(req.body.groupLimit),
+        req.body.dueDate,
+        req.body.platformEmail,
+        req.body.platformPassword,
+        parseFloat(req.body.totalSubsPrice),
+        parseInt(req.body.subsLength),
+        req.body.hashtags
+      );
 
-      // if(req.session.user._id == ObjectId(createGroupData.groupLeaderId)){
-      //   checkGroupLeader = true
-      // }
-      // else{
-      //   checkGroupLeader = false
-      // }
-
-    if (req.file.mimetype !== "image/jpg" && req.file.mimetype !== "image/png" && req.file.mimetype !== "image/jpeg") 
-    return res.status(400).json({ error: true,message:'Invalid groupImage!',groupImage:"Only JPG,PNG and JPEG are allowed!"});
-
-    // Request Params
-    const groupName = xss(req.body.groupName);
-    const category = xss(req.body.category);
-    const platformName = xss(req.body.platformName);
-    const platformEmail = xss(req.body.platformEmail);
-    const platformPassword = xss(req.body.platformPassword);
-    const groupLimit = xss(req.body.groupLimit);
-    const dueDate = xss(req.body.dueDate);
-    const totalSubsPrice = xss(req.body.totalSubsPrice);
-    const subsLength = xss(req.body.subsLength);
-    const hashtags = xss(req.body.hashtags);
-
-    // Validation on request params
-    const validationErrorBag = createGroupValidation.checkCreateGroup(groupName, category, platformName, platformEmail,
-      platformPassword, groupLimit, dueDate, totalSubsPrice, subsLength, hashtags);
-
-    if (validationErrorBag.error) {
-      return res.status(400).json(validationErrorBag);
+      if(req.session.user._id == ObjectId(createGroupData.groupLeaderId)){
+        checkGroupLeader = true
+      }
+      else{
+        checkGroupLeader = false
+      }
+      
+      createUserData = await userData.getUserById(req.session.user._id);
+      arrUsers = [createUserData]; //this will have list of users present in the group -> need a function that gets all the users present in the group
+      res.render("group-details", { 
+        user: arrUsers,
+        group: createGroupData,
+        checkGroupLeader: checkGroupLeader,
+        currUserId : req.session.user._id 
+        });
+    } catch (e) {
+      return res.status(400).json({ error: e });
     }
-    createGroupData = await groupData.createGroup(
-      req.session.user._id,
-      groupName,
-      req.file.filename,
-      category,
-      platformName,
-      platformEmail,
-      platformPassword,
-      groupLimit,
-      dueDate,
-      totalSubsPrice,
-      subsLength,
-      hashtags
-    );
-    res.json({error:false,id:createGroupData._id});
-  } catch (e) {
-    console.log(e);
-    // if(e===`There is already a group with that email`){
-    //   return res.status(400).json({ error: true,message:e });
-    // }else{
-      return res.status(500).json({ error:true,message: 'Internal Server Error' });
-    // }
-  }
   });
 router
 .route("/updategroup")
 .post(async (req, res) => {
   try{
-
+    
+    let groupName = req.body.groupName;
+    let category = req.body.category;
+    let platformName = req.body.platformName;
+    let platformEmail =  req.body.platformEmail;
+    let platformPassword =  req.body.platformPassword;
+    let groupLimit =  req.body.groupLimit;
+    let hashtags = req.body.hashtags;
     console.log("Reached to routes")
-    updatedGroup = await groupData.updateGroup(
-      xss(req.body.groupid),
-      xss(req.body.groupName),
-      xss(req.body.category), 
-      xss(req.body.platformName),
-      xss(req.body.platformEmail), 
-      xss(req.body.platformPassword),
-      parseInt(xss(req.body.groupLimit)),
-      xss(req.body.hashtags) ) 
-    res.redirect('/navigation/groupdetails/'+ xss(req.body.groupid));
+
+    //validations
+    helper.editGroupDetailsValidation(
+      groupName,
+      category, 
+      platformName,
+      platformEmail, 
+      platformPassword,
+      groupLimit
+    );
+
+    //updating group data
+    const updatedGroup = await groupData.updateGroup(req.body.groupid,
+      groupName,
+      category, 
+      platformName,
+      platformEmail, 
+      platformPassword,
+      parseInt(groupLimit),
+      hashtags )
+    res.redirect('/navigation/groupdetails/'+req.body.groupid);
   }catch(e){
     console.log(e);
-    res.redirect('/navigation/groupdetails/'+req.body.groupid);
-  }
-})
+      }
+}) 
 
 router
     .route("/search")
@@ -192,16 +143,13 @@ router
     .post('/search.html', async (req, res) => {
 
         try{
-            helper.checkSearch(
-              xss(req.body.groupName), 
-              xss(req.body.category)
-              );
+            helper.checkSearch(req.body.groupName, req.body.category);
         } catch(e){
             console.log("Error: ",e);
             return;
         }
 
-        let input = {category: xss(req.body.category), groupName: xss(req.body.groupName), userId: req.session.user._id};
+        let input = {category: req.body.category, groupName: req.body.groupName, userId: req.session.user._id};
         result = [];
         result = await groupData.searchGroup(input);
         if(result.length === 0){
@@ -223,39 +171,12 @@ router
                 }
             });
         };
-        groupId = helper.checkId(xss(req.params.id));
+        groupId = helper.checkId(req.params.id);
         userId = helper.checkId(req.session.user._id);
         let updated = groupData.sendRequest(groupId,userId);
         if(updated){
             await updateResult(req.params.id);
         }
-
-    //Email notification
-  //   let group= await groupData.getGroupById(groupId);
-  //   let groupLeader = await userData.getUserById(group.groupdLeaderId);
-  //   let user = await userData.getUserById(userId);
-  //   var transporter = nodemailer.createTransport({
-  //     service: 'gmail',
-  //     auth: {
-  //       user: 'sabahuhahmed@gmail.com',
-  //       pass: 'msvjmslqnylhyjzx'
-  //     }
-  // })
-  
-  // var mailOptions = {
-  //     from: user.email,
-  //     to:groupLeader.email,
-  //     subject:`Request for joining group ${group.groupName}`,
-  //     text:`${user.firstName} ${user.lastName} wants to join group ${group.groupName}`
-  // }
-  
-  // transporter.sendMail(mailOptions, function(error, info){
-  //     if (error) {
-  //         console.log(error)
-  //     } else {
-  //         console.log("Email Sent: " + info.response)
-  //     }
-  // })  
         res.render('partials/searched-group', {layout: null, sampleResult: result});
     })
 
@@ -268,7 +189,7 @@ router
   for(let i = 0; i< listOfGroups.length;i++){
     arrGroups.push(await groupData.getGroupById(listOfGroups[i]))
   }
-  res.render('my-groups',{user:currentUser, arrGroups:arrGroups,  title: 'My Groups: '});
+  res.render('my-groups',{user:currentUser,listOfGroups:listOfGroups, arrGroups:arrGroups,  title: 'My Groups'});
 })
 
 let tryStripe;
@@ -324,11 +245,8 @@ router
     .route("/addusertogroup")
     .post(async (req, res) => {
       try{
-        addUserToGroup = await userGroupData.addUserToGroup(
-          xss(req.body.userid),
-          xss(req.body.groupid)
-        )
-        res.redirect('/navigation/groupdetails/'+ xss(req.body.groupid));
+        addUserToGroup = await userGroupData.addUserToGroup(req.body.userid,req.body.groupid)
+        res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
         console.log(e);
       }
@@ -337,8 +255,8 @@ router
     .route("/rejectUserToJoinGroup")
     .post(async (req, res) => {
       try{
-        rejectUser = await groupData.removeUserFromRequestListInGroup(xss(req.body.userid),xss(req.body.groupid))
-        res.redirect('/navigation/groupdetails/'+ xss(req.body.groupid));
+        rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
+        res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
         console.log(e);
       }
@@ -411,72 +329,18 @@ router
 router
     .route("/chat/:id")
     .get(async (req, res) => {
-        const groupChat = await groupChatData.getGroupChatByGroupId(xss(req.params.id));
-        req.session.chat = {groupId: xss(req.params.id), groupChatId: groupChat._id};
+        const groupChat = await groupChatData.getGroupChatByGroupId(req.params.id);
+        req.session.chat = {groupId: req.params.id, groupChatId: groupChat._id};
         res.render('group-chat', {chat: groupChat.messages, groupID: req.params.id, username: req.session.user.username, email: req.session.user.emailId});
 })
 
 router
-    .route('/send-message.html')
-    .post(async (req, res) => {
-      let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, req.body.message);
-      res.render('partials/display-messages', { layout: null, ...newMessage });
-    });
+  .route('/send-message.html')
+  .post(async (req, res) => {
+    let newMessage = await groupChatData.sendMessage(req.session.chat.groupChatId.toString(),req.session.user.username, req.session.user.emailId, req.body.message);
+    res.render('partials/display-messages', { layout: null, ...newMessage });
+  });
 
-let userResults = [];
-let currentGroupID;  
-
-router
-    .route('/search-user/:id')
-    .get(async (req, res) => {
-      currentGroupID = req.params.id;
-      res.render('search-user', { notSearchedYet: true });
-    });
-
-router
-    .post('/search-user.html', async (req, res) => {
-
-      console.log(req.body.category);
-
-      // try {
-      //   helper.checkSearch(req.body.groupName, req.body.category);
-      // } catch (e) {
-      //   console.log("Error: ", e);
-      //   return;
-      // }
-
-      let input = { category: req.body.category, groupId: currentGroupID, userId: req.session.user._id };
-      userResults = [];
-      userResults = await userData.searchUser(input);
-      // console.log(userResults)
-      if (userResults.length === 0) {
-        res.render('partials/searched-user', { layout: null, sampleResult: false });
-        return;
-      }
-      res.render('partials/searched-user', { layout: null, sampleResult: userResults });
-
-    });
-
-router
-    .route("/send-invite/:id")
-    .post(async (req, res) => {
-      const updateResult = async (userId) => {
-        userResults.forEach(element => {
-          if (element.userId.toString() === userId) {
-            console.log("here");
-            element.invited = true;
-            element.notInvited = false;
-          }
-        });
-      };
-      groupId = helper.checkId(currentGroupID);
-      userId = helper.checkId(req.params.id);
-      let updated = userData.sendInvite(groupId, userId);
-      if (updated) {
-        await updateResult(req.params.id);
-      }
-      res.render('partials/searched-user', { layout: null, sampleResult: userResults });
-    })
   
     router.route('/success/:id').get(async (req,res)=>{
       try {
@@ -500,14 +364,14 @@ router
     })
 
 router.route("/userProfile").get(async (req, res) => {
-    if (req.session.user) {
-      const userDetails = await data.users.getUserById(req.session.user._id);
-      return res.render("userProfile", {
-        title: "Profile Page",
-        user: userDetails,
-      });
-    } else {
-    }
+  if (req.session.user) {
+    const userDetails = await data.users.getUserById(req.session.user._id);
+    return res.render("userProfile", {
+      title: "RProfile Page",
+      user: userDetails,
+    });
+  } else {
+  }
 });
 
 const destination = multer.diskStorage({
@@ -581,25 +445,25 @@ router
         if (err) {
           throw err;
         }
-        let emailId = xss(req.body.emailIdInput);
-        let firstName = xss(req.body.firstNameInput);
-        let lastName = xss(req.body.lastNameInput);
-        let userDescription = xss(req.body.userDescriptionInput);
-        let gender = xss(req.body.genderInput);
+        let emailId = req.body.emailIdInput;
+        let firstName = req.body.firstNameInput;
+        let lastName = req.body.lastNameInput;
+        let userDescription = req.body.userDescriptionInput;
+        let gender = req.body.genderInput;
         if (req.file) {
           profileImgUrl = req.file.destination + req.file.filename;
         }
-        let city = xss(req.body.cityInput);
-        let state = xss(req.body.stateInput);
-        let streetAddress = xss(req.body.streetAddressInput);
-        let phoneNumber = xss(req.body.phoneNumberInput);
-        let ott = xss(req.body.interestedOTT);
-        let musicStreaming = xss(req.body.interestedMusicStreaming);
+        let city = req.body.cityInput;
+        let state = req.body.stateInput;
+        let streetAddress = req.body.streetAddressInput;
+        let phoneNumber = req.body.phoneNumberInput;
+        let ott = req.body.interestedOTT;
+        let musicStreaming = req.body.interestedMusicStreaming;
         let networkServiceProviders =
-          xss(req.body.interestedNetworkServiceProviders);
-        let education = xss(req.body.interestedEducation);
-        let eCommerce = xss(req.body.interestedECommerce);
-        let other = xss(req.body.interestedOther);
+          req.body.interestedNetworkServiceProviders;
+        let education = req.body.interestedEducation;
+        let eCommerce = req.body.interestedECommerce;
+        let other = req.body.interestedOther;
 
         //// Validations
         emailId = helper.checkString(emailId, "emailId");
