@@ -8,6 +8,7 @@ const helper = require("../validations/helper");
 const userData = require('./users');
 const  groupchat  = require("../data/groupchat");
 var emailValidator = require("email-validator");
+const e = require("express");
 
 // const createGroup = async (
 //   groupName,
@@ -196,7 +197,8 @@ const searchGroup = async (input) => {
 // Sabah
 async function getRequestedUserByGroupLeaderId(groupLeaderId){
   const grpCollection = await groups();
-  let groupCollections= await grpCollection.find({"groupdLeaderId":groupLeaderId}).toArray();
+  // let groupCollections= await grpCollection.find({"groupdLeaderId":groupLeaderId}).toArray();
+  let groupCollections= await grpCollection.find({"groupLeaderId":groupLeaderId}).toArray();
   return await userData.getAllUsersByUserIdList(groupCollections);
 } 
 
@@ -232,7 +234,7 @@ const createGroup = async (
    // ************************************************* Group Name Validation *****************************************************
    let isValidGroupNameString = helper.isStringValid('groupName', groupName);
    if (!isValidGroupNameString.isValid) {
-    throw "groupName is required!"
+    throw "groupNamrequired!"
    }
  
    let isValidGroupNameAlphaNume = helper.isAlphanumericValid('groupName', groupName);
@@ -425,7 +427,7 @@ const createGroup = async (
       platformLoginId: platformLoginId,
       platformPassword:platFormPassword
     },
-    groupdLeaderId:userid,
+    groupLeaderId:userid,
     groupLimit:groupLimit,
     duePaymentDate:duePaymentDate,
     payment:{
@@ -436,7 +438,8 @@ const createGroup = async (
     listOfUsers:[userid],//userId list
     requestToJoin: [],
     hashtags:hashtagArr,
-    readRequestToJoin:[]
+    readRequestToJoin:[],
+    reports:[]
   };
   const insertedGrp = await grpCollection.insertOne(newGrp);
 
@@ -473,6 +476,36 @@ const createGroup = async (
   }
 
 };
+
+const addReportToGroup = async (groupid,reportedUserId, userid) => {
+  const grpCollection = await groups();
+  try{
+    reportingUser = await userData.getUserById(userid)
+  } catch (e){
+    console.log(e + "Error finding reportingUser in addReportToGroup")
+  }
+  try{
+    reportedUser = await userData.getUserById(reportedUserId)
+  } catch (e){
+    console.log(e + "Error finding reportedUser in addReportToGroup")
+  }
+  const currentTime = new Date();
+  if(reportingUser && reportedUser){
+    console.log("found both")
+    messageData = {
+      message:reportingUser.firstName + " " + reportingUser.lastName + " has reported " + reportedUser.firstName + " " + reportedUser.lastName + ".",
+      time:  currentTime.toLocaleString()
+    }
+
+    const reportUserList = await grpCollection.updateOne({ _id:  ObjectId(groupid) },
+    {$push: { 'reports': messageData }});
+    if (!reportUserList.acknowledged){
+      throw `removing requestToJoin Failed`
+    }
+    return true
+  }
+  return false
+}
 
 const getAllGroups = async () => {
   const grpCollection = await groups();
@@ -530,7 +563,7 @@ const updateGroup = async (
       platformPassword:platFormPassword
     },
     groupLimit:groupLimit,
-    hashtags:hashtagArr
+    hashtags:hashtagArr,
   };
 
   const newUpdatedGrp = await grpCollection.updateOne(
@@ -600,5 +633,6 @@ module.exports = {
   sendRequest,
   removeUserFromRequestListInGroup,
   getRequestedUserByGroupLeaderId,
-  udpateReadRequest
+  udpateReadRequest,
+  addReportToGroup
 };

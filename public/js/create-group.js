@@ -319,7 +319,7 @@ async function createGroup(event) {
       }
       else {
         alert('Group Created successfully.');
-        window.location.assign('http://localhost:3000/navigation/group-details/' + result.id);
+        window.location.assign('http://localhost:3000/navigation/groupdetails/' + result.id);
       }
     })
     .catch((error) => {
