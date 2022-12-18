@@ -279,6 +279,7 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
 
   // Due Payment Date
   const date = new Date();
+  console.log(dueDate)
   if (dueDate.length !== 10) {
     errorBag.error = true;
     errorBag.message = "Invalid due Date!";
@@ -353,14 +354,14 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
   }
 
 
-  if (dueYear == currYear) {
-    if (dueMonth < currMonth) {
-      errorBag.error = true;
-      errorBag.message = "Invalid due Date!";
-      errorBag.dueDate = `dueDate cannot be before than current date`;
-      return errorBag;
-    }
-  }
+  // if (dueYear == currYear) {
+  //   if (dueMonth < currMonth) {
+  //     errorBag.error = true;
+  //     errorBag.message = "Invalid due Date!";
+  //     errorBag.dueDate = `dueDate cannot be before than current date`;
+  //     return errorBag;
+  //   }
+  // }
 
   if (dueMonth == currMonth) {
     if (dueYear == currYear && dueDay < currDay) {
@@ -408,20 +409,20 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
     return errorBag;
   }
 
-  //Hashtag validation
-  if (hashTag) {
-    if (hashTag.trim().length !== 0) {
-      let hashTagReg = new RegExp(
-        "^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$"
-      );
-      if (!hashTag.match(hashTagReg)) {
-        errorBag.error = true;
-        errorBag.message = "Hashtag should be an alphanumeric value!";
-        errorBag.hashTag = "Hashtag should be an alphanumeric value!"
-        return errorBag;
-      }
-    }
-  }
+  // //Hashtag validation
+  // if (hashTag) {
+  //   if (hashTag.trim().length !== 0) {
+  //     let hashTagReg = new RegExp(
+  //       "^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$"
+  //     );
+  //     if (!hashTag.match(hashTagReg)) {
+  //       errorBag.error = true;
+  //       errorBag.message = "Hashtag should be an alphanumeric value!";
+  //       errorBag.hashTag = "Hashtag should be an alphanumeric value!"
+  //       return errorBag;
+  //     }
+  //   }
+  // }
   errorBag.error = false;
   return errorBag;
 

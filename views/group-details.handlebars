@@ -1,36 +1,35 @@
 <section>
   <main>
+    <div id = "error" class = "error"></div>
     <form action="/navigation/chat/{{group._id}}" method="get">
-      <button type="submit">Open Chat</button>
-    </form>
-    <form action="/navigation/search-user/{{group._id}}" method="get">
-      <button type="submit">Search for Users</button>
-    </form>
+    <button type="submit">Open Chat</button>
+  </form>
     <br>
     <br>
     <div class="container d-flex justify-content-end">
-      <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#updateGroupModal">
+      <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#updateGroupModal">
         Update Group
       </button>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportModalCenter">
+      <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#reportModalCenter">
         Report List
       </button>
     </div>
-    <h3 class="text-center">Group Details</h3>
     {{!-- <h5>Userid {{user._id}}</h5> --}}
     {{!-- <h2>Group Id {{groupData._id}}</h2>
     <h2>Group Name {{groupData.groupName}}</h2> --}}
-    <div class="card shadow p-3 mb-5 bg-white mx-auto" style="width: 80rem; height:50rem; border-radius: 40px; ">
+    <br>
+    <br>
+    <div class="card shadow mb-5 bg-white mx-auto" style="width: 80rem; height:35rem; width:100rem">
+      <h2 class="card-header text-center">Group Details</h2>
       <div class="row">
-        {{!-- <div class="col-md-4">
-          <img class="card-img-top img-circle" style="padding: 40px;" src="/public/netflix.png" alt="">
-        </div> --}}
+        <div class="col-md-4">
+          <img class="card-img-top img-circle" style="padding: 40px;" src="/public/group-images/{{group.groupImage}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';">
+        </div>
         <div class="card-body col-md-6">
           <br>
           <br>
-            <h2 class="card-title">Group Image: <br> <img src = "/public/group-images/{{group.groupImage}}"  alt = "test" width = "200" height = "200"></h2>
             <h2 class="card-title">Group Name: {{group.groupName}}</h2>
-            <h4 class="card-title">Login ID: {{group.platform.platformLoginId}}</h4>
+            <h4 class="card-title" id="loginidcopy">Login ID: {{group.platform.platformLoginId}}</h4>
             <h4 class="card-title">Password: {{group.platform.platformPassword}}</h4>
             <h5 class="card-title d-flex justify-content-left" style="font-size: medium;color:red;">Monthly Payment for the group : ${{group.payment.montlyPaymentForGroup}}</h5>
             <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">Payment Span : {{group.payment.paymentPlanSpanInMonths}} months</h5>
@@ -40,21 +39,15 @@
         </div>
       </div>
     </div>
-    {{!-- GroupName Display --}}
-    {{!-- <div class="d-flex justify-content-center">
-      <h3 class="mx-auto" style="color: rgb(44, 42, 42);">Group Name: {{group.groupName}}</h3>
-    </div> --}}
-    {{!-- <br>
-    <br> --}}
-    {{!-- User details cards --}}
 
     <div class="container">
-      <h3 class="text-center">Users in this Group</h3>
+      <h3 class="text-left">Group members</h3>
+      <br>
       <div class="card-deck">
           {{#each user}}
-              <div class="col-3 " style="padding-bottom: 50px;">
-                      <div class="card Larger shadow" style="border-radius: 40px;">
-                          <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+              <div class="col-4 " style="padding-bottom: 50px;">
+                      <div class="card Larger shadow" >
+                          <img style="width: 100%;" class="card-img-top mx-auto" src="{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -98,12 +91,13 @@
     </div>
     {{!-- request to join --}}
     <div class="container">
-      <h3 class="text-center">Request to Join</h3>
+      <h3 class="text-left">Request to Join</h3>
+      <br>
       <div class="card-deck">
           {{#each requestToJoin}}
-              <div class="col-3" style="padding-bottom: 50px;">
+              <div class="col-4" style="padding-bottom: 50px;">
                       <div class="card Larger shadow" style="border-radius: 40px;">
-                          <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -134,19 +128,20 @@
 
       {{!-- PAYMENT ACTIVITY --}}
       <div class="container">
-      <h3 class="text-center">Payment Activity</h3>
+      <h3 class="text-left">Payment Activity</h3>
+      <br>
       <div class="card-deck">
           {{#each user}}
             <div class="col-3" style="padding-bottom: 50px;">
-              <div class="card Larger shadow" style="border-radius: 40px;">
-                <img style="border-radius: 50% ; padding: 20px 90px 20px 40px ; width: 20rem;" class="card-img-top mx-auto" src="/public/profile.png" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+              <div class="card Larger shadow">
+                <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
                 <div class="card-body">
-                  <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
+                  <h5 class="card-title d-flex justify-content-center">Pay for next month</h5>
                   <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
                   <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
                   <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
                   <form action="/navigation/checkout-page" method="get"> 
-                  <button id="pay" type="submit" >Check-out </button>
+                  <button type="submit" class="btn btn-outline-danger">Check-out</button>
                   </form>  
                 </div>
               </div>
@@ -156,6 +151,10 @@
     </div>
     </div>    
     </div>
+
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src='../public/js/group-details.js'></script>
+  <link rel="stylesheet" href="/public/css/group-details.css"> 
 
   <script>
     $('#myModal').on('shown.bs.modal', function () {
@@ -224,7 +223,7 @@
               <label for="group-limit">Group Limit</label>
               <input type= "number" class="form-control" id="group-limit" name="groupLimit" placeholder="Group Limit" value="{{group.groupLimit}}">
               </div>
-              {{!-- DuePaymentDate --}}
+              {{!-- Hash Tags --}}
               <div class="form-group col-md-6">
               <label for="platform-name">Add Hash Tags</label>
                   <input type="text" class="form-control" id="hashtags" name="hashtags" placeholder="Add # before every tag" value="{{#each group.hashtags}}#{{this}}{{/each}}">
@@ -267,7 +266,5 @@
     </div>
   </div>
 </div>
+<script src='../public/js/editGroup.js'></script>
 </section>
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src='/public/js/group-details.js'></script>

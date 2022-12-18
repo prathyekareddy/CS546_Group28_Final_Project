@@ -371,11 +371,11 @@ const createGroup = async (
    }
  
  
-   if (dueYear == currYear) {
-     if (dueMonth < currMonth) {
-       throw `duePaymentDate cannot be less than current date`;
-     }
-   }
+  //  if (dueYear == currYear) {
+  //    if (dueMonth < currMonth) {
+  //      throw `duePaymentDate cannot be less than current date`;
+  //    }
+  //  }
  
    if (dueMonth == currMonth) {
      if (dueYear == currYear && dueDay < currDay) {

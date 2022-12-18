@@ -162,9 +162,27 @@ router
 .route("/updategroup")
 .post(async (req, res) => {
   try{
+    
+    let groupName = req.body.groupName;
+    let category = req.body.category;
+    let platformName = req.body.platformName;
+    let platformEmail =  req.body.platformEmail;
+    let platformPassword =  req.body.platformPassword;
+    let groupLimit =  req.body.groupLimit;
+    let hashtags = req.body.hashtags;
 
-    console.log("Reached to routes")
-    updatedGroup = await groupData.updateGroup(
+    //validations
+    helper.editGroupDetailsValidation(
+      groupName,
+      category, 
+      platformName,
+      platformEmail, 
+      platformPassword,
+      groupLimit
+    );
+
+    //updating group data
+    const updatedGroup = await groupData.updateGroup(
       xss(req.body.groupid),
       xss(req.body.groupName),
       xss(req.body.category), 
@@ -172,13 +190,12 @@ router
       xss(req.body.platformEmail), 
       xss(req.body.platformPassword),
       parseInt(xss(req.body.groupLimit)),
-      xss(req.body.hashtags) ) 
-    res.redirect('/navigation/groupdetails/'+ xss(req.body.groupid));
-  }catch(e){
-    console.log(e);
+      xss(req.body.hashtags) )
     res.redirect('/navigation/groupdetails/'+req.body.groupid);
+  }catch(e){
+    res.render('error',  {error: e, groupId: req.body.groupid});
   }
-})
+}) 
 
 router
     .route("/search")
