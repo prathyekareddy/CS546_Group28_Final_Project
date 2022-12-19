@@ -313,14 +313,12 @@ router
 
       try {
         if((groupDetails.listOfUsers).length > 0){
-          console.log(groupDetails.listOfUsers)
           for (i = 0; i < (groupDetails.listOfUsers).length; i++){
             let userGroupHbs = await userGroupData.getUserGroupbyGroupIdandUserId(groupDetails._id.toString(),(groupDetails.listOfUsers)[i].toString())
             let userArrHbs = await userData.getUserById((groupDetails.listOfUsers)[i]);
             // console.log(userArrHbs,"userArrHbs");
             userArrHbs.paid = userGroupHbs.curentPaymentStatus;
             userArr.push(userArrHbs);
-            console.log("this", userArr, "asdf");
           }
         }
       } catch (error) {
@@ -328,14 +326,12 @@ router
       }
       if(ObjectId(req.session.user._id).toString() == ObjectId(groupDetails.groupLeaderId).toString()){
         checkGroupLeader = true
-        console.log("Group Leader")
       }
       else{
-        console.log("Not Group Leader")
         checkGroupLeader = false
       }
       // console.log(userArr,"USER ARRAY");
-      console.log(req.session.user._id.toString(),"USER ID");
+      // console.log(req.session.user._id.toString(),"USER ID");
 
       // console.log(userGroupHbs.currrentPaymentStatus , "STATUSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs")
 
@@ -373,7 +369,7 @@ router
     router
     .route("/removeUserFromGroup")
     .post(async (req, res) => {
-      console.log(req.body)
+      // console.log(req.body)
       try{
         userGroup = await userGroupData.getUserGroupbyGroupIdandUserId(req.body.groupid,req.body.userid)
       }catch(error){
@@ -396,7 +392,7 @@ router
     .post(async (req, res) => {
       try{
         // rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
-        console.log(req.body)
+        // console.log(req.body)
         reportuser = await groupData.addReportToGroup(req.body.groupid, req.body.reporteduserid, req.body.userid)
         res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
@@ -463,7 +459,7 @@ router
 router
     .post('/search-user.html', async (req, res) => {
 
-      console.log(req.body.category);
+      // console.log(req.body.category);
 
       // try {
       //   helper.checkSearch(req.body.groupName, req.body.category);
@@ -490,7 +486,6 @@ router
       const updateResult = async (userId) => {
         userResults.forEach(element => {
           if (element.userId.toString() === userId) {
-            console.log("here");
             element.invited = true;
             element.notInvited = false;
           }

@@ -194,10 +194,8 @@ const createUserGroup = async (
     userId = helper.idCheck(userId);
     const usergroupCollection = await userGroupData();
     const oldUserGroupcollection = await getUserGroupbyGroupIdandUserId(groupId,userId);
-    console.log(oldUserGroupcollection , "OLD DATA")
     oldUserGroupcollection.paymentHistory.push(paymentHistory);
     const usergroupId = oldUserGroupcollection._id;
-    console.log(usergroupId , "updateUserGroup cha aat madhe");
     
     const updatedUserGroup = {
       curentPaymentStatus: curentPaymentStatus,

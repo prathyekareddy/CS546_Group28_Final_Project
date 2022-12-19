@@ -255,7 +255,6 @@ const createGroup = async (
 
   let categoryList = ["OTT", "Music Streaming", "Network Service Providers", "Education", "E-commerce", "Other"];
   if (!categoryList.includes(category)) {
-    console.log(category);
     throw "Allowed categories are " + categoryList
   }
 

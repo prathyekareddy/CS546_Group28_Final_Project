@@ -166,7 +166,6 @@ if (myForm) {
     if (city.value.trim()) {
       errorDiv.hidden = true;
     } else {
-      console.log(city.value.trim(), "in here");
       city.value = "";
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a City";

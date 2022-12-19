@@ -105,6 +105,8 @@ function createGroupFormValidation(
     }
 
   //   if(duePaymentDate){
+    // let dueDate = new Date(duePaymentDate);
+    // duePaymentDate = dueDate.toLocaleDateString("en-US");
 
   //   let dueDate = new Date(duePaymentDate);
   //   duePaymentDate = dueDate.toLocaleDateString("en-US");
