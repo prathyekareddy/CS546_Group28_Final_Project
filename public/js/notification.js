@@ -88,5 +88,4 @@ async function requestNotification(id) {
     const temp = document.createElement("a");
     temp.href = "/logout";
     temp.click();
-    console.log("logout");
   };

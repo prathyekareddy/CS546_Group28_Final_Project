@@ -140,7 +140,7 @@ async function createEverythingEverywhereAllAtOnce(){
         }
       } else {
         try{
-          groupCreated = await groups.createGroup(userCreated._id,`Apple Music Group${i - 3} - Full`,"",
+          groupCreated = await groups.createGroup(userCreated._id,`Apple Music Group${i - 3} - Full`,"common_apple.png",
           "Music Streaming",
           "Apple Music",
           "yash@netflix.com",
@@ -419,6 +419,5 @@ async function createEverythingEverywhereAllAtOnce(){
 }
 }
 main();
-
 
 

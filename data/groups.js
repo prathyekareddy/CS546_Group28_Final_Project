@@ -255,7 +255,6 @@ const createGroup = async (
 
   let categoryList = ["OTT", "Music Streaming", "Network Service Providers", "Education", "E-commerce", "Other"];
   if (!categoryList.includes(category)) {
-    console.log(category);
     throw "Allowed categories are " + categoryList
   }
 
@@ -416,7 +415,7 @@ const createGroup = async (
 
   montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
 
-  hashtagArr = []
+  let hashtagArr = []
   if(hashtags){
     hashtagArr = hashtags.split("#");
     hashtagArr = hashtagArr.filter(element => {
@@ -497,7 +496,6 @@ const addReportToGroup = async (groupid,reportedUserId, userid) => {
   }
   const currentTime = new Date();
   if(reportingUser && reportedUser){
-    console.log("found both")
     messageData = {
       message:reportingUser.firstName + " " + reportingUser.lastName + " has reported " + reportedUser.firstName + " " + reportedUser.lastName + ".",
       time:  currentTime.toLocaleString()
