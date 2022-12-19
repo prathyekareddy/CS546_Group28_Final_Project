@@ -129,7 +129,7 @@ router
 
     // Validation on request params
     const validationErrorBag = createGroupValidation.checkCreateGroup(groupName, category, platformName, platformEmail,
-      platformPassword, groupLimit, dueDate, totalSubsPrice, subsLength, hashtags);
+      platformPassword, groupLimit, totalSubsPrice, subsLength, hashtags);
 
     if (validationErrorBag.error) {
       return res.status(400).json(validationErrorBag);

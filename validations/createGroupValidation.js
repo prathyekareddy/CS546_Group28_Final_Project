@@ -143,7 +143,7 @@ const checkId = async (id) => {
 // };
 
 function checkCreateGroup(groupName, category, platformName, platformEmail,
-  platformPassword, groupLimit, dueDate, totalSubsPrice, subsLength, hashTag) {
+  platformPassword, groupLimit, totalSubsPrice, subsLength, hashTag) {
 
   //Group Name Validation
   let errorBag = {};
@@ -277,80 +277,81 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
     return errorBag;
   }
 
-  // Due Payment Date
-  const date = new Date();
-  if (dueDate.length !== 10) {
-    errorBag.error = true;
-    errorBag.message = "Invalid due Date!";
-    errorBag.dueDate = "dueDate must be in the mm/dd/yyyy format!"
-    return errorBag;
-  }
-  if (dueDate.slice(2, 3) !== "/" || dueDate.slice(5, 6) !== "/") {
-    errorBag.error = true;
-    errorBag.message = "Invalid due Date!";
-    errorBag.dueDate = "dueDate must be in the mm/dd/yyyy format!"
-    return errorBag;
-  }
+  // // Due Payment Date
+  // const date = new Date();
+  // console.log(dueDate)
+  // if (dueDate.length !== 10) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid due Date!";
+  //   errorBag.dueDate = "dueDate must be in the mm/dd/yyyy format!"
+  //   return errorBag;
+  // }
+  // if (dueDate.slice(2, 3) !== "/" || dueDate.slice(5, 6) !== "/") {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid due Date!";
+  //   errorBag.dueDate = "dueDate must be in the mm/dd/yyyy format!"
+  //   return errorBag;
+  // }
 
-  let currMonth = date.toLocaleDateString().slice(0, 2);
-  let currDay = date.toLocaleDateString().slice(-7, -5);
-  let currYear = date.toLocaleDateString().slice(-4);
+  // let currMonth = date.toLocaleDateString().slice(0, 2);
+  // let currDay = date.toLocaleDateString().slice(-7, -5);
+  // let currYear = date.toLocaleDateString().slice(-4);
 
 
-  let dueMonth = Number(dueDate.slice(0, 2));
-  let dueDay = Number(dueDate.slice(3, 5));
-  let dueYear = Number(dueDate.slice(6));
+  // let dueMonth = Number(dueDate.slice(0, 2));
+  // let dueDay = Number(dueDate.slice(3, 5));
+  // let dueYear = Number(dueDate.slice(6));
 
-  if (Number.isNaN(dueMonth) || Number.isNaN(dueDay) || Number.isNaN(dueYear)) {
-    errorBag.error = true;
-    errorBag.message = "Invalid due Date!";
-    errorBag.dueDate = `day, month and year must be numbers`;
-    return errorBag;
-  }
+  // if (Number.isNaN(dueMonth) || Number.isNaN(dueDay) || Number.isNaN(dueYear)) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid due Date!";
+  //   errorBag.dueDate = `day, month and year must be numbers`;
+  //   return errorBag;
+  // }
 
-  if (dueMonth < 1 || dueMonth > 12) {
-    errorBag.error = true;
-    errorBag.message = "Invalid due Date!";
-    errorBag.dueDate = `Month must be between 1-12`;
-    return errorBag;
-  }
+  // if (dueMonth < 1 || dueMonth > 12) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid due Date!";
+  //   errorBag.dueDate = `Month must be between 1-12`;
+  //   return errorBag;
+  // }
 
-  if (dueDay < 1 || dueDay > 31) {
-    errorBag.error = true;
-    errorBag.message = "Invalid due Date!";
-    errorBag.dueDate = `Day must be between 1-31`;
-    return errorBag;
-  }
+  // if (dueDay < 1 || dueDay > 31) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid due Date!";
+  //   errorBag.dueDate = `Day must be between 1-31`;
+  //   return errorBag;
+  // }
 
-  if (dueMonth === 2 && dueDay > 28 && !helper.checkLeapYear(dueYear)) {
-    errorBag.error = true;
-    errorBag.message = "Invalid dueDate!";
-    errorBag.dueDate = `February can not contain more than 28 days`;
-    return errorBag;
-  }
+  // if (dueMonth === 2 && dueDay > 28 && !helper.checkLeapYear(dueYear)) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid dueDate!";
+  //   errorBag.dueDate = `February can not contain more than 28 days`;
+  //   return errorBag;
+  // }
 
-  if (dueMonth === 2 && dueDay > 29 && helper.checkLeapYear(dueYear)) {
-    errorBag.error = true;
-    errorBag.message = "Invalid dueDate!";
-    errorBag.dueDate = `February can not contain more than 29 days`;
-    return errorBag;
-  }
+  // if (dueMonth === 2 && dueDay > 29 && helper.checkLeapYear(dueYear)) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid dueDate!";
+  //   errorBag.dueDate = `February can not contain more than 29 days`;
+  //   return errorBag;
+  // }
 
-  if (dueMonth === 4 || dueMonth === 6 || dueMonth === 9 || dueMonth === 11) {
-    if (dueDay > 30) {
-      errorBag.error = true;
-      errorBag.message = "Invalid dueDate!";
-      errorBag.dueDate = `Date can not be 31 for the month ${dueMonth}`;
-      return errorBag;
-    }
-  }
+  // if (dueMonth === 4 || dueMonth === 6 || dueMonth === 9 || dueMonth === 11) {
+  //   if (dueDay > 30) {
+  //     errorBag.error = true;
+  //     errorBag.message = "Invalid dueDate!";
+  //     errorBag.dueDate = `Date can not be 31 for the month ${dueMonth}`;
+  //     return errorBag;
+  //   }
+  // }
 
-  if (dueYear < currYear) {
-    errorBag.error = true;
-    errorBag.message = "Invalid due Date!";
-    errorBag.dueDate = `Year should not be in the past`;
-    return errorBag;
-  }
+  // if (dueYear < currYear) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid due Date!";
+  //   errorBag.dueDate = `Year should not be in the past`;
+  //   return errorBag;
+  // }
 
 
   // if (dueYear == currYear) {
@@ -362,14 +363,14 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
   //   }
   // }
 
-  if (dueMonth == currMonth) {
-    if (dueYear == currYear && dueDay < currDay) {
-      errorBag.error = true;
-      errorBag.message = "Invalid due Date!";
-      errorBag.dueDate = `due Date cannot be before than current date`;
-      return errorBag;
-    }
-  }
+  // if (dueMonth == currMonth) {
+  //   if (dueYear == currYear && dueDay < currDay) {
+  //     errorBag.error = true;
+  //     errorBag.message = "Invalid due Date!";
+  //     errorBag.dueDate = `due Date cannot be before than current date`;
+  //     return errorBag;
+  //   }
+  // }
 
   // totalSubsPrice Validation 
   let isValidTotalSubsPriceString = helper.isStringValid('totalSubscriptionPrice', totalSubsPrice);
