@@ -496,7 +496,6 @@ const addReportToGroup = async (groupid,reportedUserId, userid) => {
   }
   const currentTime = new Date();
   if(reportingUser && reportedUser){
-    console.log("found both")
     messageData = {
       message:reportingUser.firstName + " " + reportingUser.lastName + " has reported " + reportedUser.firstName + " " + reportedUser.lastName + ".",
       time:  currentTime.toLocaleString()

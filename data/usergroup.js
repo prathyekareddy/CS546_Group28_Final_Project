@@ -206,8 +206,6 @@ const createUserGroup = async (
       { _id: ObjectId(usergroupId) },
       { $set: updatedUserGroup}
     );
-
-    console.log(updateUserGroup, "updated User Group");
     if (!updateUserGroup.modifiedCount || !updateUserGroup.acknowledged) {
       throw "Cannot update user group";
     }
