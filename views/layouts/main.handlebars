@@ -49,11 +49,11 @@
                 <a class="nav-link" href="/navigation/aboutUs">About Us <span class="sr-only">(current)</span></a>
                 </li>
             <li class="nav-item dropdown active">
-                <a class="nav-link dropdown-toggle" href="#" class="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Groups
                 </a>
                 
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
                 <a class="dropdown-item" href="/navigation/create">Create a Group</a>
                 <a class="dropdown-item" href="/navigation/search">Search Groups</a>
                 <a class="dropdown-item" href="/navigation/mygroups">My Groups</a>
@@ -71,10 +71,10 @@
                 <a class="dropdown-item" href="#">TBD</a>
                 </div> --}}
                 <li class="nav-item dropdown active">
-                <a class="nav-link dropdown-toggle" href="#" class="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Profile
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
                 <a class="dropdown-item" href="/navigation/userProfile">View Profile</a>
                 <a class="dropdown-item" href="/navigation/editProfile">Edit Profile</a>
                 </div>
@@ -82,21 +82,21 @@
             
 {{!-- Notification--}}
 <li class="nav-item dropdown" id="notification-read" onclick="requestNotification('notification-read')">
-    <a class="nav-link" href="#" class="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+    <a class="nav-link" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fas fa-bell"></i>
         <span class="badge rounded-pill badge-notification bg-danger" id="notification-count"></span>
     </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="notification"></div>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3" id="notification"></div>
 
 
 </li>
-            </span>
-            <span style="display: flex;">
+            {{!-- </span> --}}
+            {{!-- <span style="display: flex;"> --}}
                 <li class="nav-item active">
                 <a class="nav-link" href="#" onclick="handleLogout();">Logout <span class="sr-only">(current)</span></a>
             </li>
-            </span>
+            {{!-- </span> --}}
             </ul>
         </div>
         </nav>       
