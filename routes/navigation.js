@@ -5,7 +5,7 @@ const path = require('path');
 const {fileURLToPath} = require('url')
 const fs = require("fs");
 const data = require('../data');
-const { updateUserGroup } = require('../data/usergroup');
+const { updateUserGroup, getUserGroupbyGroupIdandUserId } = require('../data/usergroup');
 const groupData = data.groups;
 const userData = data.users;
 const userGroupData = data.usergroup;
@@ -313,15 +313,19 @@ router
 
       try {
         if((groupDetails.listOfUsers).length > 0){
-          for (i = 0; i < (groupDetails.listOfUsers).length; i ++){
-            userArr.push(await userData.getUserById((groupDetails.listOfUsers)[i]))
+          console.log(groupDetails.listOfUsers)
+          for (i = 0; i < (groupDetails.listOfUsers).length; i++){
+            let userGroupHbs = await userGroupData.getUserGroupbyGroupIdandUserId(groupDetails._id.toString(),(groupDetails.listOfUsers)[i].toString())
+            let userArrHbs = await userData.getUserById((groupDetails.listOfUsers)[i]);
+            // console.log(userArrHbs,"userArrHbs");
+            userArrHbs.paid = userGroupHbs.curentPaymentStatus;
+            userArr.push(userArrHbs);
+            console.log("this", userArr, "asdf");
           }
         }
       } catch (error) {
         console.log(error)
       }
-      console.log(req.session.user._id + "session")
-      console.log(groupDetails.groupLeaderId + "groupLeaderId")
       if(ObjectId(req.session.user._id).toString() == ObjectId(groupDetails.groupLeaderId).toString()){
         checkGroupLeader = true
         console.log("Group Leader")
@@ -330,10 +334,16 @@ router
         console.log("Not Group Leader")
         checkGroupLeader = false
       }
+      // console.log(userArr,"USER ARRAY");
+      console.log(req.session.user._id.toString(),"USER ID");
+
+      // console.log(userGroupHbs.currrentPaymentStatus , "STATUSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs")
+
+      
       res.render('group-details', { group: groupDetails,
         requestToJoin : requestArr,
         user : userArr,
-        currUserId : req.session.user._id,
+        currUserId : req.session.user._id.toString(),
         checkGroupLeader: checkGroupLeader,
       })
     })

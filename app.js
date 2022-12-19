@@ -7,7 +7,13 @@ const exphbs = require("express-handlebars");
 // const multer  = require('multer')
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
-  partialsDir: ['views/partials/']
+  partialsDir: ['views/partials/'],
+
+  helpers:{
+    ifEqual: function(arg1, arg2, options) {
+      return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+  }
+  }
 });
 
 const server = require('http').Server(app)
@@ -47,6 +53,8 @@ app.engine('handlebars', handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
 configRoutes(app);
+
+
 
 server.listen(3000, () => {
   console.log("We've now got a server!");

@@ -416,7 +416,7 @@ const createGroup = async (
 
   montlyPaymentForGroup =await monthlyPaymentCalculator(totalPaymentPrice,paymentPlanSpanInMonths)
 
-  hashtagArr = []
+  let hashtagArr = []
   if(hashtags){
     hashtagArr = hashtags.split("#");
     hashtagArr = hashtagArr.filter(element => {

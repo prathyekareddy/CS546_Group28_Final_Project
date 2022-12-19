@@ -43,6 +43,7 @@ if (myForm) {
     emailId = document.getElementById("emailIdInput");
     password = document.getElementById("passwordInput");
     errorDiv = document.getElementById("error");
+    errorDiv.innerHTML = "";
     //   emailId
     if (emailId.value.trim()) {
       errorDiv.hidden = true;
@@ -51,6 +52,7 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a email-id";
       emailId.focus();
+      return;
     }
     // password
     if (password.value.trim()) {
@@ -60,6 +62,7 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a password";
       password.focus();
+      return;
     }
 
     try {
@@ -69,7 +72,12 @@ if (myForm) {
     } catch (e) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = e;
+      return;
     }
-    event.target.submit();
+
+    if (!errorDiv.innerHTML) {
+      event.target.submit();
+    }
+    // event.target.submit();
   });
 }

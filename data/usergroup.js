@@ -117,7 +117,7 @@ const createUserGroup = async (
     if(listOfUsers>group.groupLimit){
       throw 'User can not join! Group limit reached.'
     }else{
-      group.listOfUsers.push(ObjectId(userId))
+      group.listOfUsers.push(userId);
     }
 
     requestList = group.requestToJoin.filter(function(e) { return e !== userId })
@@ -125,8 +125,8 @@ const createUserGroup = async (
     dateJoined = new Date().toUTCString()
   
     let newUserGroup = {
-        userId: userId,
-        groupId: groupId,
+        userId: ObjectId(userId),
+        groupId: ObjectId(groupId),
         curentPaymentStatus: null,
         paymentHistory: [],
         dateJoined: dateJoined,
@@ -174,10 +174,10 @@ const createUserGroup = async (
  
   // let userGroupbyGroupIdandUserId = [];
   const getUserGroupbyGroupIdandUserId = async (groupId , userid)=>{
-    groupId = helper.idCheck(groupId);
-    userId = helper.idCheck(userid);
+    groupId = helper.checkId(groupId,"Group Id");
+    userId = helper.checkId(userid,"User Id");
     const usergroupCollection = await userGroupData();
-    const usergroup = await usergroupCollection.find({ "userId": userid, "groupId": ObjectId(groupId) }).toArray();
+    const usergroup = await usergroupCollection.find({ "userId": ObjectId(userid), "groupId": ObjectId(groupId) }).toArray();
     if (!usergroup) throw "Group not found for this user";
    return usergroup[0];
   };
@@ -194,8 +194,10 @@ const createUserGroup = async (
     userId = helper.idCheck(userId);
     const usergroupCollection = await userGroupData();
     const oldUserGroupcollection = await getUserGroupbyGroupIdandUserId(groupId,userId);
+    console.log(oldUserGroupcollection , "OLD DATA")
     oldUserGroupcollection.paymentHistory.push(paymentHistory);
     const usergroupId = oldUserGroupcollection._id;
+    console.log(usergroupId , "updateUserGroup cha aat madhe");
     
     const updatedUserGroup = {
       curentPaymentStatus: curentPaymentStatus,
@@ -206,6 +208,8 @@ const createUserGroup = async (
       { _id: ObjectId(usergroupId) },
       { $set: updatedUserGroup}
     );
+
+    console.log(updateUserGroup, "updated User Group");
     if (!updateUserGroup.modifiedCount || !updateUserGroup.acknowledged) {
       throw "Cannot update user group";
     }

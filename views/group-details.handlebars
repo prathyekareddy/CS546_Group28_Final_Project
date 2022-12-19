@@ -1,18 +1,21 @@
+
 <section>
   <main>
     <div id = "error" class = "error"></div>
-    <form action="/navigation/chat/{{group._id}}" method="get">
-    <button type="submit">Open Chat</button>
-  </form>
     <br>
     <br>
+    
     <div class="container d-flex justify-content-end">
+      <form action="/navigation/chat/{{group._id}}" method="get">
+        <button type="submit" class="btn btn-outline-info">Open Chat</button>
+      </form>
       <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#updateGroupModal">
         Update Group
       </button>
       <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#reportModalCenter">
         Report List
       </button>
+      
     </div>
     {{!-- <h5>Userid {{user._id}}</h5> --}}
     {{!-- <h2>Group Id {{groupData._id}}</h2>
@@ -54,18 +57,6 @@
                               {{!-- <h5 class="card-title d-flex justify-content-left" style="font-size: medium;">${{this.payment}} </h5> --}}
                               <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
                               <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
-                              <div class="rate">
-                                  <input type="radio" id="star5" name="rate" value="5" />
-                                  <label for="star5" title="text">5 stars</label>
-                                  <input type="radio" id="star4" name="rate" value="4" />
-                                  <label for="star4" title="text">4 stars</label>
-                                  <input type="radio" id="star3" name="rate" value="3" />
-                                  <label for="star3" title="text">3 stars</label>
-                                  <input type="radio" id="star2" name="rate" value="2" />
-                                  <label for="star2" title="text">2 stars</label>
-                                  <input type="radio" id="star1" name="rate" value="1" />
-                                  <label for="star1" title="text">1 star</label>
-                            </div>
                           </div>
                           <div class="card-footer text-muted">
                             <div class="row">
@@ -139,14 +130,25 @@
                   <h5 class="card-title d-flex justify-content-center">Pay for next month</h5>
                   <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
                   <p class="card-subtitle text-muted d-flex justify-content-center" style="font-size: medium;"> {{this.address.streetAddress}} {{this.address.city}} {{this.address.state}}</p>
-                  <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p>
+                  <p class="card-text d-flex justify-content-center">{{this.userDescription}}</p> 
+                  {{#ifEqual this.paid "Paid"}}
+                    <p class="card-title d-flex justify-content-center bg-success text-white">PAID</p>
+                    {{log "working"}}
+                    {{else}}
+                    <p class="card-title d-flex justify-content-center bg-danger text-white">UNPAID</p>
+                    {{#ifEqual this._id ../currUserId}}
                   <form action="/navigation/checkout-page" method="get"> 
-                  <button type="submit" class="btn btn-outline-danger">Check-out</button>
+                  <button type="submit" id="pay" class="btn card-title d-flex justify-content-center btn-outline-danger">Check-out</button>
                   </form>  
+                  {{/ifEqual}}
+                  {{/ifEqual}}  
+                  
                 </div>
               </div>
             </div>
         {{/each}}
+        {{log "that"}}
+        {{log currUserId}}
       </div>  
     </div>
     </div>    
