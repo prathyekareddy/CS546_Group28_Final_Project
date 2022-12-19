@@ -8,8 +8,8 @@ let platformEmail = document.getElementById('platformEmail');
 let platformPassword = document.getElementById('platformPassword');
 let groupLimit = document.getElementById('groupLimit');
 
-console.log(groupLimit +" JS grouplimit")
-console.log(platformEmail + "JS platformemail")
+// console.log(groupLimit +" JS grouplimit")
+// console.log(platformEmail + "JS platformemail")
 
 const updateGroupFormValidation = async (
 groupName,

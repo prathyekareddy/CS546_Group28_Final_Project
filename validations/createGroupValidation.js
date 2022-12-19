@@ -279,7 +279,6 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
 
   // Due Payment Date
   const date = new Date();
-  console.log(dueDate)
   if (dueDate.length !== 10) {
     errorBag.error = true;
     errorBag.message = "Invalid due Date!";

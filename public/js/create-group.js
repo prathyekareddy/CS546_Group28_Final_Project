@@ -105,6 +105,8 @@ function createGroupFormValidation(
     }
 
   //   if(duePaymentDate){
+    // let dueDate = new Date(duePaymentDate);
+    // duePaymentDate = dueDate.toLocaleDateString("en-US");
 
   //   let dueDate = new Date(duePaymentDate);
   //   duePaymentDate = dueDate.toLocaleDateString("en-US");
@@ -263,9 +265,9 @@ async function createGroup(event) {
   formData.append('platformEmail', platformEmail);
   formData.append('platformPassword', platformPassword);
   formData.append('groupLimit', groupLimit);
-  let dueDate = new Date(duePaymentDate);
-  dueDate=dueDate.toLocaleDateString('en-US');
-  formData.append('dueDate', dueDate);
+  // let dueDate = new Date(duePaymentDate);
+  // dueDate=dueDate.toLocaleDateString();
+  formData.append('dueDate', duePaymentDate);
   formData.append('totalSubsPrice', subscriptionPrice);
   formData.append('subsLength', subscriptionLengthInMonths);
   formData.append('groupImage', groupImage);

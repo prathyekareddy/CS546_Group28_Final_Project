@@ -5,7 +5,7 @@ const path = require('path');
 const {fileURLToPath} = require('url')
 const fs = require("fs");
 const data = require('../data');
-const { updateUserGroup } = require('../data/usergroup');
+const { updateUserGroup, getUserGroupbyGroupIdandUserId } = require('../data/usergroup');
 const groupData = data.groups;
 const userData = data.users;
 const userGroupData = data.usergroup;
@@ -313,27 +313,33 @@ router
 
       try {
         if((groupDetails.listOfUsers).length > 0){
-          for (i = 0; i < (groupDetails.listOfUsers).length; i ++){
-            userArr.push(await userData.getUserById((groupDetails.listOfUsers)[i]))
+          for (i = 0; i < (groupDetails.listOfUsers).length; i++){
+            let userGroupHbs = await userGroupData.getUserGroupbyGroupIdandUserId(groupDetails._id.toString(),(groupDetails.listOfUsers)[i].toString())
+            let userArrHbs = await userData.getUserById((groupDetails.listOfUsers)[i]);
+            // console.log(userArrHbs,"userArrHbs");
+            userArrHbs.paid = userGroupHbs.curentPaymentStatus;
+            userArr.push(userArrHbs);
           }
         }
       } catch (error) {
         console.log(error)
       }
-      console.log(req.session.user._id + "session")
-      console.log(groupDetails.groupLeaderId + "groupLeaderId")
       if(ObjectId(req.session.user._id).toString() == ObjectId(groupDetails.groupLeaderId).toString()){
         checkGroupLeader = true
-        console.log("Group Leader")
       }
       else{
-        console.log("Not Group Leader")
         checkGroupLeader = false
       }
+      // console.log(userArr,"USER ARRAY");
+      // console.log(req.session.user._id.toString(),"USER ID");
+
+      // console.log(userGroupHbs.currrentPaymentStatus , "STATUSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs")
+
+      
       res.render('group-details', { group: groupDetails,
         requestToJoin : requestArr,
         user : userArr,
-        currUserId : req.session.user._id,
+        currUserId : req.session.user._id.toString(),
         checkGroupLeader: checkGroupLeader,
       })
     })
@@ -363,7 +369,7 @@ router
     router
     .route("/removeUserFromGroup")
     .post(async (req, res) => {
-      console.log(req.body)
+      // console.log(req.body)
       try{
         userGroup = await userGroupData.getUserGroupbyGroupIdandUserId(req.body.groupid,req.body.userid)
       }catch(error){
@@ -386,7 +392,7 @@ router
     .post(async (req, res) => {
       try{
         // rejectUser = await groupData.removeUserFromRequestListInGroup(req.body.userid,req.body.groupid)
-        console.log(req.body)
+        // console.log(req.body)
         reportuser = await groupData.addReportToGroup(req.body.groupid, req.body.reporteduserid, req.body.userid)
         res.redirect('/navigation/groupdetails/'+req.body.groupid);
       }catch(e){
@@ -453,7 +459,7 @@ router
 router
     .post('/search-user.html', async (req, res) => {
 
-      console.log(req.body.category);
+      // console.log(req.body.category);
 
       // try {
       //   helper.checkSearch(req.body.groupName, req.body.category);
@@ -480,7 +486,6 @@ router
       const updateResult = async (userId) => {
         userResults.forEach(element => {
           if (element.userId.toString() === userId) {
-            console.log("here");
             element.invited = true;
             element.notInvited = false;
           }

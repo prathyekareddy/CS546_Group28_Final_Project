@@ -138,6 +138,7 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a email-id";
       emailId.focus();
+      return;
     }
     // firstName
     if (firstName.value.trim()) {
@@ -147,6 +148,7 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a First Name";
       firstName.focus();
+      return;
     }
     // lastName
     if (lastName.value.trim()) {
@@ -156,18 +158,19 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a Last Name";
       lastName.focus();
+      return;
     }
     // city
-    console.log(city.value.trim(), "in here");
+    // console.log(city.value.trim(), "in here");
 
     if (city.value.trim()) {
       errorDiv.hidden = true;
     } else {
-      console.log(city.value.trim(), "in here");
       city.value = "";
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a City";
       city.focus();
+      return;
     }
     // state
     if (state.value.trim()) {
@@ -177,6 +180,7 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a State";
       state.focus();
+      return;
     }
     // streetAddress
     if (streetAddress.value.trim()) {
@@ -186,6 +190,7 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a Street Address";
       streetAddress.focus();
+      return;
     }
     // phoneNumber
     if (phoneNumber.value.trim()) {
@@ -195,6 +200,7 @@ if (myForm) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = "You must enter a Phone Number";
       phoneNumber.focus();
+      return;
     }
     try {
       emailId = checkString(emailId.value, "emailId");
@@ -242,6 +248,7 @@ if (myForm) {
     } catch (e) {
       errorDiv.hidden = false;
       errorDiv.innerHTML = e;
+      return;
     }
     if (errorDiv.innerHTML == "") {
       event.target.submit();

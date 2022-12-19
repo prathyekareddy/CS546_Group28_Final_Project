@@ -258,7 +258,7 @@ const updateUser = async (
   interestedECommerce,
   interestedOther
 ) => {
-  console.log(userId,firstName,lastName,email,gender,userDescription,profileImgUrl,city,state,streetAddress,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther)
+  // console.log(userId,firstName,lastName,email,gender,userDescription,profileImgUrl,city,state,streetAddress,phoneNumber,interestedOTT,interestedMusicStreaming,interestedNetworkServiceProviders,interestedEducation,interestedECommerce,interestedOther)
   userId = validation.checkId(userId, "userId");
 
   email = validation.checkString(email,"email")
