@@ -2,10 +2,10 @@
     {{#each sampleResult}}
     <div class="col">
         <div class="card shadow">
-            <h2 class="card-title text-center"> <img class="img-fluid" src = "/public/group-images/{{this.groupImage}}"  alt = {{platform}} width = "200" height = "200"></h2>
+            <h1 class="card-title text-center"> <img class="img-fluid" src = "/public/group-images/{{this.groupImage}}"  alt = {{platform}} width = "200" height = "200"></h1>
 
             <div class="card-body">
-                <h5 class="card-title blockquote">{{ groupName }}</h5>
+                <h2 class="card-title blockquote">{{ groupName }}</h2>
                 <div class="card-text">
                     <p class="platform">{{ platform }}</p>
                     <p class="payment">${{ monthlyPayment }} permonth / ${{ yearlyPayment }} per year</p>
