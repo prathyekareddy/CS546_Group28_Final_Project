@@ -277,6 +277,7 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
     return errorBag;
   }
 
+<<<<<<< Updated upstream
   // // Due Payment Date
   // const date = new Date();
   // console.log(dueDate)
@@ -292,6 +293,23 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
   //   errorBag.dueDate = "dueDate must be in the mm/dd/yyyy format!"
   //   return errorBag;
   // }
+=======
+  // Due Payment Date
+  const date = new Date();
+  console.log(dueDate)
+  if (dueDate.length !== 10) {
+    errorBag.error = true;
+    errorBag.message = "Invalid due Date!";
+    errorBag.dueDate = "dueDate must be in the mm/dd/yyyy format!"
+    return errorBag;
+  }
+  if (dueDate.slice(2, 3) !== "/" || dueDate.slice(5, 6) !== "/") {
+    errorBag.error = true;
+    errorBag.message = "Invalid due Date!";
+    errorBag.dueDate = "dueDate must be in the mm/dd/yyyy format!"
+    return errorBag;
+  }
+>>>>>>> Stashed changes
 
   // let currMonth = date.toLocaleDateString().slice(0, 2);
   // let currDay = date.toLocaleDateString().slice(-7, -5);

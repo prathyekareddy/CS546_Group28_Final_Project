@@ -1,14 +1,26 @@
+<<<<<<< Updated upstream
 <section>  
+=======
+<section>
+  <main>    
+>>>>>>> Stashed changes
     <div class="container">
     <h3 class="mx-auto"> My Groups</h3>
     <div class="card-deck">
         {{#each arrGroups}}
             <div class="col-3" style="padding-bottom: 50px;">
                     <div class="card Larger shadow" style="width: 20rem; height:30rem;">
+<<<<<<< Updated upstream
                         <img style="width: 100%; height: 75%;" class="card-img-top mx-auto" src="/public/group-images/{{this.groupImage}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap">
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-left">Group Name: {{this.groupName}}</h5>
                             <h5 class="card-subtitle d-flex justify-content-left" style="font-weight: normal; color: rgb(5, 5, 5)"> Category: {{this.category}}</h5>
+=======
+                        <img style="width: 100%; height: 75%;" class="card-img-top mx-auto" src="/public/group-images/{{this.groupImage}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                        <div class="card-body">
+                            <h5 class="card-title d-flex justify-content-left">Group Name: {{this.groupName}}</h5>
+                            <h5 class="card-subtitle d-flex justify-content-left" style="font-weight: light; color: rgb(5, 5, 5)"> Category: {{this.category}}</h5>
+>>>>>>> Stashed changes
                             <form action= '/navigation/groupdetails/{{this._id}}' method="get"> 
                                 <button type="submit" class="btn btn-outline-danger">Go to Group</button>
                             </form>

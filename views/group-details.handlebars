@@ -1,13 +1,27 @@
 
 <section>
+<<<<<<< Updated upstream
     <div id = "error" class = "error"></div>
+=======
+  <main>
+    <div id = "error" class = "error"></div>
+    <form action="/navigation/chat/{{group._id}}" method="get">
+      <button type="submit">Open Chat</button>
+    </form>
+    <form action="/navigation/search-user/{{group._id}}" method="get">
+      <button type="submit">Search for Users</button>
+    </form>
+>>>>>>> Stashed changes
     <br>
     <br>
     
     <div class="container d-flex justify-content-end">
+<<<<<<< Updated upstream
       <form action="/navigation/chat/{{group._id}}" method="get">
         <button type="submit" class="btn btn-outline-info">Open Chat</button>
       </form>
+=======
+>>>>>>> Stashed changes
       <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#updateGroupModal">
         Update Group
       </button>
@@ -25,7 +39,11 @@
       <h2 class="card-header text-center">Group Details</h2>
       <div class="row">
         <div class="col-md-4">
+<<<<<<< Updated upstream
           <img class="card-img-top img-circle" style="padding: 40px;" src="/public/group-images/{{group.groupImage}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="">
+=======
+          <img class="card-img-top img-circle" style="padding: 40px;" src="/public/group-images/{{group.groupImage}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';">
+>>>>>>> Stashed changes
         </div>
         <div class="card-body col-md-6">
           <br>
@@ -49,8 +67,12 @@
           {{#each user}}
               <div class="col-4 " style="padding-bottom: 50px;">
                       <div class="card Larger shadow" >
+<<<<<<< Updated upstream
                           <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap">
                           
+=======
+                          <img style="width: 100%;" class="card-img-top mx-auto" src="{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+>>>>>>> Stashed changes
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -88,7 +110,11 @@
           {{#each requestToJoin}}
               <div class="col-4" style="padding-bottom: 50px;">
                       <div class="card Larger shadow" style="border-radius: 40px;">
+<<<<<<< Updated upstream
                           <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap">
+=======
+                          <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+>>>>>>> Stashed changes
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -125,7 +151,11 @@
           {{#each user}}
             <div class="col-3" style="padding-bottom: 50px;">
               <div class="card Larger shadow">
+<<<<<<< Updated upstream
                 <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap">
+=======
+                <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+>>>>>>> Stashed changes
                 <div class="card-body">
                   <h5 class="card-title d-flex justify-content-center">Pay for next month</h5>
                   <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -138,7 +168,11 @@
                     <p class="card-title d-flex justify-content-center bg-danger text-white">UNPAID</p>
                     {{#ifEqual this._id ../currUserId}}
                   <form action="/navigation/checkout-page" method="get"> 
+<<<<<<< Updated upstream
                   <button type="submit" id="pay" class="btn card-title d-flex justify-content-center btn-outline-danger">Check-out</button>
+=======
+                  <button type="submit" class="btn btn-outline-danger">Check-out</button>
+>>>>>>> Stashed changes
                   </form>  
                   {{/ifEqual}}
                   {{/ifEqual}}  
@@ -269,4 +303,8 @@
   </div>
 </div>
 <script src='../public/js/editGroup.js'></script>
+<<<<<<< Updated upstream
 </section>
+=======
+</section>
+>>>>>>> Stashed changes

@@ -483,6 +483,10 @@ function editGroupDetailsValidation(
 
   //Group limit validations
   if (groupLimit) {
+<<<<<<< Updated upstream
+=======
+    console.log(typeof groupLimit + "GroupLimit")
+>>>>>>> Stashed changes
     if (groupLimit.includes(".")) {
       throw 'Decimals values are not allowed';
     }

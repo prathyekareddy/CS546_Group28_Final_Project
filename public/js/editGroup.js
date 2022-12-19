@@ -8,8 +8,13 @@ let platformEmail = document.getElementById('platformEmail');
 let platformPassword = document.getElementById('platformPassword');
 let groupLimit = document.getElementById('groupLimit');
 
+<<<<<<< Updated upstream
 // console.log(groupLimit +" JS grouplimit")
 // console.log(platformEmail + "JS platformemail")
+=======
+console.log(groupLimit +" JS grouplimit")
+console.log(platformEmail + "JS platformemail")
+>>>>>>> Stashed changes
 
 const updateGroupFormValidation = async (
 groupName,
@@ -33,7 +38,11 @@ if (groupName.length < 2) {
 }
 let groupNameReg = new RegExp("^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$");
 if (!groupName.match(groupNameReg)) {
+<<<<<<< Updated upstream
   // throw new Error('Group Name can only be Alphanumerical');
+=======
+  throw new Error('Group Name can only be Alphanumerical');
+>>>>>>> Stashed changes
 }
 
 //Category validation
@@ -54,7 +63,11 @@ if (platformName.length < 2) {
 }
 let platformNameReg = new RegExp("^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$");
 if (!platformName.match(platformNameReg)) {
+<<<<<<< Updated upstream
   // throw new Error('Platform name can only be Alphanumerical');
+=======
+  throw new Error('Platform name can only be Alphanumerical');
+>>>>>>> Stashed changes
 }
 
 //Platform email validation

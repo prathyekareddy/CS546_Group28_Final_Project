@@ -105,8 +105,11 @@ function createGroupFormValidation(
     }
 
   //   if(duePaymentDate){
+<<<<<<< Updated upstream
     // let dueDate = new Date(duePaymentDate);
     // duePaymentDate = dueDate.toLocaleDateString("en-US");
+=======
+>>>>>>> Stashed changes
 
   //   let dueDate = new Date(duePaymentDate);
   //   duePaymentDate = dueDate.toLocaleDateString("en-US");

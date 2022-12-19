@@ -1,5 +1,8 @@
 node_modules/
 public/group-images/
+<<<<<<< Updated upstream
 node_modules/.package-lock.json
 package-lock.json
 
+=======
+>>>>>>> Stashed changes
