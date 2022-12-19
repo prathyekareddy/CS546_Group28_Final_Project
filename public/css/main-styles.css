@@ -13,11 +13,11 @@ body {
 }
 
 .payment {
-	color: red;
+	color: #ee0000;
 }
 
 .members {
-	color: blue;
+	color: #007cc0;
 	font-size: 14px;
 }
 
@@ -41,12 +41,23 @@ body {
 }
 
 .search-button {
-	background-color: #5cb85c !important;
-	color: white !important;
+	background-color: #008a00 !important;
+	color: #ffffff !important;
+}
+
+.edit-button{
+	background-color: #008a00 !important;
+}
+
+.blue-color{
+	
+	color: #ffffff !important;
+	background-color: #007cc0 !important;
 }
 
 .req-btn {
-	color: white !important;
+	color: #ffffff !important;
+	background-color: #007cc0 !important;
 }
 
 .custom-align {
