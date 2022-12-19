@@ -296,6 +296,7 @@ router
     .get(async (req, res) => {
       tryStripe = req.params.id;
      groupDetails = await groupData.getGroupById(req.params.id);
+     if(!groupDetails.listOfUsers.includes(req.session.user._id.toString())) res.render("error-unauthorized");
      paymentForstripe = groupDetails.payment.montlyPaymentForGroup / groupDetails.listOfUsers.length ;
 
      paymentForstripe = paymentForstripe.toFixed(2);
@@ -436,6 +437,8 @@ router
 router
     .route("/chat/:id")
     .get(async (req, res) => {
+        groupDetails = await groupData.getGroupById(req.params.id);
+        if(!groupDetails.listOfUsers.includes(req.session.user._id.toString())) res.render("error-unauthorized");
         const groupChat = await groupChatData.getGroupChatByGroupId(xss(req.params.id));
         req.session.chat = {groupId: xss(req.params.id), groupChatId: groupChat._id};
         res.render('group-chat', {chat: groupChat.messages, groupID: req.params.id, username: req.session.user.username, email: req.session.user.emailId});

@@ -155,13 +155,13 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
     return errorBag;
   }
 
-  let isValidGroupNameAlphaNume = helper.isAlphanumericValid('groupName', groupName);
-  if (!isValidGroupNameAlphaNume.isValid) {
-    errorBag.error = true;
-    errorBag.message = "Invalid group Name!";
-    errorBag.groupName = "Only alphanumeric characters are allowed in group Name!";
-    return errorBag;
-  }
+  // let isValidGroupNameAlphaNume = helper.isAlphanumericValid('groupName', groupName);
+  // if (!isValidGroupNameAlphaNume.isValid) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid group Name!";
+  //   errorBag.groupName = "Only alphanumeric characters are allowed in group Name!";
+  //   return errorBag;
+  // }
 
   //Category Validation
   let isValidCategory = helper.isStringValid('category', category);
@@ -213,13 +213,13 @@ function checkCreateGroup(groupName, category, platformName, platformEmail,
     return errorBag;
   }
 
-  isValidPlatformName = helper.isAlphanumericValid('Platform', platformName);
-  if (!isValidPlatformName.isValid) {
-    errorBag.error = true;
-    errorBag.message = "Invalid Platform name!";
-    errorBag.platformName = "Only alphanumeric characters are allowed in Platform name!"
-    return errorBag;
-  }
+  // isValidPlatformName = helper.isAlphanumericValid('Platform', platformName);
+  // if (!isValidPlatformName.isValid) {
+  //   errorBag.error = true;
+  //   errorBag.message = "Invalid Platform name!";
+  //   errorBag.platformName = "Only alphanumeric characters are allowed in Platform name!"
+  //   return errorBag;
+  // }
 
   //platformEmail validation
   let isValidplatformEmail = helper.isStringValid('Email', platformEmail);

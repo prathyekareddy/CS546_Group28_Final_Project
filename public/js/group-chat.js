@@ -50,7 +50,7 @@ mySearchForm.submit(async (event) => {
 
 socket.on('chat-message', data => {
     const messageElement = document.createElement('div')
-    messageElement.innerHTML = `<p class="text-primary fw-bold">${data.message.email}</p>
+    messageElement.innerHTML = `<p class="text-primary fw-bold fix-color">${data.message.email}</p>
                                 <p><b>Message: </b>${data.message.message}</p>`
     messageContainer.append(messageElement)
 });

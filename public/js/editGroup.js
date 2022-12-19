@@ -33,7 +33,7 @@ if (groupName.length < 2) {
 }
 let groupNameReg = new RegExp("^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$");
 if (!groupName.match(groupNameReg)) {
-  throw new Error('Group Name can only be Alphanumerical');
+  // throw new Error('Group Name can only be Alphanumerical');
 }
 
 //Category validation
@@ -54,7 +54,7 @@ if (platformName.length < 2) {
 }
 let platformNameReg = new RegExp("^([A-Za-z]|[A-Za-z][0-9]*|[0-9]*[A-Za-z])+$");
 if (!platformName.match(platformNameReg)) {
-  throw new Error('Platform name can only be Alphanumerical');
+  // throw new Error('Platform name can only be Alphanumerical');
 }
 
 //Platform email validation
