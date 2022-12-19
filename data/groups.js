@@ -322,52 +322,52 @@ const createGroup = async (
   }
 
    // Due Payment Date============================================================================================
-   const date = new Date();
-   if (duePaymentDate.length !== 10) {
-     throw "duePaymentDate must be in the mm/dd/yyyy format!"
-   }
-   if (duePaymentDate.slice(2, 3) !== "/" || duePaymentDate.slice(5, 6) !== "/") {
-     throw "duePaymentDate must be in the mm/dd/yyyy format!"
-   }
+  //  const date = new Date();
+  //  if (duePaymentDate.length !== 10) {
+  //    throw "duePaymentDate must be in the mm/dd/yyyy format!"
+  //  }
+  //  if (duePaymentDate.slice(2, 3) !== "/" || duePaymentDate.slice(5, 6) !== "/") {
+  //    throw "duePaymentDate must be in the mm/dd/yyyy format!"
+  //  }
  
-   let currMonth = date.toLocaleDateString().slice(0, 2);
-   let currDay = date.toLocaleDateString().slice(-7, -5);
-   let currYear = date.toLocaleDateString().slice(-4);
+  //  let currMonth = date.toLocaleDateString().slice(0, 2);
+  //  let currDay = date.toLocaleDateString().slice(-7, -5);
+  //  let currYear = date.toLocaleDateString().slice(-4);
  
  
-   let dueMonth = Number(duePaymentDate.slice(0, 2));
-   let dueDay = Number(duePaymentDate.slice(3, 5));
-   let dueYear = Number(duePaymentDate.slice(6));
+  //  let dueMonth = Number(duePaymentDate.slice(0, 2));
+  //  let dueDay = Number(duePaymentDate.slice(3, 5));
+  //  let dueYear = Number(duePaymentDate.slice(6));
  
-   if (Number.isNaN(dueMonth) || Number.isNaN(dueDay) || Number.isNaN(dueYear)) {
-      throw `day, month and year must be numbers`;
-   }
+  //  if (Number.isNaN(dueMonth) || Number.isNaN(dueDay) || Number.isNaN(dueYear)) {
+  //     throw `day, month and year must be numbers`;
+  //  }
  
-   if (dueMonth < 1 || dueMonth > 12) {
-     throw `Month must be between 1-12`;
-   }
+  //  if (dueMonth < 1 || dueMonth > 12) {
+  //    throw `Month must be between 1-12`;
+  //  }
  
-   if (dueDay < 1 || dueDay > 31) {
-     throw `Day must be between 1-31`;
-   }
+  //  if (dueDay < 1 || dueDay > 31) {
+  //    throw `Day must be between 1-31`;
+  //  }
  
-   if (dueMonth === 2 && dueDay > 28 && !helper.checkLeapYear(dueYear)) {
-     throw `February can not contain more than 28 days`;
-   }
+  //  if (dueMonth === 2 && dueDay > 28 && !helper.checkLeapYear(dueYear)) {
+  //    throw `February can not contain more than 28 days`;
+  //  }
  
-   if (dueMonth === 2 && dueDay > 29 && helper.checkLeapYear(dueYear)) {
-    throw `February can not contain more than 29 days`;
-  }
+  //  if (dueMonth === 2 && dueDay > 29 && helper.checkLeapYear(dueYear)) {
+  //   throw `February can not contain more than 29 days`;
+  // }
 
-   if (dueMonth === 4 || dueMonth === 6 || dueMonth === 9 || dueMonth === 11) {
-     if (dueDay > 30) {
-       throw `Date can not be 31 for the month ${dueDay}`;
-     }
-   }
+  //  if (dueMonth === 4 || dueMonth === 6 || dueMonth === 9 || dueMonth === 11) {
+  //    if (dueDay > 30) {
+  //      throw `Date can not be 31 for the month ${dueDay}`;
+  //    }
+  //  }
  
-   if (dueYear < currYear) {
-    throw `Year should not be less than current year`;
-   }
+  //  if (dueYear < currYear) {
+  //   throw `Year should not be less than current year`;
+  //  }
  
  
   //  if (dueYear == currYear) {
@@ -376,11 +376,11 @@ const createGroup = async (
   //    }
   //  }
  
-   if (dueMonth == currMonth) {
-     if (dueYear == currYear && dueDay < currDay) {
-       throw `duePaymentDate cannot be less than current date`;
-     }
-   }
+  //  if (dueMonth == currMonth) {
+  //    if (dueYear == currYear && dueDay < currDay) {
+  //      throw `duePaymentDate cannot be less than current date`;
+  //    }
+  //  }
 
    /************************************************* totalPaymentPrice Validation ***********************************************/
    let isValidTotalPaymentPrice = helper.isStringValid('totalPaymentPrice', totalPaymentPrice);

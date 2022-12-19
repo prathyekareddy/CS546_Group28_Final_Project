@@ -297,7 +297,8 @@ router
       tryStripe = req.params.id;
      groupDetails = await groupData.getGroupById(req.params.id);
      paymentForstripe = groupDetails.payment.montlyPaymentForGroup / groupDetails.listOfUsers.length ;
-
+    
+     paymentForstripe = paymentForstripe.toFixed(2)
       requestArr = []
       userArr = []
 
