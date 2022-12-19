@@ -5,7 +5,7 @@
     <div class="container shadow p-3 mb-5 bg-white rounded">
         {{!-- groupImage --}}
         <label for="groupImage">Group Image</label>
-        <input type="file" name="groupImage" id="groupImage" class="form-control" accept="image/jpeg, image/png, image/jpg" required/>
+        <input type="file" name="groupImage" id="groupImage" class="form-control" accept="image/jpeg, image/png, image/jpg" required>
         <div class="d-flex align-items-center flex-column">
             <div id="file" class="d-flex justify-content-start align-items-center flex-column form-group col-md-3">
             </div>
@@ -60,7 +60,7 @@
             {{!-- DuePaymentDate --}}
                        <div class="form-group col-md-6">
             <label for="due-date">Payment Due Date</label>
-            <input type="date" class="form-control" id="due-date" name="dueDate" placeholder="Payment Due Date" min="" required>
+            <input type="date" class="form-control" id="due-date" name="dueDate" required>
             </div>
         </div>    
         <div class="form-row">
@@ -90,8 +90,8 @@
             </div>
         </div>
         </div>
+    </div>    
     </form>
-    </div>
 </main>
 <script src='../public/js/create-group.js'></script>
 

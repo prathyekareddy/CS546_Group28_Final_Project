@@ -1,6 +1,5 @@
 
 <section>
-  <main>
     <div id = "error" class = "error"></div>
     <br>
     <br>
@@ -26,7 +25,7 @@
       <h2 class="card-header text-center">Group Details</h2>
       <div class="row">
         <div class="col-md-4">
-          <img class="card-img-top img-circle" style="padding: 40px;" src="/public/group-images/{{group.groupImage}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';">
+          <img class="card-img-top img-circle" style="padding: 40px;" src="/public/group-images/{{group.groupImage}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="">
         </div>
         <div class="card-body col-md-6">
           <br>
@@ -50,7 +49,8 @@
           {{#each user}}
               <div class="col-4 " style="padding-bottom: 50px;">
                       <div class="card Larger shadow" >
-                          <img style="width: 100%;" class="card-img-top mx-auto" src="{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap">
+                          
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -61,14 +61,14 @@
                           <div class="card-footer text-muted">
                             <div class="row">
                               <form method="POST" action="/navigation/reportUser" id="reportUserForm">
-                                <input type="hidden" name="groupid"  value="{{../group._id}}"/>
-                                <input type="hidden" name="reporteduserid"  value="{{this._id}}"/>
+                                <input type="hidden" name="groupid"  value="{{../group._id}}">
+                                <input type="hidden" name="reporteduserid"  value="{{this._id}}">
                                 <input type="hidden" name="userid" value="{{../currUserId}}">
                                 <button type="submit" class="btn btn-outline-danger">Report</button>
                               </form>
                               {{#if ../checkGroupLeader}}
                                 <form method="POST" action="/navigation/removeUserFromGroup" id="removeUserFromGroupForm">
-                                  <input type="hidden" name="groupid"  value="{{../group._id}}"/>
+                                  <input type="hidden" name="groupid"  value="{{../group._id}}">
                                   <input type="hidden" name="userid" value="{{this._id}}">
                                   <button type="submit" class="btn btn-outline-danger">Remove</button>
                                 </form>
@@ -88,7 +88,7 @@
           {{#each requestToJoin}}
               <div class="col-4" style="padding-bottom: 50px;">
                       <div class="card Larger shadow" style="border-radius: 40px;">
-                          <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                          <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap">
                           <div class="card-body">
                               <h5 class="card-title d-flex justify-content-center">{{this.firstName}} {{this.lastName}}</h5>
                               <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -125,7 +125,7 @@
           {{#each user}}
             <div class="col-3" style="padding-bottom: 50px;">
               <div class="card Larger shadow">
-                <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap"/>
+                <img style="width: 100%;" class="card-img-top mx-auto" src=".{{this.profileImgUrl}}" onerror="this.onerror=null;this.src='https://png.pngtree.com/element_our/20200609/ourmid/pngtree-children-s-software-programming-image_2230761.jpg';" alt="Card Image cap">
                 <div class="card-body">
                   <h5 class="card-title d-flex justify-content-center">Pay for next month</h5>
                   <h6 class="card-subtitle d-flex justify-content-center" style="font-weight: lighter; color: lightcoral">{{this.email}}</h6>
@@ -163,7 +163,6 @@
       })
   </script>
     {{!-- Payment below --}}
-  </main>
 
   
 <!-- Modal -->
@@ -179,7 +178,7 @@
       <div class="modal-body">
         {{!-- Form Start --}}
           <form method="POST" action="/navigation/updategroup" id="updateGroupForm">
-          <input type="hidden" name="groupid"  value="{{group._id}}"/>
+          <input type="hidden" name="groupid"  value="{{group._id}}">
           <div class="form-row">
               {{!-- groupName --}}
               <div class="form-group col-md-12">
@@ -192,12 +191,14 @@
               <div class="dropdown form-group d-flex flex-column">
                   <label for="category">Category</label>
                       <select style="width: 553px;" class="text-left btn btn-light dropdown-toggle" id="category" name="category"
-                          data-toggle="dropdown" value="{{group.category}}">
+                          data-toggle="dropdown">
                           <option value="{{group.category}}"> {{group.category}} </option>
                           <option value="OTT">OTT</option>
+                          <option value="Music Streaming">Music Streaming</option>
+                          <option value="Network Service Provider">Network Service Provider</option>
                           <option value="Education">Education</option>
-                          <option value="E-commerce">E-commerce</option>
-                          <option value="Network Carrier Plans">Network Carrier Plans</option>
+                          <option value="E-Commerce">E-Commerce</option>
+                <option value="Other">Other</option>
                       </select>
               </div>
               {{!-- Platform --}}
@@ -229,17 +230,17 @@
               <label for="platform-name">Add Hash Tags</label>
                   <input type="text" class="form-control" id="hashtags" name="hashtags" placeholder="Add # before every tag" value="{{#each group.hashtags}}#{{this}}{{/each}}">
               </div>
-          </div>    
-      </div>
+          </div>
       <div class="modal-footer">
         <button class="btn btn-primary" data-toggle="tooltip" title="Update Group">Update Group</button>
       </div>
       </form>
     </div>
   </div>
+  </div>
 </div>
 {{!-- Reports  Modal--}}
-<div class="modal fade" id="reportModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="reportModalCenter" tabindex="-1" role="dialog" aria-label="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
